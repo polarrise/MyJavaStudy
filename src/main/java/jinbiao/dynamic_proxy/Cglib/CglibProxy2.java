@@ -1,8 +1,9 @@
 package jinbiao.dynamic_proxy.Cglib;
 
 
-import com.jinbiao.dynamic_proxy.jdk.UserManager;
-import com.jinbiao.dynamic_proxy.jdk.UserManagerImpl;
+
+import jinbiao.dynamic_proxy.jdk.UserManager;
+import jinbiao.dynamic_proxy.jdk.UserManagerImpl;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
