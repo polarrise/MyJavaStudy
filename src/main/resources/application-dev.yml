@@ -1,0 +1,90 @@
+#本地选择开启swagger
+swagger:
+  enabled: true
+
+server:
+  #(改)启动端口，一台服务器唯一
+  port: 8011
+#  servlet:
+#  #(改)应用上下文，统一用/tps-local
+#  context-path: /tps-test
+
+#
+#  server.port=8050
+#  #dubbo配置
+#  spring.dubbo.application.name=hs-ldm-server-service
+#  #注册中心地址
+#  spring.dubbo.registry.address=zookeeper://127.0.0.1:2181
+#  #配置了这个后，就会一直有守护京城，而不是启动就怪盗了
+#  spring.dubbo.server=true
+#  #扫描的包
+#  spring.dubbo.scan=com.example
+#  #Dubbo Protocol
+#  spring.dubbo.protocol.name=dubbo
+#  spring.dubbo.protocol.port=29999
+#  spring.dubbo.protocol.version=1.0.0
+#  #DemoService version
+#  service.version=1.0.0
+
+spring:
+  application:
+    #(改)项目名称，建议使用hsa-tps-local，和包名一致
+    name: hsa-test
+  datasource:
+    username: hnxybkfhj
+    password: hnxybkfhj$123
+    url: jdbc:mysql://127.0.0.1:3306/test?connectTimeout=1000000&socketTimeout=3000000&autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8&allowMultiQueries=true
+    driver-class-name: com.mysql.jdbc.Driver
+
+service:
+   version: 1.0.0
+
+mybatis:
+  mapper-locations: classpath:mapping/*Mapper.xml
+  type-aliases-package: com.powersi.entity
+  #设置sql打印
+  configuration:
+    database-id: ${mybatis.database.provider.type:mysql}
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    #设置驼峰命名法
+    map-underscore-to-camel-case: true
+
+#showSql
+logging:
+  level:
+    com:
+      powersi:
+        mapper : debug
+#mybatis-plus打印sql信息
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#Dubbo provider configuration
+#dubbo:
+#  application:
+#      name: dubbo_provider
+#  protocol:
+#      #(改)连接zookeeper服务地址端口，建议所有的都不一样，且记录下来
+#      port: 20880
+#      name: dubbo
+#      version: 1.0.0
+#  registry:
+#      #(改)zookeeper服务地址，根据提供修改(zookeeper://IP:端口)
+#      protocol: zookeeper
+#      address: zookeeper://127.0.0.1:2181
+#  metadata-report:
+#      #(改)zookeeper服务地址，根据提供修改(zookeeper://IP:端口)
+#      address: zookeeper://127.0.0.1:2181
+#      #扫描注解包通过该设置将服务注册到zookeeper           dubbo.scan.base-packages=com.wzb.provider.service
+#  scan:
+#    base-packages: com.powersi.service
+#  provider:
+#          version: 1.0.0
+
+#idgenerator:
+#   common:
+#      step: 10
+#   redis:
+#      clusterNodes: 172.18.21.145:6379
+#      password: powersi$123
