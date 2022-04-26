@@ -1,0 +1,2 @@
+class=cn.how2j.springcloud.reflect.test.Service1
+method=doService1
