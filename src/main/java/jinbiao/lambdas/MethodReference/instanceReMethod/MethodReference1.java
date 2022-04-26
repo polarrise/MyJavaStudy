@@ -1,6 +1,7 @@
 package jinbiao.lambdas.MethodReference.instanceReMethod;
 
-import cn.how2j.springcloud.lambdas.MethodReference.MyPrintable;
+
+import jinbiao.lambdas.MethodReference.MyPrintable;
 
 public class MethodReference1 {
     public static void printString(MyPrintable p){

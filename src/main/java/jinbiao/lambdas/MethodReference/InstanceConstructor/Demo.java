@@ -1,6 +1,7 @@
 package jinbiao.lambdas.MethodReference.InstanceConstructor;
 
-import org.junit.jupiter.api.Test;
+
+import org.testng.annotations.Test;
 
 import java.util.function.Function;
 import java.util.function.Supplier;

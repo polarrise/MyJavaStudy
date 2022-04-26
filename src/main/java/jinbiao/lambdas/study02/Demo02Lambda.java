@@ -1,6 +1,7 @@
 package jinbiao.lambdas.study02;
 
-import cn.how2j.springcloud.lambdas.study02.Demo01Logger.MessageBuilder;
+
+import jinbiao.lambdas.study02.Demo01Logger.MessageBuilder;
 
 /**
     使用Lambda优化日志案例
