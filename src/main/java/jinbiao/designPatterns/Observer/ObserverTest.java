@@ -23,15 +23,16 @@ public class ObserverTest {
         Vector students = new Vector();
         Teacher t = new Teacher();
         for(int i= 0;i<10;i++){
-            Student st = new Student("Jinbiao"+i,t);  //创建学生Jinbiao1,t     Jinbiao2,t  10个学生,一个老师
+            Student st = new Student("Jinbiao"+i,t);  //创建学生Jinbiao0-9,t     10个学生,一个老师
             students.add(st);
-            t.attach(st);
+            t.attach(st);      //目标-添加观察者对象
         }
-        System.out.println("Welcome to Jinbiao!" +"\n"+"Observer Patterns." +"\n"+"-------------------------------");
+        System.out.println("Welcome to Jinbiao!" +"Observer Patterns." +"-------------------------------");
         t.setPhone("12345678");
         for(int i=0;i<3;i++){
             ((Student)students.get(i)).show();
         }
+        System.out.println("老师的手机号改变后~,通知学生及时更新手机号");
         t.setPhone("87654321");
         for(int i=0;i<3;i++){
             ((Student)students.get(i)).show();
@@ -87,7 +88,7 @@ class Teacher implements Subject{
     public String getPhone() {
         return phone;
     }
-    public void setPhone(String phone) {
+    public void setPhone(String phone) {   //只要老师一改变手机号,立马通知学生更新手机号为老师的最新手机号
         this.phone = phone;
         notice();
     }
@@ -108,7 +109,7 @@ class Student implements Observer{
         mTeacher = t;
     }
     public void show(){
-        System.out.println("Name:"+name+"\nTeacher'sphone:" + phone);
+        System.out.println("Name:"+name+" Teacher'sphone:" + phone);
     }
     @Override
     public void update() {
