@@ -25,12 +25,13 @@ public class A {
 //1        synchronized(this){
 //            this.num++;
 //        }
-        atomicInteger.incrementAndGet();
 
-        while(true){
-            int oldValue=atomicInteger.get();
-            int newValue=oldValue+1;
-            if(atomicInteger.compareAndSet(oldValue,newValue)){
+//        atomicInteger.incrementAndGet();  //等价于下面的代码:
+
+        while(true){                //线程调用increse方法时不断循环去判断自己的栈内存中原子类中的可见value是否与内存中atomicInteger的值是否一样
+            int oldValue=atomicInteger.get();   //线程独有的栈内存拿到atomicInteger原子类的旧值(注意:因为是多线程环境,这时候其他线程可能已经比较和交换过值了,那就会造成该线程栈内存的旧值不等于原子类中的value了)
+            int newValue=oldValue+1;           //旧值上+1
+            if(atomicInteger.compareAndSet(oldValue,newValue)){   //CAS(比较和交换)的实现:拿到旧值-然后跟内存里面的值比较一下，如果相等则把新值替换内存中的值
                 break;
             }
         }
@@ -46,14 +47,14 @@ public class A {
          long start=System.currentTimeMillis();
          //线程t1:
          Thread t1=new Thread(()->{
-                for(int i=0;i<10000;i++){
+                for(int i=0;i<100000;i++){
                     a.increse();
                 }
          });
         t1.start();
 
         //主线程:
-        for(int i=0;i<10000;i++){
+        for(int i=0;i<100000;i++){
             a.increse();
         }
         t1.join();//在主线程中调t1线程的join方法,那么主线程会进入阻塞队列,直到t1线程结束或中断线程。也就是主线程执行到这行代码时，要等着t1线程执行完
