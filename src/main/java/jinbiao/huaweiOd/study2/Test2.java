@@ -1,5 +1,9 @@
 package jinbiao.huaweiOd.study2;
 
+/**
+ * substring(beginIndex,endIndex)  包含首不含尾
+ * substring(beginIndex)   从该号索引开始往后截,包含该索引
+ */
 public class Test2 {
 
     public static void test(String str){  //length:13

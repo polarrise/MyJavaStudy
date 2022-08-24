@@ -126,7 +126,7 @@ public class Product {
         List<Product> prodList = Lists.newArrayList(prod1, prod2, prod3, prod4, prod5);
 
         new Product().test1(prodList);
-//        new Product().test2(prodList);
+        new Product().test2(prodList);
     }
 
 

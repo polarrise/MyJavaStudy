@@ -44,6 +44,8 @@ public class StringOfStream {
         //当然这个可以简化为
         list = list.stream().sorted(Comparator.comparingInt(Person::getAge)).collect(toList());
         System.out.println("3:"+list);
+
+        //           respList= respList.stream().sorted(Comparator.comparing((UmsLawFirm::getLawFirmName))).collect(toList());  a-z排序
         //5.limit:
         list=list.stream().limit(2).collect(toList());  //limit(long n):返回前 n 个元素
         System.out.println("4:"+list);
