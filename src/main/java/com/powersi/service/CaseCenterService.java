@@ -1,11 +1,10 @@
-package com.powersi.dao;
+package com.powersi.service;
+
 
 import com.powersi.entity.CaseCenter;
-import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 import java.util.Map;
 
-@Mapper
-public interface PersonMapper {
+public interface CaseCenterService {
     List<CaseCenter> getAllCase(Map map);
 }

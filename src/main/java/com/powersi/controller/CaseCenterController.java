@@ -1,9 +1,8 @@
 package com.powersi.controller;
 
 
-import com.powersi.entity.PersonDo;
-import com.powersi.service.PersonService;
-import com.powersi.service.impl.PayService;
+import com.powersi.entity.CaseCenter;
+import com.powersi.service.CaseCenterService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,19 +14,16 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/testBoot")
-@Api(value = "Person类Api文档",tags={"查询PersonController"})
-public class PersonController {
+@RequestMapping("/caseCenterApi")
+@Api(value = "CaseCenter类Api文档",tags={"查询CaseCenterController"})
+public class CaseCenterController {
     @Autowired
-    private PersonService personService;
+    private CaseCenterService caseCenterService;
 
-    @Autowired
-    private PayService  payService;
-
-    @RequestMapping("getAllPerson")
+    @RequestMapping("caseCenter")
     @ApiOperation(value="根据ID查询Person", notes="")
-    public List<PersonDo> getAllPerson(@RequestBody Map<String,Object> map){
-        return personService.getAllPerson(map);
+    public List<CaseCenter> getAllCase(@RequestBody Map<String,Object> map){
+        return caseCenterService.getAllCase(map);
     }
 
 }

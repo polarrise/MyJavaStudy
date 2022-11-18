@@ -13,8 +13,8 @@
 <!--       <result column="e-mail" jdbcType="VARCHAR" property="eMail" />-->
 <!--   </resultMap>-->
 
-    <select id="getAllPerson" resultType="com.powersi.entity.PersonDo" parameterType="java.util.Map">
-        select * from person where id = #{id}
+    <select id="getAllCase" resultType="com.powersi.entity.CaseCenter" parameterType="java.util.Map">
+        select * from case_center where id = #{id}
     </select>
 
 

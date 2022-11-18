@@ -20,8 +20,7 @@ public class PayController {
     @RequestMapping("toPay")
     @ApiOperation(value="发起支付", notes="根据支付方式发起对应的支付")
     public CommonResult<String> toPay(String payWay){
-        payService.pay(payWay);
-        return CommonResult.success();
+        return CommonResult.success(payService.pay(payWay));
     }
 
 }

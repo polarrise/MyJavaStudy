@@ -27,7 +27,7 @@ public class PayService implements ApplicationListener<ContextRefreshedEvent> {
       });
     }
   }
-  public void pay(String code) {
-    payMap.get(code).pay();
+  public String pay(String code) {
+    return payMap.get(code).pay();
   }
 }

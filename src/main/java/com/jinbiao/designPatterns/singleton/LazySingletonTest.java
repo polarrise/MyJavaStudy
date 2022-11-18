@@ -24,7 +24,7 @@ public class LazySingletonTest {
 //        }
 
         //反序列化:从test文件反序列化得到实例
-        try ( ObjectInputStream ois=new ObjectInputStream(new FileInputStream("test"))){
+        try ( ObjectInputStream ois=new ObjectInputStream(new FileInputStream("src/test"))){
             LazySingleton lazySingleton = (LazySingleton) ois.readObject();
             System.out.println(instance==lazySingleton);
         }catch (FileNotFoundException e){

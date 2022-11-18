@@ -1,13 +1,8 @@
 package com;
 
-import com.alibaba.dubbo.config.spring.context.annotation.EnableDubbo;
-import com.powersi.spring_aop.v1.IUserService;
-import com.powersi.spring_aop.v1.Impl.Person1ServiceImpl;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 

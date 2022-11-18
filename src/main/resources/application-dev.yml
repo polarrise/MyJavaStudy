@@ -5,9 +5,10 @@ swagger:
 server:
   #(改)启动端口，一台服务器唯一
   port: 8011
-#  servlet:
-#  #(改)应用上下文，统一用/tps-local
-#  context-path: /tps-test
+  #(改)应用上下文，统一用/tps-local
+  servlet:
+    context-path: /jinbiao-cool
+
 
 #
 #  server.port=8050
@@ -29,11 +30,11 @@ server:
 spring:
   application:
     #(改)项目名称，建议使用hsa-tps-local，和包名一致
-    name: hsa-test
+    name: jinbiao-cool
   datasource:
-    username: hnxybkfhj
-    password: hnxybkfhj$123
-    url: jdbc:mysql://172.18.21.164:3306/test?connectTimeout=1000000&socketTimeout=3000000&autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8&allowMultiQueries=true
+    username: root
+    password: 123456
+    url: jdbc:mysql://127.0.0.1:3306/xiaofa_lawyer?connectTimeout=1000000&socketTimeout=3000000&autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8&allowMultiQueries=true
     driver-class-name: com.mysql.jdbc.Driver
 
 service:
