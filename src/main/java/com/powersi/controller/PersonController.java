@@ -3,6 +3,7 @@ package com.powersi.controller;
 
 import com.powersi.entity.PersonDo;
 import com.powersi.service.PersonService;
+import com.powersi.service.impl.PayService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ import java.util.Map;
 public class PersonController {
     @Autowired
     private PersonService personService;
+
+    @Autowired
+    private PayService  payService;
 
     @RequestMapping("getAllPerson")
     @ApiOperation(value="根据ID查询Person", notes="")

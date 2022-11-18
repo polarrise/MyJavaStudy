@@ -14,7 +14,6 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @MapperScan({"com.powersi.dao"})
 @SpringBootApplication(scanBasePackages = {"com.powersi"})
 @ComponentScan(basePackages = {"com.powersi.*", "com.config"})   //@ComponentScan 用于指定 Spring 在初始化容器时要扫描的包。basePackages 属性用于指定要扫描的包。
-@EnableDubbo    //启用dubbo
 @EnableAspectJAutoProxy  //添加@EnableAspectJAutoProxy注解来放开代理的使用
 public class SpringBootDemoApplication {
 
