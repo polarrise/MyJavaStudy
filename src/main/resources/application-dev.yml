@@ -46,7 +46,7 @@ mybatis:
   #设置sql打印
   configuration:
     database-id: ${mybatis.database.provider.type:mysql}
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     #设置驼峰命名法
     map-underscore-to-camel-case: true
 

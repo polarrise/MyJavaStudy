@@ -17,5 +17,12 @@
         select * from case_center where id = #{id}
     </select>
 
+    <select id="getCaseInfoById" resultType="com.powersi.entity.CaseCenter" parameterType="java.lang.Long">
+        select * from case_center where id = #{id}
+    </select>
+
+    <select id="getUserInfoById" resultType="com.powersi.entity.User" parameterType="java.lang.Long">
+        select * from ums_member where id = #{id}
+    </select>
 
 </mapper>
