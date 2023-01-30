@@ -1,6 +1,7 @@
 package com.powersi.controller;
 
 
+import com.powersi.common.api.CommonResult;
 import com.powersi.entity.CaseCenter;
 import com.powersi.service.CaseCenterService;
 import io.swagger.annotations.Api;
@@ -24,14 +25,26 @@ public class CaseCenterController {
 
     @RequestMapping("caseCenter")
     @ApiOperation(value="根据ID查询Person", notes="")
-    public List<CaseCenter> getAllCase(@RequestBody Map<String,Object> map){
-        return caseCenterService.getAllCase(map);
+    public CommonResult<List<CaseCenter>> getAllCase(@RequestBody Map<String,Object> map){
+        return CommonResult.success(caseCenterService.getAllCase(map));
     }
 
     @GetMapping("getCaseInfoById")
     @ApiOperation(value="查询案情详情", notes="查询案情详情")
-    public Map getCaseInfoById(Long id) throws ExecutionException, InterruptedException {
-        return caseCenterService.getCaseInfoById(id);
+    public CommonResult<Map> getCaseInfoById(Long id) throws ExecutionException, InterruptedException {
+        return CommonResult.success(caseCenterService.getCaseInfoById(id));
+    }
+
+    @GetMapping("testFuture")
+    @ApiOperation(value="查询案情详情", notes="查询案情详情")
+    public CommonResult<Map> testFuture(Long id) throws ExecutionException, InterruptedException {
+        return CommonResult.success(caseCenterService.testFuture(id));
+    }
+
+    @GetMapping("testCompletableFuture")
+    @ApiOperation(value="查询案情详情", notes="查询案情详情")
+    public CommonResult<Map> testCompletableFuture(Long id) throws Exception {
+        return CommonResult.success(caseCenterService.testCompletableFuture(id));
     }
 
 }
