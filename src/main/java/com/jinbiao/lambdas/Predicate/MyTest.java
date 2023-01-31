@@ -1,8 +1,12 @@
 package com.jinbiao.lambdas.Predicate;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author Jinbiao
@@ -48,5 +52,37 @@ public class MyTest {
             }
         }
         System.out.println("在方法体里完成测试:"+result);
+
+        final Predicate<String> predicate = new Predicate<String>() {
+            @Override
+            public boolean test(String s) {
+                if(StringUtils.isNotEmpty(s)){
+                    System.out.println(s);
+                    return true;
+                }
+                return false;
+            }
+        };
+
+        List<String> testList = new ArrayList<>();
+        testList.add("迪丽热巴");
+        testList.add("古力娜扎");
+        testList.add("佟丽娅");
+        testList.add("赵丽颖");
+        testList.add("胡歌");
+        List<String> filterList = testList.stream().filter(predicate).collect(Collectors.toList());
+
+        List<String> filterList2 = testList.stream().filter(
+            a-> {
+                for (String s: array) {
+                   if(a.equals(s.split(",")[0])){
+                       return true;
+                   }
+                }
+                return false;
+            }).collect(Collectors.toList());
+
+        System.out.println("filterList:"+filterList);
+        System.out.println("filterList2:"+filterList2);
     }
 }
