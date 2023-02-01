@@ -73,6 +73,14 @@ mybatis:
     #设置驼峰命名法
     map-underscore-to-camel-case: true
 
+# webSocket启动端口
+im:
+  server:
+    port: 40002                #套接字端口
+    allIdleTimeSeconds: 180    #所有类型的空闲超时时间,所有类型的空闲超时时间设定，包括读空闲和写空闲
+    readerIdleTimeSeconds: 7   #读空闲超时时间
+    writerIdleTimeSeconds: 3   #写空闲超时时间
+
 #showSql
 logging:
   level:
