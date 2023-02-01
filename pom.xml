@@ -157,14 +157,18 @@
             <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
 
-    </dependencies>
-<!--
+        <!-- Redis -->
         <dependency>
-            <groupId>org.apache.dubbo</groupId>
-            <artifactId>dubbo</artifactId>
-            <version>2.7.3</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
--->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+            <version>2.0</version>
+        </dependency>
+
+    </dependencies>
 
     <!-- 被当作jar包被其他项目引用需要包这块去掉，不然就会找不到程序包 -->
     <!--<build>

@@ -1,5 +1,6 @@
 package com.powersi.service.impl;
 
+import com.powersi.common.service.RedisService;
 import com.powersi.dao.PersonMapper;
 import com.powersi.entity.CaseCenter;
 import com.powersi.entity.User;
@@ -27,6 +28,9 @@ public class CaseCenterServiceImpl implements CaseCenterService {
 
   @Autowired
   KafkaProducer kafkaProducer;
+
+  @Autowired
+  RedisService redisService;
 
   @Override
   public List<CaseCenter> getAllCase(Map map) {
@@ -150,6 +154,8 @@ public class CaseCenterServiceImpl implements CaseCenterService {
       }
       User user = personMapper.getUserInfoById(a.getUserId());
       System.out.println("查询用户信息异步任务(有返回结果):"+user);
+
+      redisService.set("user",user);
 
       kafkaProducer.sendMsg(GsonUtils.toJson(user));
       return user;
