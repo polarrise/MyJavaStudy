@@ -1,4 +1,4 @@
-package com.powersi.entity;
+package com.powersi.entity.ws;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;

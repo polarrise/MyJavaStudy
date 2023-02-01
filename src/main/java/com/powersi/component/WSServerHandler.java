@@ -3,7 +3,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.powersi.config.SpringContextHolder;
-import com.powersi.entity.WSMsgReqParam;
+import com.powersi.entity.ws.WSMsgReqParam;
 import com.powersi.service.WsService;
 import com.powersi.service.impl.WsServiceImpl;
 import io.netty.channel.ChannelHandler;
@@ -66,6 +66,7 @@ public class WSServerHandler extends SimpleChannelInboundHandler<TextWebSocketFr
      * @param ctx     ChannelHandlerContext
      * @param message TextWebSocketFrame  数据帧:文本数据
      * @Description: [object Object]: 前端传的异常数据
+     * 本地连接:ws://127.0.0.1:40002/ws。   在线websocket调试工具:http://coolaf.com/tool/chattest
      */
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame message) {
@@ -90,6 +91,10 @@ public class WSServerHandler extends SimpleChannelInboundHandler<TextWebSocketFr
                     // 发送消息
                     case WSReqTypeConstant.SEND_MSG:
                         wsService.sendMsg(ctx,param);
+                        break;
+                    // 消息确认机制
+                    case WSReqTypeConstant.MESSAGE_CONFIRMATION:
+                        wsService.messageConfirmation(ctx,param);
                         break;
                     default:
                         log.info("默认未知类型消息");

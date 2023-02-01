@@ -1,7 +1,9 @@
 package com.powersi.service.impl;
 
-import com.powersi.entity.WSMsgReqParam;
-import com.powersi.entity.WSMsgResult;
+import com.powersi.entity.ws.SendMessageSuccessVO;
+import com.powersi.entity.ws.WSMsgReqParam;
+import com.powersi.entity.ws.WSMsgResult;
+import com.powersi.enums.MsgSendStatusEnum;
 import com.powersi.service.WsService;
 import com.powersi.utils.DesensitizationUtil;
 import com.powersi.utils.JsonUtils;
@@ -37,6 +39,15 @@ public class WsServiceImpl implements WsService {
     wsLog.info("登录成功!");
   }
 
+  /**
+   * 如何实时监测消息状态:
+   * 可参考:
+   * 1.在消息入库的时候,定义状态为:1--服务器已接收
+   * 2.在服务器推送给接收者消息的时候,定义状态为:2--服务器已发送给接收者
+   * 3.在接收者通过消息确认机制确认收到消息时候,定义状态为:3--接收者已确认收到信息
+   * @param ctx
+   * @param param
+   */
   @Override
   public void sendMsg(ChannelHandlerContext ctx,WSMsgReqParam param) {
     Channel channel = ctx.channel();
@@ -63,5 +74,31 @@ public class WsServiceImpl implements WsService {
 
     }
 
+  }
+
+  /**
+   * 在接收者通过消息确认机制确认收到消息时候,定义状态为:3--接收者已确认收到信息
+   * @param ctx
+   * @param param
+   */
+  @Override
+  public void messageConfirmation(ChannelHandlerContext ctx,WSMsgReqParam param) {
+
+    WSMsgVO wsMsgVO = new WSMsgVO();
+    BeanUtils.copyProperties(param,wsMsgVO);
+
+    // 向发送者发送消息，确认消息发送成功
+    SendMessageSuccessVO sendMessageSuccessVO = new SendMessageSuccessVO();
+    sendMessageSuccessVO.setReceiveMessageId(param.getReceiveMessageId());
+
+    //更新消息状态为
+    sendMessageSuccessVO.setMsgStatus(MsgSendStatusEnum.SERVER_SEND_TO_RECEIVER.getIndex());
+    Channel channel = ctx.channel();
+    if (param.getReceiveMessageId() != null) {
+      sendMessageSuccessVO.setAck(true);
+      ctx.channel();
+      log.info("向消息发送方发送接收消息的确认信息开始获取到sendChannel={}", channel);
+      channel.writeAndFlush(new TextWebSocketFrame(JsonUtils.objectToJson(WSMsgResult.success(WSMsgResult.SEND_MESSAGE_SUCCESS, "对方已收到消息!", sendMessageSuccessVO))));
+    }
   }
 }
