@@ -25,12 +25,14 @@ public class ImplementsCallable implements Callable {
     ImplementsCallable callable = new ImplementsCallable();
 
     // 使用Lambda表达式创建Callnable对象, FutureTask实现类实现了Runnable接口的
+    FutureTask<String> futureTask1 = new FutureTask(callable);
     FutureTask<Integer> futureTask = new FutureTask(()->5);
-
     //开启线程
+    Thread thread1 =  new Thread(futureTask1,"有返回值的线程");
     Thread thread =  new Thread(futureTask,"有返回值的线程");
     thread.start();
-
+    thread1.start();
+    System.out.println(futureTask1.get());
     /**
      *  join()方法的作用就是让主线程等待子线程执行结束之后再运行主线程。
      *  谁调用join方法，谁就强占cpu资源，它就不会再释放,直至执行结束

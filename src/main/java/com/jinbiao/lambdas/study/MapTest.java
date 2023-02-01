@@ -5,7 +5,7 @@ import java.util.Map;
 public class MapTest {
     public static void main(String[] args) {
         Map<String,Object> map= new HashMap<String,Object>();
-        map.put("1",1);
+        map.put("1111",1);
         System.out.println(map.get("1"));
 
         Test test =message -> System.out.println("ibuy"+message);

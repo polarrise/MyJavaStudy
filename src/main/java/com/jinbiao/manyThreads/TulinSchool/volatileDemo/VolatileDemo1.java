@@ -15,7 +15,7 @@ public class VolatileDemo1 {
           while (flag){
 
           }
-        System.out.println("flag改为了true");
+        System.out.println("flag改为了false");
       }).start();
 
     Thread.sleep(100);

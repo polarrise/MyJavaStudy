@@ -3,7 +3,9 @@ package com.powersi.service.impl;
 import com.powersi.dao.PersonMapper;
 import com.powersi.entity.CaseCenter;
 import com.powersi.entity.User;
+import com.powersi.kafka.KafkaProducer;
 import com.powersi.service.CaseCenterService;
+import com.powersi.utils.GsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +24,14 @@ import java.util.concurrent.atomic.AtomicReference;
 public class CaseCenterServiceImpl implements CaseCenterService {
   @Autowired
   PersonMapper personMapper;
-    @Override
-    public List<CaseCenter> getAllCase(Map map) {
-        return personMapper.getAllCase(map);
-    }
+
+  @Autowired
+  KafkaProducer kafkaProducer;
+
+  @Override
+  public List<CaseCenter> getAllCase(Map map) {
+      return personMapper.getAllCase(map);
+  }
 
   @Override
   public Map getCaseInfoById(Long id) throws ExecutionException, InterruptedException {
@@ -144,6 +150,8 @@ public class CaseCenterServiceImpl implements CaseCenterService {
       }
       User user = personMapper.getUserInfoById(a.getUserId());
       System.out.println("查询用户信息异步任务(有返回结果):"+user);
+
+      kafkaProducer.sendMsg(GsonUtils.toJson(user));
       return user;
     });
     HashMap<String, Object> map = new HashMap<String, Object>() {{

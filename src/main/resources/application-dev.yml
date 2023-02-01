@@ -37,6 +37,29 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/xiaofa_lawyer?connectTimeout=1000000&socketTimeout=3000000&autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8&allowMultiQueries=true
     driver-class-name: com.mysql.jdbc.Driver
 
+  kafka:
+    im-topic-name: IM_T001_DEV
+    bootstrap-servers: 127.0.0.1:9092
+    listener:
+      type: batch               # 批量消费
+      concurrency: 1            # 并发数
+      poll-timeout: 500         # 轮询消费者时使用的超时（以毫秒为单位）
+    producer:
+      retries: 3                # 重试次数
+      batch-size: 16384         # 批量发送的消息数量
+      buffer-memory: 33554432   # 32MB的批处理缓冲区
+      acks: 1
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      group-id: IM_G001_DEV             # 默认消费者组
+      auto-offset-reset: earliest       # 最早未被消费的offset
+      max-poll-records: 100             # 批量一次最大拉取数据量
+      auto-commit-interval: 100         # 如果'enable.auto.commit'为true，则消费者偏移自动提交给Kafka的频率（以毫秒为单位），默认值为5000。
+      enable-auto-commit: true
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
 service:
   version: 1.0.0
 
