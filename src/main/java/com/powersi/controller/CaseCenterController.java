@@ -41,6 +41,12 @@ public class CaseCenterController {
         return CommonResult.success(caseCenterService.testFuture(id));
     }
 
+    @GetMapping("testTaskIfFinished")
+    @ApiOperation(value="测试线程池任务是否执行完成", notes="测试线程池任务是否执行完成")
+    public CommonResult<Map> testTaskIfFinished(Long id) throws ExecutionException, InterruptedException {
+        return CommonResult.success(caseCenterService.testTaskIfFinished(id));
+    }
+
     @GetMapping("testCompletableFuture")
     @ApiOperation(value="查询案情详情", notes="查询案情详情")
     public CommonResult<Map> testCompletableFuture(Long id) throws Exception {

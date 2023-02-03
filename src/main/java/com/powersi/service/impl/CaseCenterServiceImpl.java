@@ -1,20 +1,26 @@
 package com.powersi.service.impl;
 
+import com.powersi.annotation.JudgeTaskCode;
 import com.powersi.common.service.RedisService;
 import com.powersi.dao.PersonMapper;
 import com.powersi.entity.CaseCenter;
 import com.powersi.entity.User;
+import com.powersi.enums.JudgeTaskFinishedWaysEnum;
 import com.powersi.kafka.KafkaProducer;
 import com.powersi.service.CaseCenterService;
+import com.powersi.service.judgePoolTask_If_Finashed.JudgeTaskFinishedService;
 import com.powersi.utils.GsonUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author com.jinbiao
@@ -22,7 +28,8 @@ import java.util.concurrent.atomic.AtomicReference;
  * @apiNote
  */
 @Service
-public class CaseCenterServiceImpl implements CaseCenterService {
+@Slf4j
+public class CaseCenterServiceImpl implements CaseCenterService, ApplicationListener<ContextRefreshedEvent> {
   @Autowired
   PersonMapper personMapper;
 
@@ -31,6 +38,8 @@ public class CaseCenterServiceImpl implements CaseCenterService {
 
   @Autowired
   RedisService redisService;
+
+  private static Map<String, JudgeTaskFinishedService> judgeTaskFinashedWaysMap = null;
 
   @Override
   public List<CaseCenter> getAllCase(Map map) {
@@ -89,12 +98,16 @@ public class CaseCenterServiceImpl implements CaseCenterService {
   public Map testFuture(Long id) throws InterruptedException, ExecutionException {
     ExecutorService executorService = Executors.newFixedThreadPool(10);
     long startTime = System.currentTimeMillis();
+    //计数器，判断线程是否执行结束
+    CountDownLatch taskLatch = new CountDownLatch(2);
     FutureTask<CaseCenter> caseInfoFutureTask = new FutureTask<>(new Callable<CaseCenter>() {
       @Override
       public CaseCenter call() throws Exception {
         Thread.sleep(500); //模拟调用耗时
         CaseCenter caseCenter = personMapper.getCaseInfoById(id);
-        System.out.println("异步获取案源信息:");
+        System.out.println("异步获取案源信息:"+caseCenter);
+        taskLatch.countDown();
+        System.out.println("当前计数器数量：" + taskLatch.getCount());
         return caseCenter;
       }
     });
@@ -105,10 +118,29 @@ public class CaseCenterServiceImpl implements CaseCenterService {
       public User call() throws Exception {
         Thread.sleep(300); //模拟调用耗时
         User user = personMapper.getUserInfoById(1550400L);
+        System.out.println("异步获取用户信息:"+user);
+        taskLatch.countDown();
+        System.out.println("当前计数器数量：" + taskLatch.getCount());
         return user;
       }
     });
     executorService.submit(userInfoFutureTask);
+
+    //executorService.shutdown();
+    ////等待所有任务都结束了继续执行
+    //while(true){
+    //  //如果关闭后所有任务都已完成，则返回｛@code true｝。请注意，除非首先调用了｛@code shutdown｝或｛@codeshutdownNow｝
+    //  if(executorService.isTerminated()){
+    //    log.info("异步任务已结束！！！");
+    //    break;
+    //  }
+    //  Thread.sleep(80);
+    //}
+    //当前线程阻塞，等待计数器置为0
+    Thread.sleep(300);
+    taskLatch.await();
+    System.out.println("异步任务全部执行完毕");
+
     CaseCenter caseInfo = caseInfoFutureTask.get();//获取个人信息结果
     User userInfo = userInfoFutureTask.get();//获取勋章信息结果
     HashMap<String, Object> map = new HashMap<String, Object>() {{
@@ -117,6 +149,25 @@ public class CaseCenterServiceImpl implements CaseCenterService {
     }};
     System.out.println("总共用时" + (System.currentTimeMillis() - startTime) + "ms");
     return map;
+  }
+
+  @Override
+  public void onApplicationEvent(ContextRefreshedEvent event) {
+    ApplicationContext applicationContext = event.getApplicationContext();
+    Map<String, Object> beansWithAnnotation = applicationContext.getBeansWithAnnotation(JudgeTaskCode.class);
+
+    if (beansWithAnnotation != null) {
+      judgeTaskFinashedWaysMap = new HashMap<>();
+      beansWithAnnotation.forEach((key, value) ->{
+        String bizType = value.getClass().getAnnotation(JudgeTaskCode.class).value();
+        judgeTaskFinashedWaysMap.put(bizType, (JudgeTaskFinishedService) value);
+      });
+    }
+  }
+
+  @Override
+  public Map testTaskIfFinished(Long id) throws InterruptedException, ExecutionException {
+     return judgeTaskFinashedWaysMap.get(JudgeTaskFinishedWaysEnum.AWAITTERMINATION.getValue()).judgeTaskFinashed(id);
   }
 
   /**
@@ -161,10 +212,12 @@ public class CaseCenterServiceImpl implements CaseCenterService {
       return user;
     });
     HashMap<String, Object> map = new HashMap<String, Object>() {{
+      //get()获取任务执行结果，如果任务还没完成则会阻塞等待直到任务执行完成
       put("caseInfo", caseCenterFuture.get());
       put("userInfo", userFuture.get());
     }};
     System.out.println("总共用时" + (System.currentTimeMillis() - startTime) + "ms");
     return map;
   }
+
 }
