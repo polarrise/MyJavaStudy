@@ -14,4 +14,13 @@ public interface CaseCenterService {
     Map testFuture(Long id) throws InterruptedException, ExecutionException;
 
     Map testCompletableFuture(Long id) throws Exception;
+
+    /**
+     * 测试线程池任务是否执行完毕
+     * @param id
+     * @return
+     * @throws InterruptedException
+     * @throws ExecutionException
+     */
+    Map testTaskIfFinished(Long id) throws InterruptedException, ExecutionException;
 }
