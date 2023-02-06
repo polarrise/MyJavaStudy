@@ -3,7 +3,7 @@ package com.jinbiao.manyThreads.control_thread_run;
 /**
  * @author WangJinbiao
  * @date 2023/2/4 23:47
- * @desc 直接用volatile修饰变量，volatile能保证变量的更改对所有线程可见。
+ * @desc 三个线程按序打印ABC方式3:直接用volatile修饰变量，volatile能保证变量的更改对所有线程可见。
  */
 public class UseVolatile {
 

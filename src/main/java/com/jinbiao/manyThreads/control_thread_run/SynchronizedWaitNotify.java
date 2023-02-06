@@ -3,7 +3,8 @@ package com.jinbiao.manyThreads.control_thread_run;
 /**
  * @author WangJinbiao
  * @date 2023/2/4 21:55
- * @desc 通过synchronized+wait+notify
+ * @desc 三个线程按序打印ABC方式1:通过synchronized+wait+notify。
+ * wait()、notify()和notifyAll()一般是跟synchronized配合一起使用，这些方法都是Object类提供的。
  * 实现思路:每个线程都首先尝试去获取对象锁，A执行完通知BC执行，B执行完通知C。
  * 在此期间如果BC先抢去了锁，则调用wait()方法，由运行状态->等待状态。  B等待A执行完。 C等待B执行完
  */

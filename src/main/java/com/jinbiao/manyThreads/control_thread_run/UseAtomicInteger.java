@@ -5,7 +5,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * @author WangJinbiao
  * @date 2023/2/5 14:50
- * @desc 我们都知道synchronized和lock都属于悲观锁，我们还可以用乐观锁来实现。
+ * @desc 三个线程按序打印ABC方式4:使用 AtomicInteger
+ * 实现思路：我们都知道synchronized和lock都属于悲观锁，我们还可以用乐观锁来实现。
  * 在Java里，我们熟悉的原子操作类AtomicInteger就是基于CAS实现的，可以用来保证Integer操作的原子性。
  */
 public class UseAtomicInteger {
@@ -14,22 +15,23 @@ public class UseAtomicInteger {
 
     private void printA() {
         System.out.println(Thread.currentThread().getName() + "打印A");
-        state.compareAndSet(1, 2);
+        state.incrementAndGet();
     }
 
     private void printB() {
         while (state.get() < 4){
-            while(state.compareAndSet(2, 3)){
+            while(state.get() == 2){
                 System.out.println(Thread.currentThread().getName() + "打印B");
+                state.incrementAndGet();
             }
         }
     }
 
     private void printC() {
         while (state.get() < 4){
-            while(state.compareAndSet(3, 4)){
-                System.out.println(state.get());
+            while(state.get() == 3){
                 System.out.println(Thread.currentThread().getName() + "打印C");
+                state.incrementAndGet();
             }
         }
 

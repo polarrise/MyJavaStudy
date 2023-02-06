@@ -5,9 +5,8 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * @author WangJinbiao
  * @date 2023/2/4 22:51
- * @desc 还可以用lock+state来实现，大概思路：
- * 用lock来实现同步+用全局变量state标识改哪个线程执行，不执行就释放锁.
- *
+ * @desc 三个线程按序打印ABC方式2:还可以用lock+state来实现
+ * 实现思路：用lock来实现同步+用全局变量state标识改哪个线程执行，不执行就释放锁.
  * 这里也有几个细节要注意：
  * 1.要在循环里获取锁，不然线程可能会在获取到锁之前就终止了   ->不循环获取也成功了，但是别吧。  还有一点要while里面去try获取锁。别写成了try里面去while获取锁，会造成一直循环获取到了锁然后报错！！！
  * 2.要用while，而不是if判断，是否当前线程应该打印输出     ->我之前用的是if没问题，但还是别吧
