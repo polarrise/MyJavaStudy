@@ -19,5 +19,17 @@ public class JOLDemo1 {
     Object o2 = new Object();
     System.out.println(ClassLayout.parseInstance(o2).toPrintable());
 
+
+
+
+    for (int i=0;i<3;i++){
+      int finalI = i;
+      new Thread(()->{
+        synchronized (o2){
+          System.out.println("循环获取锁："+ finalI +"次");
+          System.out.println(ClassLayout.parseInstance(o2).toPrintable());
+        }
+      }).start();
+    }
   }
 }
