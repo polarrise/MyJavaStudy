@@ -1,17 +1,21 @@
 package com.powersi.controller;
 
 
+import com.powersi.annotation.Mobile;
 import com.powersi.common.api.CommonResult;
 import com.powersi.entity.CaseCenter;
+import com.powersi.qo.CaseQO;
 import com.powersi.service.CaseCenterService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -19,6 +23,7 @@ import java.util.concurrent.ExecutionException;
 @RestController
 @RequestMapping("/caseCenterApi")
 @Api(value = "CaseCenter类Api文档",tags={"查询CaseCenterController"})
+@Validated
 public class CaseCenterController {
     @Autowired
     private CaseCenterService caseCenterService;
@@ -51,6 +56,41 @@ public class CaseCenterController {
     @ApiOperation(value="查询案情详情", notes="查询案情详情")
     public CommonResult<Map> testCompletableFuture(Long id) throws Exception {
         return CommonResult.success(caseCenterService.testCompletableFuture(id));
+    }
+
+    /**
+     * Get 请求的参数接收一般依赖这两个注解，但是处于 url 有长度限制和代码的可维护性，超过 5 个参数尽量用实体来传参。
+     * 对 @PathVariable 和 @RequestParam 参数进行校验需要在入参声明约束的注解。
+     * 如果校验失败，会抛出 MethodArgumentNotValidException 异常。
+     * @param num
+     * @return
+     * 校验: 1000>= num的值>=1
+     */
+    @GetMapping("/{num}")
+    public CommonResult<Integer> detail(@PathVariable("num") @Min(1) @Max(1000) Integer num) {
+        return CommonResult.success(num * num);
+    }
+
+    @GetMapping("/getByEmail")
+    public CommonResult<CaseQO> getByAccount(@RequestParam @NotBlank @Email String email) {
+        CaseQO caseQO = new CaseQO();
+        caseQO.setEmail(email);
+        return CommonResult.success(caseQO);
+    }
+
+    @PostMapping("/test-validation")
+    public CommonResult<Map> testValidation(@RequestBody @Validated CaseQO caseQO) throws Exception {
+        return CommonResult.success(caseCenterService.testFuture(caseQO.getId()));
+    }
+
+    /**
+     * 测试自定义注解
+     * @param phone
+     * @return
+     */
+    @GetMapping("/test-customValidation")
+    public CommonResult<String> testCustomValidation(@Validated @Mobile String phone) {
+        return CommonResult.success(phone);
     }
 
 }
