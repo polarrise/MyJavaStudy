@@ -2,6 +2,8 @@ package com.powersi.service;
 
 
 import com.powersi.entity.CaseCenter;
+import com.powersi.enums.JudgeTaskFinishedWaysEnum;
+
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -22,5 +24,5 @@ public interface CaseCenterService {
      * @throws InterruptedException
      * @throws ExecutionException
      */
-    Map testTaskIfFinished(Long id) throws InterruptedException, ExecutionException;
+    Map testTaskIfFinished(Long id,JudgeTaskFinishedWaysEnum judgeTaskFinishedWay) throws InterruptedException, ExecutionException;
 }

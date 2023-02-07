@@ -1,4 +1,4 @@
-package com.jinbiao.manyThreads.TulinSchool.jol;
+package com.jinbiao.manyThreads.tulinSchool.jol;
 
 import org.openjdk.jol.info.ClassLayout;
 

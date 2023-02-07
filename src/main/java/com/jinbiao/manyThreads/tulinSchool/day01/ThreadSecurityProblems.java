@@ -1,4 +1,4 @@
-package com.jinbiao.manyThreads.TulinSchool.day01;
+package com.jinbiao.manyThreads.tulinSchool.day01;
 
 public class ThreadSecurityProblems {
     public static void main(String[] args) throws InterruptedException {

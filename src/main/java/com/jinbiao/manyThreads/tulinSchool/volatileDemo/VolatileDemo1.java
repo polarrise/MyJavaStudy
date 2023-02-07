@@ -1,4 +1,4 @@
-package com.jinbiao.manyThreads.TulinSchool.volatileDemo;
+package com.jinbiao.manyThreads.tulinSchool.volatileDemo;
 
 /**
  * @author wangjinbiao

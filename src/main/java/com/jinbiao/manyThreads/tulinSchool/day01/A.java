@@ -1,4 +1,4 @@
-package com.jinbiao.manyThreads.TulinSchool.day01;
+package com.jinbiao.manyThreads.tulinSchool.day01;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

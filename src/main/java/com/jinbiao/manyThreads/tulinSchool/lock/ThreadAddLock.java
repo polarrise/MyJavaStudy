@@ -1,4 +1,4 @@
-package com.jinbiao.manyThreads.TulinSchool.lock;
+package com.jinbiao.manyThreads.tulinSchool.lock;
 
 import java.util.concurrent.locks.ReentrantLock;
 

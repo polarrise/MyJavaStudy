@@ -1,4 +1,4 @@
-package com.jinbiao.manyThreads.TulinSchool.CASDemo;
+package com.jinbiao.manyThreads.tulinSchool.CASDemo;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicStampedReference;

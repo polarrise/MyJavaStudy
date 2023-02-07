@@ -166,8 +166,8 @@ public class CaseCenterServiceImpl implements CaseCenterService, ApplicationList
   }
 
   @Override
-  public Map testTaskIfFinished(Long id) throws InterruptedException, ExecutionException {
-     return judgeTaskFinashedWaysMap.get(JudgeTaskFinishedWaysEnum.AWAITTERMINATION.getValue()).judgeTaskFinashed(id);
+  public Map testTaskIfFinished(Long id,JudgeTaskFinishedWaysEnum judgeTaskFinishedWay) throws InterruptedException, ExecutionException {
+     return judgeTaskFinashedWaysMap.get(judgeTaskFinishedWay.getValue()).judgeTaskFinashed(id);
   }
 
   /**

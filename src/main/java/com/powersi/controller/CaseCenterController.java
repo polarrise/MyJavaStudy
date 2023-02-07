@@ -4,6 +4,7 @@ package com.powersi.controller;
 import com.powersi.annotation.Mobile;
 import com.powersi.common.api.CommonResult;
 import com.powersi.entity.CaseCenter;
+import com.powersi.enums.JudgeTaskFinishedWaysEnum;
 import com.powersi.qo.CaseQO;
 import com.powersi.service.CaseCenterService;
 import io.swagger.annotations.Api;
@@ -12,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -48,8 +46,8 @@ public class CaseCenterController {
 
     @GetMapping("testTaskIfFinished")
     @ApiOperation(value="测试线程池任务是否执行完成", notes="测试线程池任务是否执行完成")
-    public CommonResult<Map> testTaskIfFinished(Long id) throws ExecutionException, InterruptedException {
-        return CommonResult.success(caseCenterService.testTaskIfFinished(id));
+    public CommonResult<Map> testTaskIfFinished(Long id,@RequestParam @NotNull JudgeTaskFinishedWaysEnum judgeTaskFinishedWay) throws ExecutionException, InterruptedException {
+        return CommonResult.success(caseCenterService.testTaskIfFinished(id,judgeTaskFinishedWay));
     }
 
     @GetMapping("testCompletableFuture")
