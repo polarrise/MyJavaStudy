@@ -1,11 +1,11 @@
-package com.jinbiao.javaStudy.StatisGetAndSet;
+package com.jinbiao.javaStudy.compare;
 
 /**
  * @author wangjinbiao
  * @date 2023/2/9 11:52
  * @desc
  */
-public class StringTest {
+public class StringCompare {
   private static void howNumObjCreate(){
     String s1 = new String("he")+new String("llo");
     String s2 = s1.intern();

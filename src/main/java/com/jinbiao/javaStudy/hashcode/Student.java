@@ -1,6 +1,7 @@
 package com.jinbiao.javaStudy.hashcode;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Objects;
 
 /**
@@ -26,10 +27,10 @@ public class Student {
     return age == student.age &&
         Objects.equals(name, student.name);
   }
-  @Override
-  public int hashCode() {
-    return Objects.hash(name, age);
-  }
+  //@Override
+  //public int hashCode() {
+  //  return Objects.hash(name, age);
+  //}
 
   @Override
   public String toString() {
@@ -46,9 +47,9 @@ public class Student {
     System.out.println("s2.hashCode:"+s2.hashCode());
     System.out.println(s1.equals(s2));
 
-    HashMap<Object, Object> hashMap = new HashMap<>();
-    hashMap.put(s1,s1);
-    hashMap.put(s2,s2);
-    System.out.println(hashMap);
+    HashSet<Student> hashSet = new HashSet<>();
+    hashSet.add(s1);
+    hashSet.add(s2);
+    System.out.println(hashSet);
   }
 }
