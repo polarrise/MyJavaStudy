@@ -56,7 +56,7 @@ class LazySingleton implements Serializable {
                 if(null==instance){
                     instance=new LazySingleton();
                     //1.在堆内存中开辟内存空间
-                    //2.初始化空间
+                    //2.给成员属性初始化
                     //3.赋值给对象的引用instance。   这个引用指向堆内存空间
                 }
             }
