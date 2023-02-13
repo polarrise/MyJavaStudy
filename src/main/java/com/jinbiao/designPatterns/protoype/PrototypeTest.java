@@ -14,7 +14,7 @@ public class PrototypeTest {
     public static void main(String[] args) throws CloneNotSupportedException {
 
         BaseInfo baseInfo = new BaseInfo("Rise");
-        Product product = new Product("part1", 110, 110l, 110.0,baseInfo);
+        Product product = new Product("part1", 110, 110l,baseInfo);
         //new Product  ....
         Product clone = product.clone();   //克隆Product产品对象
 
@@ -24,10 +24,11 @@ public class PrototypeTest {
         System.out.println("clone:"+clone);
         System.out.println(product==clone);   //原始对象和对象不一样
 
-        System.out.println("===============");
         //不进行深拷贝的话(BaseInfo implements Cloneable):改变原始产品的baseInfo对象,会导致克隆对象的baseInfo也改变!!!
         product.getBaseInfo().setCompanyName("Rise111");
         product.setPart1("part111");
+        product.setPart2(111);
+        product.setPart3(111L);
         System.out.println("product:"+product);
         System.out.println("clone:"+clone);
     }
@@ -49,7 +50,7 @@ class BaseInfo implements Cloneable,Serializable{
 
     @Override
     public String toString() {
-        return  super.hashCode()+" "+"BaseInfo{" +
+        return  "BaseInfo{" +
                 "companyName='" + companyName + '\'' +
                 '}';
     }
@@ -67,9 +68,6 @@ class Product implements Cloneable,Serializable{  //只有实现Serializable接�
     private String part1;
     private Integer part2;
     private Long part3;
-    private Double part4;
-    private int part5;
-    private String part6;
     private BaseInfo baseInfo;    //可变对象
     @Override
     protected Product clone() throws CloneNotSupportedException {
@@ -106,23 +104,19 @@ class Product implements Cloneable,Serializable{  //只有实现Serializable接�
     public Product(){
 
     }
-    public Product(String part1, Integer part2, Long part3, Double part4,BaseInfo baseInfo) {
+    public Product(String part1, Integer part2, Long part3, BaseInfo baseInfo) {
         this.part1 = part1;
         this.part2 = part2;
         this.part3 = part3;
-        this.part4 = part4;
         this.baseInfo=baseInfo;
     }
 
     @Override
     public String toString() {
-        return  super.hashCode()+" "+"Product{" +
+        return  "Product{" +
                 "part1='" + part1 + '\'' +
                 ", part2='" + part2 + '\'' +
                 ", part3='" + part3 + '\'' +
-                ", part4='" + part4 + '\'' +
-                ", part5='" + part5 + '\'' +
-                ", part6='" + part6 + '\'' +
                 ", baseInfo=" + baseInfo +
                 '}';
     }

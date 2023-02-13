@@ -38,7 +38,7 @@ public class MyArrayList extends ArrayList {
         MyArrayList listClone = (MyArrayList) list.clone();
         System.out.println("拷贝对象:"+listClone);
 
-        System.out.println("修改原始对象name为rise1,拷贝对象不修改。出现结果:【拷贝对象的name跟着被改了】===");
+        System.out.println("======不进行数组深拷贝的前提下发现：修改原始对象name为rise1,拷贝对象不修改。出现结果:【拷贝对象的name跟着被改了】=====");
         //修改原始对象:
         Company company1 = (Company) list.get(1);
         company1.setName("rise1");
