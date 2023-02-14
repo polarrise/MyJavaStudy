@@ -36,6 +36,7 @@ public class JdkProxy implements InvocationHandler {
 
     public static void main(String[] args) {
         JdkProxy jdkProxy=new JdkProxy();    //实例化JDKProxy对象
+        //如果UserManagerImpl没有实现接口则会报异常:com.sun.proxy.$Proxy0 cannot be cast to cn.how2j.springcloud.jdk.UserManagerImpl
         UserManager proxy= (UserManager) jdkProxy.getJDKProxy(new UserManagerImpl());  //jdk动态代理(实现了InvocationHandler接口),利用反射机制获取某个目标类的代理对象，然后通过代理对象调用目标类的实现方法
         proxy.addUser("jdkProxyAdmin", "jdkProxy123123");
     }

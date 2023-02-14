@@ -18,7 +18,8 @@ public class CglibProxy implements MethodInterceptor {
 
     private Object target;//需要代理的目标对象
     //重写拦截方法--
-    public Object intercept(Object obj, Method method,Object[] arr, MethodProxy proxy) throws Throwable {
+    @Override
+    public Object intercept(Object obj, Method method, Object[] arr, MethodProxy proxy) throws Throwable {
         System.out.println("Cglib动态代理，监听开始！");
         Object invoke = method.invoke(target, arr);//方法执行，参数：target 目标对象 arr参数数组
         System.out.println("Cglib动态代理，监听结束！");
