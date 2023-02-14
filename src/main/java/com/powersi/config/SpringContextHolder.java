@@ -25,6 +25,12 @@ public class SpringContextHolder implements ApplicationContextAware {
         return applicationContext.getBean(className, cls);
     }
 
+    /**
+     * 设置此对象(SpringContextHolder)运行的ApplicationContext(Spring容器)。
+     * 通常情况下此调用将被用于初始化对象,在填充普通bean属性之后。
+     * 但在初始化回调（如{@link-org.springframework.beans.factory.InitializingBeanafterPropertiesSet（）} or a custom init-method）之前调用
+     * @param applicationContext
+     */
     @Override
     public void setApplicationContext(@NotNull ApplicationContext applicationContext) {
         SpringContextHolder.applicationContext = applicationContext;

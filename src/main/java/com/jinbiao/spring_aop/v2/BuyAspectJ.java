@@ -15,19 +15,19 @@ public class BuyAspectJ {
      * @Before 这个注解，表示他将在buy方法执行之前执行
      * execution:声明了切点,表示满足某一匹配模式的所有目标类方法连接点~
      */
-    @Before("execution(* cn.how2j.springcloud.springAop_ibuy.IBuy.buy(..))")
+    @Before("execution(* com.jinbiao.spring_aop.v2.IBuy.buy(..))")
     public void before(){
         System.out.println("男孩女孩都买自己喜欢的东西");
     }
-    @After("execution(* cn.how2j.springcloud.springAop_ibuy.IBuy.buy(..))")
+    @After("execution(* com.jinbiao.spring_aop.v2.IBuy.buy(..))")
     public void after() {
         System.out.println("After ...");
     }
-    @AfterReturning("execution(* cn.how2j.springcloud.springAop_ibuy.IBuy.buy(..))")
+    @AfterReturning("execution(* com.jinbiao.spring_aop.v2.IBuy.buy(..))")
     public void AfterReturning() {
         System.out.println("AfterReturning ...");
     }
-    @Around("execution(* cn.how2j.springcloud.springAop_ibuy.IBuy.buy(..))")
+    @Around("execution(* com.jinbiao.spring_aop.v2.IBuy.buy(..))")
     public void Around(ProceedingJoinPoint pj) {
         try {
             System.out.println("Around aaa ...");
