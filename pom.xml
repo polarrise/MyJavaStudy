@@ -168,6 +168,13 @@
             <version>2.0</version>
         </dependency>
 
+        <!--2. 连接池依赖-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.1.23</version>
+        </dependency>
+
     </dependencies>
 
     <!-- 被当作jar包被其他项目引用需要包这块去掉，不然就会找不到程序包 -->
@@ -206,7 +213,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-
         </plugins>
     </build>
 

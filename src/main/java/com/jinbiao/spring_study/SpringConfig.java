@@ -1,11 +1,14 @@
 package com.jinbiao.spring_study;
 
+import com.alibaba.druid.pool.DruidDataSource;
 import com.jinbiao.spring_aop.v2.IBuy;
+import com.jinbiao.spring_study.service.JDBCConfig;
 import com.jinbiao.spring_study.service.OrderService;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.context.annotation.*;
+
+import javax.sql.DataSource;
 
 /**
  * @Configuration用于定义配置类，可替换xml配置文件。 可理解为用spring的时候xml里面的<beans>标签
@@ -15,8 +18,11 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
  */
 @Configuration
 @ComponentScan({"com.jinbiao.spring_study"})
+@MapperScan("com.jinbiao.spring_study.dao")   //MyBatis扫描dao接口
 @EnableAspectJAutoProxy(proxyTargetClass = true)
-public class AppConfig {
+@PropertySource("classpath:jdbc.properties")  //读取jdbc数据源文件
+@Import({JDBCConfig.class})                  //导入配置类
+public class SpringConfig {
 
   //疑问已经在OrderService上加了@Component注解了
   //@Bean
@@ -35,6 +41,7 @@ public class AppConfig {
   public OrderService orderService2(){
     return new OrderService();
   }
+
 }
 
 

@@ -1,16 +1,14 @@
-package com.powersi.dao;
+package com.jinbiao.spring_study.dao;
 
 import com.powersi.entity.CaseCenter;
 import com.powersi.entity.User;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
 
 @Mapper
-public interface PersonMapper {
+public interface UserMapper {
 
     List<CaseCenter> getAllCase(Map map);
 
