@@ -4,6 +4,10 @@ import com.alibaba.druid.pool.DruidDataSource;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 
@@ -12,6 +16,7 @@ import javax.sql.DataSource;
  * @date 2023/2/14 23:53
  * @desc
  */
+@Configuration
 public class JDBCConfig {
 
     @Value("${database.driverClassName}")
@@ -40,5 +45,17 @@ public class JDBCConfig {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource);
         return sqlSessionFactoryBean;
+    }
+
+    @Bean
+    public JdbcTemplate jdbcTemplate(){
+       return new JdbcTemplate(dataSource());
+    }
+
+    @Bean
+    public PlatformTransactionManager transactionManager(){
+        DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
+        transactionManager.setDataSource(dataSource());
+        return  transactionManager;
     }
 }

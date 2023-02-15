@@ -4,9 +4,11 @@ import com.alibaba.druid.pool.DruidDataSource;
 import com.jinbiao.spring_aop.v2.IBuy;
 import com.jinbiao.spring_study.service.JDBCConfig;
 import com.jinbiao.spring_study.service.OrderService;
+import org.aspectj.lang.annotation.Aspect;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.*;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
@@ -17,12 +19,13 @@ import javax.sql.DataSource;
  * @EnableAspectJAutoProxy注解，启用了 AOP 功能
  */
 @Configuration
-@ComponentScan({"com.jinbiao.spring_study"})
+@ComponentScan({"com.jinbiao.spring_study"})   //扫描包路径下的所有加了@Controller、Service、@Repository、@Component注解的类
 @MapperScan("com.jinbiao.spring_study.dao")   //MyBatis扫描dao接口
-@EnableAspectJAutoProxy(proxyTargetClass = true)
-@PropertySource("classpath:jdbc.properties")  //读取jdbc数据源文件
-@Import({JDBCConfig.class})                  //导入配置类
-public class SpringConfig {
+@EnableAspectJAutoProxy(proxyTargetClass = true)  //开启切面
+@PropertySource("classpath:jdbc.properties")     //读取jdbc数据源文件
+@Import({JDBCConfig.class})                     //导入配置类
+@EnableTransactionManagement                   //开启事务管理器
+public class AppConfig {
 
   //疑问已经在OrderService上加了@Component注解了
   //@Bean

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class JinBiaoAspect {
 
-  @Before("execution(public void com.jinbiao.spring_study.service.UserService2.test())")
+  @Before("execution(public void com.jinbiao.spring_study.service.UserServiceInferConstruct.test())")
   public void jinBiaoBefore(JoinPoint joinPoint){
     System.out.println("jinBiaoBefore执行==");
   }

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * 注解 @Component 表明它将作为一个Spring Bean 被装配
- * 注解 @Aspect 表示它是一个切面。
+ * 注解 @Aspect 表示它是一个切面。在调用目标对象的方法(切点)时，代理对象首先会调用这些通知，然后再调用目标对象的方法
  */
 @Aspect
 @Component
