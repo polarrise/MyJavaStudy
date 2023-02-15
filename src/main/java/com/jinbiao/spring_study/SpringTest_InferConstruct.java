@@ -15,7 +15,7 @@ import java.lang.reflect.Method;
  * @date 2023/2/14 14:11
  * @desc
  */
-public class Spring_Test1 {
+public class SpringTest_InferConstruct {
   public static void main(String[] args) {
 
     AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class); //加载spring配置文件
