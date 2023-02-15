@@ -19,6 +19,17 @@ import java.util.List;
  * UserService->无参构造方法->普通对象->依赖注入->初始化前(@PostConstruct)->
  * 初始化(InitializingBean)->初始化后(AOP)->代理对象->放入单例池Map->Bean
  * ps：spring bean在初始化和销毁的时候我们可以触发一些自定义的回调操作。
+ *
+  UserServiceInitProcess 创建生命周期：
+   1.推断构造方法，然后创建一个UserServiceInitProcess普通对象
+   2.依赖主语填充加了AutoWired注解的属性
+   4.初始化前方法：Spring创建Bean的时候会去执行加了@PostConstruct注解的初始化前方法
+   5.自定义的初始化方法：实现InitializingBean接口重写afterPropertiesSet方法
+   6.初始化后方法会进行AOP。  比如这个对象里面有方法被设置成了切点。 或者有方法上加了事务注解，那么就会进行AOP。生成代理对象
+   7.放入单例池    (没发生过AOP? 普通对象：代理对象)
+   8.在销毁bean之前会去执行加了@PreDestroy注解的销毁前方法
+   9.容器关闭，则销毁bean.
+   10.容器关闭后会调用DisposableBean里面的destory方法。
  */
 @Component
 public class UserServiceInitProcess implements InitializingBean, DisposableBean {
