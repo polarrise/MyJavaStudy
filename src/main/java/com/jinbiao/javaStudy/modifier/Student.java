@@ -5,7 +5,7 @@ package com.jinbiao.javaStudy.modifier;
  * @date 2022/1/7
  * @apiNote
  */
-public class Student implements  Person {
+public class Student {
 
     public void test() {
         /**

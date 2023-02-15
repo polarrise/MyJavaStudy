@@ -1,4 +1,4 @@
-package com.jinbiao.javaStudy;
+package com.jinbiao.javaStudy.StringTest;
 
 
 import org.apache.commons.lang3.StringUtils;

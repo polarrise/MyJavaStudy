@@ -1,4 +1,4 @@
-package com.jinbiao.javaStudy.compare;
+package com.jinbiao.javaStudy.StringTest;
 
 /**
  * @author wangjinbiao
