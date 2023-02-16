@@ -1,4 +1,4 @@
-package com.jinbiao.javaStudy.classLibrary;
+package com.jinbiao.HelperClass;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

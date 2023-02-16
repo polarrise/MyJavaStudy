@@ -1,4 +1,4 @@
-package com.jinbiao.blindBoxActivity;
+package com.jinbiao.HelperClass.blindBoxActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;

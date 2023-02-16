@@ -1,4 +1,4 @@
-package com.jinbiao.blindBoxActivity;
+package com.jinbiao.HelperClass.blindBoxActivity;
 
 import lombok.Data;
 

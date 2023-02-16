@@ -1,4 +1,4 @@
-package com.jinbiao.Optional;
+package com.jinbiao.HelperClass.Optional;
 
 
 import org.apache.commons.lang3.StringUtils;
@@ -124,12 +124,14 @@ public class OptionalTest {
      * 这个与orElse很相似，入参不一样，入参为Supplier对象，为空返回传入对象的.get()方法，如果非空则返回当前对象
      */
     public void orElseGet(){
-        Person person=new Person();
-        person.setAge(1);
+        Person person=null;
+
         Optional<Supplier<Person>> sup=Optional.ofNullable(Person::new);
-        //调用get()方法，此时才会调用对象的构造方法，即获得到真正对象
+        //调用get()方法，此时才会调用对象的构造方法，即获得到真正对象。 person不为空返回person,为空返回new Person对象
         Person person2 = Optional.ofNullable(person).orElseGet(sup.get());
+        Person person22 = Optional.ofNullable(person).orElseGet(()->new Person());
         System.out.println("optionalTest:"+person2);
+        System.out.println("optionalTest:"+person22);
     }
 
     /**
@@ -144,14 +146,17 @@ public class OptionalTest {
 
     public void testZ(){
         Person person=new Person();
-        person.setName("");
+        person.setName(null);
         person.setAge(2);
        //普通判断
         if(StringUtils.isNotBlank(person.getName())){
             //名称不为空执行代码块
         }
         //使用Optional做判断
-        Optional.ofNullable(person).map(p -> p.getName()).orElse("name为空");
+        Optional.ofNullable(person).map(p->{
+            System.out.println("name不为空："+p.getName());
+                return p.getName();
+        }).orElse("name为空");
     }
     public static void main(String[] args) throws MyException {
         OptionalTest optionalTest = new OptionalTest();
@@ -163,8 +168,8 @@ public class OptionalTest {
         optionalTest.isPresent();
         optionalTest.ifPresent();
         optionalTest.orElseGet();
+        optionalTest.testZ();
         optionalTest.orElseThrow();
-
     }
     /**
      *  相似方法进行对比分析

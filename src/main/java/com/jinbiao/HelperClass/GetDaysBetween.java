@@ -1,4 +1,4 @@
-package com.jinbiao.javaStudy;
+package com.jinbiao.HelperClass;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -6,7 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
-public class Test {
+public class GetDaysBetween {
   public static void main(String[] args) throws ParseException {
     Random random = new Random();
 

@@ -1,4 +1,4 @@
-package com.jinbiao;
+package com.jinbiao.HelperClass;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;

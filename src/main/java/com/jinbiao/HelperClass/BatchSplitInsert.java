@@ -1,4 +1,4 @@
-package com.jinbiao.batchSplitInsert;
+package com.jinbiao.HelperClass;
 
 import java.util.ArrayList;
 import java.util.List;

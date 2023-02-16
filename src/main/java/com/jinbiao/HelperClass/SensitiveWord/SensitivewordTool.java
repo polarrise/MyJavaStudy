@@ -1,4 +1,4 @@
-package com.jinbiao.SensitiveWord;
+package com.jinbiao.HelperClass.SensitiveWord;
 
 
 import java.util.*;
