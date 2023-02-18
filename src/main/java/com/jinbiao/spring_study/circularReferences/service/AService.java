@@ -8,16 +8,18 @@ import org.springframework.stereotype.Service;
  * @date 2023/2/15 16:57
  * @desc
  * AService 创建生命周期：
-  1.创建一个AService普通对象        --->zhouyuMap<beanName,AService对象></>
+
+  AService出现了循环依赖的情况下才需要提前AOP
+  1.创建一个AService普通对象  -->?提前AOP-->AService代理对象 --->zhouyuMap<beanName,AService代理对象></>
   2.填充bService属性   -->去单例池中找BService-->创建BService的Bean对象
   3.填充其他属性
   4.其他操作
-  5.初始化后
+  5.初始化后(AOP)
   6.放入单例池
 
  * BService 创建生命周期：
   1.创建一个BService普通对象
-  2.填充aService属性   -->去单例池中找AService-->创建AService的Bean对象。 找不到就从上面的zhouyuMap<beanName,AService对象></>去取
+  2.填充aService属性   -->去单例池中找AService-->creatingSet-->出现了循环依赖--提前AOP--AService代理对象
   3.填充其他属性
   4.其他操作
   5.初始化后
