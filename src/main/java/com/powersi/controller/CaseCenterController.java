@@ -1,6 +1,7 @@
 package com.powersi.controller;
 
 
+import com.powersi.annotation.DealResult;
 import com.powersi.annotation.Mobile;
 import com.powersi.common.api.CommonResult;
 import com.powersi.entity.CaseCenter;
@@ -70,7 +71,8 @@ public class CaseCenterController {
     }
 
     @GetMapping("/getByEmail")
-    public CommonResult<CaseQO> getByAccount(@RequestParam @NotBlank @Email String email) {
+    @DealResult(name = "脱敏返回值邮箱号",value = "email")
+    public CommonResult<CaseQO> getByEmail(@RequestParam @NotBlank @Email String email) {
         CaseQO caseQO = new CaseQO();
         caseQO.setEmail(email);
         return CommonResult.success(caseQO);

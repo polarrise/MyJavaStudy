@@ -1,5 +1,6 @@
 package com.jinbiao.spring_study;
 
+import com.jinbiao.spring_study.service.SpringContextHolder;
 import com.jinbiao.spring_study.service.UserServiceInitProcess;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -14,6 +15,14 @@ public class SpringTest_InitProcess {
         UserServiceInitProcess userServiceInitProcess = (UserServiceInitProcess)applicationContext.getBean("userServiceInitProcess");
         userServiceInitProcess.test();
         System.out.println(userServiceInitProcess.getAdmin());
+
+        /**
+         * 原型bean
+         */
+        UserServiceInitProcess userServiceInitProcess2 = SpringContextHolder.getPrototypeBean("userServiceInitProcess");
+        System.out.println(userServiceInitProcess);
+        System.out.println(userServiceInitProcess2);
+
         applicationContext.close();
     }
 }

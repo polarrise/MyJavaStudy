@@ -2,10 +2,16 @@ package com.jinbiao.spring_study.service;
 
 import com.jinbiao.spring_study.dao.UserDao;
 import com.jinbiao.spring_study.dao.UserMapper;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.DestructionAwareBeanPostProcessor;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -32,7 +38,7 @@ import java.util.List;
    10.容器关闭后会调用DisposableBean里面的destory方法。
  */
 @Component
-public class UserServiceInitProcess implements InitializingBean, DisposableBean {
+public class UserServiceInitProcess implements InitializingBean, DisposableBean, BeanPostProcessor,BeanNameAware, ApplicationContextAware {
 
     @Autowired
     UserDao userDao;
@@ -41,6 +47,22 @@ public class UserServiceInitProcess implements InitializingBean, DisposableBean 
     //private UserMapper userMapper;
 
     private User admin;
+
+    private ApplicationContext applicationContext;
+
+    //1.回调一些列Aware接口
+    @Override
+    public void setBeanName(String s) {
+        System.out.println("回调BeanNameAware的方法");
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        Object userServiceInitProcess = applicationContext.getBean("userServiceInitProcess");
+        this.applicationContext = applicationContext;
+        System.out.println("回调ApplicationContextAware的方法:"+applicationContext);
+    }
+
 
     //Spring创建Bean的初始化前方法。Spring启动时候会去调用这里注解里面的方法
     @PostConstruct
@@ -57,6 +79,7 @@ public class UserServiceInitProcess implements InitializingBean, DisposableBean 
     public void afterPropertiesSet() throws Exception {
         System.out.println("初始化方法执行==");
     }
+
 
     public void test() {
         System.out.println("test方法执行==");
@@ -79,4 +102,5 @@ public class UserServiceInitProcess implements InitializingBean, DisposableBean 
     public void destroy() throws Exception {
         System.out.println("===Bean销毁的时候执行===");
     }
+
 }
