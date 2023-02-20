@@ -1,5 +1,6 @@
 package com.powersi.annotation;
 
+import javax.validation.constraints.NotNull;
 import java.lang.annotation.*;
 
 /**
@@ -11,6 +12,9 @@ import java.lang.annotation.*;
 @Target(ElementType.METHOD)  //里面可以写ElementType.TYPE代表该注解写在类上面，ElementType.METHOD表示写在方法上
 @Documented
 public @interface DealResult {
-    String name();
-    String value();
+    @NotNull
+    String name() ;
+
+    @NotNull
+    String[] value();
 }

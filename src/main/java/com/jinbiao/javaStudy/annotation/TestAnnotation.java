@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 
 /**
  * @author wangjinbiao
@@ -55,7 +56,9 @@ public class TestAnnotation {
 
     // 获取方法上参数的注解
     Method setNameMethod = testClazz.getDeclaredMethod("setName", String.class);
-    AnnotationForParam annotationForParam = setNameMethod.getDeclaredAnnotation(AnnotationForParam.class);
-    System.out.println("类中方法上参数的注解的值\t" + annotationForParam.value());
+    for(Parameter parameter:setNameMethod.getParameters()){
+      AnnotationForParam annotationForParam = parameter.getDeclaredAnnotation(AnnotationForParam.class);
+      System.out.println("类中方法上参数的注解的值\t" + annotationForParam.value());
+    }
   }
 }

@@ -71,9 +71,10 @@ public class CaseCenterController {
     }
 
     @GetMapping("/getByEmail")
-    @DealResult(name = "脱敏返回值邮箱号",value = "email")
-    public CommonResult<CaseQO> getByEmail(@RequestParam @NotBlank @Email String email) {
+    @DealResult(name = "脱敏返回值邮箱号",value = {"phone","email"})
+    public CommonResult<CaseQO> getByEmail(@RequestParam @NotBlank @Email String email,@NotBlank String phone) {
         CaseQO caseQO = new CaseQO();
+        caseQO.setPhone(phone);
         caseQO.setEmail(email);
         return CommonResult.success(caseQO);
     }
