@@ -4,6 +4,7 @@ import com.powersi.common.api.CommonResult;
 import com.powersi.common.api.ResultCode;
 import com.powersi.common.exception.customException.BusinessException;
 import com.powersi.common.exception.customException.ForbiddenException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
 
 /**
@@ -22,6 +24,7 @@ import javax.validation.ConstraintViolationException;
  * 一个是为了可以与前面定义下来的统一包装返回结构能对应上，
  * 另一个是我们希望无论系统发生什么异常，Http 的状态码都要是 200,尽可能由业务来区分系统的异常。
  */
+@Slf4j
 @RestControllerAdvice(basePackages = "com.powersi.controller")
 public class ExceptionAdvice {
 
@@ -67,7 +70,11 @@ public class ExceptionAdvice {
    * 顶级异常捕获并统一处理，当其他异常无法处理时候选择使用
    */
   @ExceptionHandler({Exception.class})
-  public CommonResult<?> handle(Exception ex) {
+  public CommonResult<?> handle(Exception ex, HttpServletRequest request) {
+      log.error("全局异常,请求路径:" + request.getRequestURI());
+      log.error("HOST:" + request.getRemoteHost());
+      request.getParameterMap().forEach((key, value) -> log.error("*****请求参数*****:{},{}", key, value));
+      log.error("*********异常信息:{},{}", ex.getMessage(), ex);
     return CommonResult.failed(ex.getMessage());
   }
 }
