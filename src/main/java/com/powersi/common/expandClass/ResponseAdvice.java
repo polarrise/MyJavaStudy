@@ -33,8 +33,9 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
 
         Method method = returnType.getMethod();
         for (Parameter parameter : method.getParameters()) {
-            Mobile mobile = parameter.getDeclaredAnnotation(Mobile.class);
-            System.out.println("入参有Mobile注解存在==");
+            if(parameter.isAnnotationPresent(Mobile.class)){
+                System.out.println("入参有Mobile注解存在==");
+            }
         }
         // 提供一定的灵活度，如果body已经被包装了，就不进行包装
         if (body instanceof CommonResult) {
