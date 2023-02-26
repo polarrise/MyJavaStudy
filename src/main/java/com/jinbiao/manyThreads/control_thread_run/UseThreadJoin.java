@@ -22,26 +22,31 @@ public class UseThreadJoin {
         System.out.println(Thread.currentThread().getName() + "打印C");
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args){
         UseThreadJoin useThreadJoin = new UseThreadJoin();
 
         Thread threadA = new Thread(() -> useThreadJoin.printA(), "Thread-A");
 
         Thread threadB = new Thread(() -> {
-            useThreadJoin.printB();
+            try {
+                threadA.join();
+                useThreadJoin.printB();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }, "Thread-B");
 
         Thread threadC = new Thread(() -> {
-            useThreadJoin.printC();
+            try {
+                threadB.join();
+                useThreadJoin.printC();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }, "Thread-C");
-
         threadA.start();
-        threadA.join();
-
         threadB.start();
-        threadB.join();
-
         threadC.start();
-        threadC.join();
+
     }
 }

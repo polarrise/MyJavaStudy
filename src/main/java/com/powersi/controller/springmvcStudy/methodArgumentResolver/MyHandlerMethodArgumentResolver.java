@@ -1,8 +1,8 @@
-package com.powersi.controller.springmvc_study.methodArgumentResolver;
+package com.powersi.controller.springmvcStudy.methodArgumentResolver;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.powersi.controller.springmvc_study.annotation.MyArgumentResolver;
-import com.powersi.controller.springmvc_study.methodParam.User;
+import com.powersi.controller.springmvcStudy.annotation.MyArgumentResolver;
+import com.powersi.controller.springmvcStudy.methodParam.User;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;

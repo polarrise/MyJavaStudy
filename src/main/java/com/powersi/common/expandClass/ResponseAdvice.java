@@ -1,6 +1,9 @@
 package com.powersi.common.expandClass;
+import com.powersi.annotation.DealResult;
 import com.powersi.annotation.Mobile;
 import com.powersi.common.api.CommonResult;
+import com.powersi.controller.springmvcStudy.annotation.MyArgumentResolver;
+import com.powersi.controller.springmvcStudy.annotation.MyReturnValueResolver;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -25,7 +28,7 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
         // 如果不需要进行封装的，可以添加一些校验手段，比如添加标记排除的注解
-        return true;
+        return returnType.hasMethodAnnotation(MyReturnValueResolver.class);
     }
 
     @Override
@@ -33,8 +36,8 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
 
         Method method = returnType.getMethod();
         for (Parameter parameter : method.getParameters()) {
-            if(parameter.isAnnotationPresent(Mobile.class)){
-                System.out.println("入参有Mobile注解存在==");
+            if(parameter.isAnnotationPresent(MyArgumentResolver.class)){
+                System.out.println("入参有MyArgumentResolver注解存在==");
             }
         }
         // 提供一定的灵活度，如果body已经被包装了，就不进行包装

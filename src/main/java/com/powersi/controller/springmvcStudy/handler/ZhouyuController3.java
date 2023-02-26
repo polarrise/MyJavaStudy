@@ -1,17 +1,20 @@
-package com.powersi.controller.springmvc_study.handler;
+package com.powersi.controller.springmvcStudy.handler;
 
 import com.powersi.annotation.Mobile;
 import com.powersi.common.api.CommonResult;
-import com.powersi.controller.springmvc_study.annotation.MyReturnValueResolver;
-import com.powersi.controller.springmvc_study.methodArgumentResolver.StringToUserEditor;
-import com.powersi.controller.springmvc_study.annotation.MyArgumentResolver;
-import com.powersi.controller.springmvc_study.methodParam.User;
+import com.powersi.controller.springmvcStudy.annotation.MyReturnValueResolver;
+import com.powersi.controller.springmvcStudy.methodArgumentResolver.StringToUserEditor;
+import com.powersi.controller.springmvcStudy.annotation.MyArgumentResolver;
+import com.powersi.controller.springmvcStudy.methodParam.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequestMapping
 @Component
+@Slf4j
 public class ZhouyuController3 {
 
     @RequestMapping(method = RequestMethod.GET, path = "/test3")

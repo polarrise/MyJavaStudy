@@ -1,7 +1,7 @@
-package com.powersi.controller.springmvc_study.methodArgumentResolver;
+package com.powersi.controller.springmvcStudy.methodArgumentResolver;
 
 
-import com.powersi.controller.springmvc_study.methodParam.User;
+import com.powersi.controller.springmvcStudy.methodParam.User;
 
 import java.beans.PropertyEditorSupport;
 

@@ -1,8 +1,11 @@
-package com.powersi.controller.springmvc_study.annotation;
-
-import org.springframework.core.annotation.AliasFor;
+package com.powersi.controller.springmvcStudy.annotation;
 
 import java.lang.annotation.*;
+
+@Target(ElementType.PARAMETER)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Inherited
 /**
  * 1.定义注解：
  * 注解的定义很像接口的定义。事实上与其他java接口一样，注解也会被编译成class文件。定义注解时需要一些元注解。
@@ -24,12 +27,10 @@ import java.lang.annotation.*;
  *  @Documented介绍：将此注解包含在javadoc中
  *  @Inherited介绍：允许子类继承父类中的注解，千万不要误解是注解的嵌套，是Class类继承的时候，是否拥有父类的注解
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)  //里面可以写ElementType.TYPE代表该注解写在类上面，ElementType.METHOD表示写在方法上
-@Documented
-public @interface MyReturnValueResolver {
+
+public @interface MyArgumentResolver {
 
     String name() default "";
 
-    String[] value();
+    String value() default "";
 }

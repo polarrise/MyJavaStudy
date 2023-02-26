@@ -1,4 +1,4 @@
-package com.powersi.controller.springmvc_study.methodParam;
+package com.powersi.controller.springmvcStudy.methodParam;
 
 import lombok.Data;
 

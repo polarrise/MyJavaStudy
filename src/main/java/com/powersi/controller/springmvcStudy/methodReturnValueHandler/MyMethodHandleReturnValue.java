@@ -1,10 +1,8 @@
-package com.powersi.controller.springmvc_study.methodReturnValueHandler;
+package com.powersi.controller.springmvcStudy.methodReturnValueHandler;
 
-import com.powersi.annotation.DealResult;
 import com.powersi.common.api.CommonResult;
-import com.powersi.controller.springmvc_study.annotation.MyReturnValueResolver;
-import com.powersi.controller.springmvc_study.methodParam.User;
-import com.powersi.qo.CaseQO;
+import com.powersi.controller.springmvcStudy.annotation.MyReturnValueResolver;
+import com.powersi.controller.springmvcStudy.methodParam.User;
 import com.powersi.utils.JsonUtils;
 import com.powersi.utils.PhoneOrEmailUtil;
 import org.springframework.core.MethodParameter;

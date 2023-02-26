@@ -1,4 +1,4 @@
-package com.powersi.controller.springmvc_study.handler;
+package com.powersi.controller.springmvcStudy.handler;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.HttpRequestHandler;

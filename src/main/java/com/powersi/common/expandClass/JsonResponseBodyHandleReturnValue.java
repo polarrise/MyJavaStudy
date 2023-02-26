@@ -28,7 +28,7 @@ import java.util.Optional;
  * @desc 自定义注解的方式统一对Controller返回值做脱敏处理：
  */
 @Component
-public class JsonResponseBodyHandleReturnValue implements HandlerMethodReturnValueHandler, AsyncHandlerMethodReturnValueHandler {
+public class JsonResponseBodyHandleReturnValue implements HandlerMethodReturnValueHandler {
 
     @Override
     public boolean supportsReturnType(MethodParameter returnType) {
@@ -64,12 +64,6 @@ public class JsonResponseBodyHandleReturnValue implements HandlerMethodReturnVal
             }
         });
         response.getWriter().write(JsonUtils.objectToJson(returnValue));
-    }
-
-    // 开启异步处理
-    @Override
-    public boolean isAsyncReturnValue(Object returnValue, MethodParameter returnType) {
-        return supportsReturnType(returnType);
     }
 
 }
