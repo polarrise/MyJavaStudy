@@ -1,6 +1,7 @@
 package com.jinbiao.spring_study;
 
 
+import com.jinbiao.spring_study.service.SpecifyTestServiceBean;
 import com.jinbiao.spring_study.service.UserServiceInitProcess;
 import com.jinbiao.spring_study.service.UserServiceInferConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,8 @@ public class SpringTest_InferConstruct {
     System.out.println(applicationContext.getBean("orderService1"));
     System.out.println(applicationContext.getBean("orderService2"));
 
+    SpecifyTestServiceBean specifyTheBean = (SpecifyTestServiceBean)applicationContext.getBean("specifyTheBean");
+    specifyTheBean.findAll();
 
     //反射看实例对象的属性是否加了Autowired注解：
     for (Field field: userServiceInferConstruct1.getClass().getDeclaredFields()) {
