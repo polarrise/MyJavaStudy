@@ -3,7 +3,7 @@ package com.jinbiao.manyThreads.threadLocal;
 /**
  * @author wangjinbiao
  * @date 2023/2/7 16:08
- * @desc
+ * @desc threadLocal的使用场景：线程里面跨方法的调用可以使用
  */
 public class AboutThreadLocal {
 
