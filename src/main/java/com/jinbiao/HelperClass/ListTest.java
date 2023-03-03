@@ -13,6 +13,80 @@ import static java.util.stream.Collectors.toList;
  */
 public class ListTest {
 
+  static class User{
+     private Integer id;
+     private String name;
+     private String createTime;
+
+    public User(Integer id, String name, String createTime) {
+      this.id = id;
+      this.name = name;
+      this.createTime = createTime;
+    }
+
+    public Integer getId() {
+      return id;
+    }
+
+    public void setId(Integer id) {
+      this.id = id;
+    }
+
+    public String getName() {
+      return name;
+    }
+
+    public void setName(String name) {
+      this.name = name;
+    }
+
+    public String getCreateTime() {
+      return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+      this.createTime = createTime;
+    }
+
+    @Override
+    public String toString() {
+      return "User{" +
+              "id=" + id +
+              ", name=" + name +
+              ", createTime='" + createTime + '\'' +
+              '}';
+    }
+  }
+
+  /**
+   * list对象集合，如何根据属性去重，保留最新时间的数据吗？
+   * 根据对象属性中的时间来判断，时间是字符串类型createdtime
+   */
+  public static void test(){
+    List<User> users = new ArrayList<>();
+    users.add(new User( 1, "张三", "2023-03-03 19:30:00"));
+    users.add(new User( 2, "李四", "2023-03-03 19:13:00"));
+    users.add(new User( 3, "张三", "2023-03-03 19:31:00"));
+    users.add(new User( 4, "王五", "2023-03-03 19:21:00"));
+    users.add(new User( 5, "张三", "2023-03-03 19:33:00"));
+    List<User> distinctUsers = users.stream()
+            .collect(Collectors.toMap(
+                    User::getName,
+                    user -> user,
+                    (existingUser, newUser) -> {
+                      if (newUser.getCreateTime().compareTo(existingUser.getCreateTime()) > 0) {
+                        return newUser;
+                      } else {
+                        return existingUser;
+                      }
+                    }))
+            .values()
+            .stream()
+            .collect(Collectors.toList());
+    System.out.println(users);
+    System.out.println(distinctUsers);
+  }
+
   public static void main(String[] args) {
     List<String> list1 = new ArrayList<String>();
     list1.add("1");
@@ -53,6 +127,9 @@ public class ListTest {
     list1.parallelStream().forEachOrdered(System.out :: println);
     System.out.println("---原来的List2---");
     list2.parallelStream().forEachOrdered(System.out :: println);
+
+
+    ListTest.test();
 
   }
 
