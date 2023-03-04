@@ -4,6 +4,7 @@ import com.powersi.common.api.CommonResult;
 import com.powersi.common.api.ResultCode;
 import com.powersi.common.exception.customException.BusinessException;
 import com.powersi.common.exception.customException.ForbiddenException;
+import com.powersi.common.exception.customException.MethodArgumentException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
@@ -64,6 +65,11 @@ public class ExceptionAdvice {
       return CommonResult.failed(ResultCode.VALIDATE_FAILED.getCode(), ex.getMessage());
     }
     return CommonResult.failed(ResultCode.VALIDATE_FAILED);
+  }
+
+  @ExceptionHandler(MethodArgumentException.class)
+  public CommonResult<?> handleForbiddenException(MethodArgumentException ex) {
+    return CommonResult.failed(ResultCode.SUCCESS, ex.getMessage());
   }
 
   /**
