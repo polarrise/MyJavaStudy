@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/jinbiao_cloud.iml" filepath="$PROJECT_DIR$/jinbiao_cloud.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jinbiao_im/jinbiao_im.iml" filepath="$PROJECT_DIR$/jinbiao_im/jinbiao_im.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jinbiao_security/jinbiao_security.iml" filepath="$PROJECT_DIR$/jinbiao_security/jinbiao_security.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jinbiao_study/jinbiao_study.iml" filepath="$PROJECT_DIR$/jinbiao_study/jinbiao_study.iml" />
+    </modules>
+  </component>
+</project>

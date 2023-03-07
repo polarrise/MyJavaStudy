@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.powersi.dao.XiaofaUserMapper">
+
+<!--   <resultMap id="reMap" type="com.powersi.entity.PersonDo">-->
+<!--        <result column="id" jdbcType="INTEGER" property="id" />-->
+<!--        <result column="name" jdbcType="VARCHAR" property="name" />-->
+<!--        <result column="age" jdbcType="INTEGER" property="age" />-->
+<!--        <result column="sex" jdbcType="VARCHAR" property="sex" />-->
+<!--       <result column="ceto" jdbcType="VARCHAR" property="ceto" />-->
+<!--       <result column="work" jdbcType="VARCHAR" property="work" />-->
+<!--       <result column="tel" jdbcType="VARCHAR" property="tel" />-->
+<!--       <result column="e-mail" jdbcType="VARCHAR" property="eMail" />-->
+<!--   </resultMap>-->
+
+    <select id="getXiaofaUsers" resultType="com.powersi.controller.springmvcStudy.uploadDownload.XiaofaUser" parameterType="java.util.Map">
+        select id,user_name userName,password,phone,source from xiaofa_user
+    </select>
+
+</mapper>
