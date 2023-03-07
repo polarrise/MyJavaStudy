@@ -2,7 +2,9 @@ package com.powersi.dao;
 
 import com.powersi.entity.CaseCenter;
 import com.powersi.entity.User;
+import com.powersi.qo.UserInfoQO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
@@ -17,4 +19,6 @@ public interface PersonMapper {
     CaseCenter getCaseInfoById(Long id);
 
     User getUserInfoById(Long id);
+
+    User getUserInfo(UserInfoQO userInfoQO);
 }

@@ -55,6 +55,9 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
+sign:   # 签名的过期时间60s
+  maxTime: 180
+
 service:
   version: 1.0.0
 
@@ -79,9 +82,9 @@ im:
 #showSql
 logging:
   level:
-    com:
-      powersi:
-        mapper : debug
+    root: info
+    com.powersi.dao: debug
+
 #mybatis-plus打印sql信息
 mybatis-plus:
   configuration:

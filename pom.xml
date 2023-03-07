@@ -197,6 +197,13 @@
             <version>2.2.8</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>3.14.9</version>
+            <scope>compile</scope>
+        </dependency>
+
     </dependencies>
 
     <!-- 被当作jar包被其他项目引用需要包这块去掉，不然就会找不到程序包 -->
