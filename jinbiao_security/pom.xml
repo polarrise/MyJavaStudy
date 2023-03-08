@@ -9,7 +9,32 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <groupId>com.jinbiao</groupId>
     <artifactId>jinbiao_security</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.jinbiao</groupId>
+            <artifactId>jinbiao-common</artifactId>
+            <version>0.0.1</version>
+        </dependency>
 
+        <dependency>
+            <groupId>com.jinbiao</groupId>
+            <artifactId>jinbiao-mbg</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <!--JWT(Json Web Token)登录支持-->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.0</version>
+        </dependency>
+    </dependencies>
 </project>
