@@ -1,8 +1,8 @@
 package com.powersi.controller.springmvcStudy.interceptor;
 
+import com.jinbiao.cloud.common.util.JsonUtils;
 import com.powersi.common.api.CommonResult;
 import com.powersi.controller.springmvcStudy.uploadDownload.XiaofaUser;
-import com.powersi.utils.JsonUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;

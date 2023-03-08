@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.powersi.dao.PersonMapper">
+<mapper namespace="com.powersi.dao.PersonDao">
 
 <!--   <resultMap id="reMap" type="com.powersi.entity.PersonDo">-->
 <!--        <result column="id" jdbcType="INTEGER" property="id" />-->
@@ -21,16 +21,8 @@
         select * from case_center where id = #{id}
     </select>
 
-    <select id="getUserInfoById" resultType="com.powersi.entity.User" parameterType="com.powersi.qo.UserInfoQO">
-        select * from ums_member
-        <where>
-        <if test="id != null ">
-            id = #{id}
-        </if>
-        <if test="phone != null ">
-            phone = #{phone}
-        </if>
-        </where>
+    <select id="getUserInfoById" resultType="com.powersi.entity.User" parameterType="java.lang.Long">
+        select * from ums_member where id = #{id}
     </select>
 
     <select id="getUserInfo" resultType="com.powersi.entity.User" parameterType="com.powersi.qo.UserInfoQO">
@@ -40,7 +32,7 @@
                 id = #{id}
             </if>
             <if test="phone != null ">
-                phone = #{phone}
+                and phone = #{phone}
             </if>
         </where>
     </select>

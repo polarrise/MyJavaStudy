@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  * ctrl+alt+o 格式化化导入包
  */
 @Controller
+@RequestMapping("/loginVerfy")
 public class LineCaptchaController {
 
     @Autowired

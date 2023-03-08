@@ -8,13 +8,11 @@ import com.powersi.entity.CaseCenter;
 import com.powersi.enums.JudgeTaskFinishedWaysEnum;
 import com.powersi.qo.CaseQO;
 import com.powersi.service.CaseCenterService;
-import com.sun.istack.internal.NotNull;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;

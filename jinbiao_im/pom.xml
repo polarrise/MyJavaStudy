@@ -11,11 +11,12 @@
 
     <artifactId>jinbiao_im</artifactId>
     <dependencies>
-    <dependency>
-        <groupId>com.powersi</groupId>
-        <artifactId>jinbiao-common</artifactId>
-        <version>0.0.1</version>
-    </dependency>
+        <dependency>
+            <groupId>com.jinbiao</groupId>
+            <artifactId>jinbiao-common</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+
     </dependencies>
 
 </project>

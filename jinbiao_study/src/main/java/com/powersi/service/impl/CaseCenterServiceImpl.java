@@ -1,8 +1,10 @@
 package com.powersi.service.impl;
 
+import com.jinbiao.cloud.common.service.RedisService;
+import com.jinbiao.cloud.mbg.model.UmsMember;
+import com.jinbiao.cloud.security.service.SecurityMemberService;
 import com.powersi.annotation.JudgeTaskCode;
-import com.powersi.common.service.RedisService;
-import com.powersi.dao.PersonMapper;
+import com.powersi.dao.PersonDao;
 import com.powersi.entity.CaseCenter;
 import com.powersi.entity.User;
 import com.powersi.enums.JudgeTaskFinishedWaysEnum;
@@ -17,6 +19,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +34,7 @@ import java.util.concurrent.*;
 @Slf4j
 public class CaseCenterServiceImpl implements CaseCenterService, ApplicationListener<ContextRefreshedEvent> {
   @Autowired
-  PersonMapper personMapper;
+  PersonDao personDao;
 
   @Autowired
   KafkaProducer kafkaProducer;
@@ -39,32 +42,38 @@ public class CaseCenterServiceImpl implements CaseCenterService, ApplicationList
   @Autowired
   RedisService redisService;
 
+  @Resource
+  private SecurityMemberService securityMemberService;   //从当前登录信息上下文里面取提交人姓名
+
   private static Map<String, JudgeTaskFinishedService> judgeTaskFinashedWaysMap = null;
 
   @Override
   public List<CaseCenter> getAllCase(Map map) {
-      return personMapper.getAllCase(map);
+      return personDao.getAllCase(map);
   }
 
   @Override
   public Map getCaseInfoById(Long id) throws ExecutionException, InterruptedException {
 
+    UmsMember currentMember = securityMemberService.getCurrentMember();
+    System.out.println("当前登录用户信息:"+currentMember);
+
     Thread.sleep(300); //模拟主线程其它操作耗时
     CompletableFuture<CaseCenter> caseCenterFuture = CompletableFuture.supplyAsync(
         ()->{
-          CaseCenter caseCenter = personMapper.getCaseInfoById(id);
+          CaseCenter caseCenter = personDao.getCaseInfoById(id);
           System.out.println("原始CompletableFuture方法任务");
           return caseCenter;
         }
     );
 
     CompletableFuture thenAcceptFuture = caseCenterFuture.thenAccept((a) -> {
-      User user = personMapper.getUserInfoById(a.getUserId());
+      User user = personDao.getUserInfoById(a.getUserId());
       System.out.println("没有返回结果:"+user);
     });
 
     CompletableFuture<User> thenApplyFuture  = caseCenterFuture.thenApply((a) -> {
-      User user = personMapper.getUserInfoById(a.getUserId());
+      User user = personDao.getUserInfoById(a.getUserId());
       System.out.println("有返回结果:"+user);
       return user;
     });
@@ -104,7 +113,7 @@ public class CaseCenterServiceImpl implements CaseCenterService, ApplicationList
       @Override
       public CaseCenter call() throws Exception {
         Thread.sleep(500); //模拟调用耗时
-        CaseCenter caseCenter = personMapper.getCaseInfoById(id);
+        CaseCenter caseCenter = personDao.getCaseInfoById(id);
         System.out.println("异步获取案源信息:"+caseCenter);
         taskLatch.countDown();
         System.out.println("当前计数器数量：" + taskLatch.getCount());
@@ -117,7 +126,7 @@ public class CaseCenterServiceImpl implements CaseCenterService, ApplicationList
       @Override
       public User call() throws Exception {
         Thread.sleep(300); //模拟调用耗时
-        User user = personMapper.getUserInfoById(1550400L);
+        User user = personDao.getUserInfoById(1550400L);
         System.out.println("异步获取用户信息:"+user);
         taskLatch.countDown();
         System.out.println("当前计数器数量：" + taskLatch.getCount());
@@ -186,7 +195,7 @@ public class CaseCenterServiceImpl implements CaseCenterService, ApplicationList
           } catch (InterruptedException e) {
             e.printStackTrace();
           }
-          CaseCenter caseCenter = personMapper.getCaseInfoById(id);
+          CaseCenter caseCenter = personDao.getCaseInfoById(id);
           System.out.println("查询案源信息异步任务:"+caseCenter);
           return caseCenter;
         }
@@ -203,7 +212,7 @@ public class CaseCenterServiceImpl implements CaseCenterService, ApplicationList
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
-      User user = personMapper.getUserInfoById(a.getUserId());
+      User user = personDao.getUserInfoById(a.getUserId());
       System.out.println("查询用户信息异步任务(有返回结果):"+user);
 
       redisService.set("user",user);

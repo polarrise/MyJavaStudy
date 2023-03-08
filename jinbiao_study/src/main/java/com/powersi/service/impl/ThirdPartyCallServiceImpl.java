@@ -1,7 +1,7 @@
 package com.powersi.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.powersi.dao.PersonMapper;
+import com.powersi.dao.PersonDao;
 import com.powersi.entity.User;
 import com.powersi.model.RequestHeader;
 import com.powersi.qo.UserInfoQO;
@@ -24,7 +24,7 @@ import java.util.SortedMap;
 public class ThirdPartyCallServiceImpl implements ThirdPartyCallService {
 
     @Autowired
-    PersonMapper personMapper;
+    PersonDao personDao;
 
     /**
      * 验证签名
@@ -49,7 +49,7 @@ public class ThirdPartyCallServiceImpl implements ThirdPartyCallService {
 
     @Override
     public User getUserDetailInfo(UserInfoQO userInfoQO) {
-        User userInfo = personMapper.getUserInfo(userInfoQO);
+        User userInfo = personDao.getUserInfo(userInfoQO);
         return userInfo;
     }
 }

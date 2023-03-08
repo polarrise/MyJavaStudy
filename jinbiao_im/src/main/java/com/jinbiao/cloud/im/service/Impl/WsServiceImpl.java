@@ -7,7 +7,7 @@ import com.jinbiao.cloud.im.domain.ws.WSMsgResult;
 import com.jinbiao.cloud.im.enums.MsgSendStatusEnum;
 import com.jinbiao.cloud.im.service.WsService;
 import com.jinbiao.cloud.im.utils.DesensitizationUtil;
-import com.jinbiao.cloud.im.utils.JsonUtils;
+import com.jinbiao.cloud.common.util.JsonUtils;
 import com.jinbiao.cloud.im.utils.RegexpUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;

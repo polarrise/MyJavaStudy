@@ -1,8 +1,8 @@
 package com.powersi.service.judgePoolTask_If_Finashed.impl;
 
+import com.jinbiao.cloud.common.service.RedisService;
 import com.powersi.annotation.JudgeTaskCode;
-import com.powersi.common.service.RedisService;
-import com.powersi.dao.PersonMapper;
+import com.powersi.dao.PersonDao;
 import com.powersi.entity.CaseCenter;
 import com.powersi.entity.User;
 import com.powersi.kafka.KafkaProducer;
@@ -25,7 +25,7 @@ import java.util.concurrent.*;
 @Slf4j
 public class AwaitTerminationJudge implements JudgeTaskFinishedService {
   @Autowired
-  PersonMapper personMapper;
+  PersonDao personDao;
 
   @Autowired
   KafkaProducer kafkaProducer;
@@ -48,7 +48,7 @@ public class AwaitTerminationJudge implements JudgeTaskFinishedService {
       @Override
       public CaseCenter call() throws Exception {
         Thread.sleep(500); //模拟调用耗时
-        CaseCenter caseCenter = personMapper.getCaseInfoById(id);
+        CaseCenter caseCenter = personDao.getCaseInfoById(id);
         System.out.println("异步获取案源信息:"+caseCenter);
         return caseCenter;
       }
@@ -59,7 +59,7 @@ public class AwaitTerminationJudge implements JudgeTaskFinishedService {
       @Override
       public User call() throws Exception {
         Thread.sleep(300); //模拟调用耗时
-        User user = personMapper.getUserInfoById(1550400L);
+        User user = personDao.getUserInfoById(1550400L);
         System.out.println("异步获取用户信息:"+user);
         return user;
       }
