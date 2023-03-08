@@ -37,6 +37,11 @@ public class SpringBootDemoApplication {
         String tokens = jwtTokenUtil.generateToken(userDetails);
         System.out.println(tokens);
 
+        /**
+         * readme:
+         * 由于git没有提交.class文件上去、由于当前业务项目依赖了jinbiao-common、jinbiao-mbg、jinbiao-security,
+         * 所以启动的时候需要把依赖项每个module都 package一下打成jar包供当前项目引用
+         */
     }
 
 }
