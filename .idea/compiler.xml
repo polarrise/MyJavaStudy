@@ -8,11 +8,15 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="jinbiao_study" />
+        <module name="jinbiao-common" />
         <module name="jinbiao_im" />
+        <module name="jinbiao-mbg" />
         <module name="jinbiao_security" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="jinbiao-common" target="1.8" />
+      <module name="jinbiao-mbg" target="1.8" />
       <module name="jinbiao_cloud" target="1.8" />
       <module name="jinbiao_im" target="1.8" />
       <module name="jinbiao_security" target="1.8" />
@@ -21,6 +25,8 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="jinbiao-common" options="-parameters" />
+      <module name="jinbiao-mbg" options="-parameters" />
       <module name="jinbiao_cloud" options="" />
       <module name="jinbiao_im" options="-parameters" />
       <module name="jinbiao_security" options="-parameters" />
