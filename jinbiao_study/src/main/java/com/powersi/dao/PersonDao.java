@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @Mapper
-public interface PersonMapper {
+public interface PersonDao {
 
     List<CaseCenter> getAllCase(Map map);
 

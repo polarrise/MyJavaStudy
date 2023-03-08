@@ -1,0 +1,935 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jinbiao.cloud.mbg.mapper.CaseCenterMapper">
+  <resultMap id="BaseResultMap" type="com.jinbiao.cloud.mbg.model.CaseCenter">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="case_type" jdbcType="VARCHAR" property="caseType" />
+    <result column="case_stage" jdbcType="VARCHAR" property="caseStage" />
+    <result column="remark_value" jdbcType="VARCHAR" property="remarkValue" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="service_type" jdbcType="BIGINT" property="serviceType" />
+    <result column="user_demand_type" jdbcType="TINYINT" property="userDemandType" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="origin" jdbcType="TINYINT" property="origin" />
+    <result column="submit_userid" jdbcType="BIGINT" property="submitUserid" />
+    <result column="case_session_id" jdbcType="BIGINT" property="caseSessionId" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="law_firm_ids" jdbcType="VARCHAR" property="lawFirmIds" />
+    <result column="follower_ids" jdbcType="VARCHAR" property="followerIds" />
+    <result column="has_mark" jdbcType="INTEGER" property="hasMark" />
+    <result column="phone_uuid" jdbcType="VARCHAR" property="phoneUuid" />
+    <result column="help_intention" jdbcType="TINYINT" property="helpIntention" />
+    <result column="found_lawyer_flag" jdbcType="TINYINT" property="foundLawyerFlag" />
+    <result column="unresolved_reason" jdbcType="VARCHAR" property="unresolvedReason" />
+    <result column="party_location" jdbcType="VARCHAR" property="partyLocation" />
+    <result column="prosecutor_location" jdbcType="VARCHAR" property="prosecutorLocation" />
+    <result column="has_legal_affairs_flag" jdbcType="TINYINT" property="hasLegalAffairsFlag" />
+    <result column="case_level" jdbcType="VARCHAR" property="caseLevel" />
+    <result column="case_level_value" jdbcType="INTEGER" property="caseLevelValue" />
+    <result column="case_follow_status" jdbcType="INTEGER" property="caseFollowStatus" />
+    <result column="case_source" jdbcType="VARCHAR" property="caseSource" />
+    <result column="case_source_code" jdbcType="INTEGER" property="caseSourceCode" />
+    <result column="im_case_card_flag" jdbcType="TINYINT" property="imCaseCardFlag" />
+    <result column="call_out_flag" jdbcType="INTEGER" property="callOutFlag" />
+    <result column="disable" jdbcType="INTEGER" property="disable" />
+    <result column="case_circulate_status" jdbcType="INTEGER" property="caseCirculateStatus" />
+    <result column="old_case_id" jdbcType="BIGINT" property="oldCaseId" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.jinbiao.cloud.mbg.model.CaseCenter">
+    <result column="original_case_desc" jdbcType="LONGVARCHAR" property="originalCaseDesc" />
+    <result column="case_desc" jdbcType="LONGVARCHAR" property="caseDesc" />
+    <result column="remark_target" jdbcType="LONGVARCHAR" property="remarkTarget" />
+    <result column="remark" jdbcType="LONGVARCHAR" property="remark" />
+    <result column="files_url" jdbcType="LONGVARCHAR" property="filesUrl" />
+    <result column="loan_demand" jdbcType="LONGVARCHAR" property="loanDemand" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, user_id, user_name, phone, province, city, case_type, case_stage, remark_value, 
+    update_time, create_time, service_type, user_demand_type, status, origin, submit_userid, 
+    case_session_id, price, law_firm_ids, follower_ids, has_mark, phone_uuid, help_intention, 
+    found_lawyer_flag, unresolved_reason, party_location, prosecutor_location, has_legal_affairs_flag, 
+    case_level, case_level_value, case_follow_status, case_source, case_source_code, 
+    im_case_card_flag, call_out_flag, disable, case_circulate_status, old_case_id
+  </sql>
+  <sql id="Blob_Column_List">
+    original_case_desc, case_desc, remark_target, remark, files_url, loan_demand
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.jinbiao.cloud.mbg.model.CaseCenterExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from case_center
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.jinbiao.cloud.mbg.model.CaseCenterExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from case_center
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from case_center
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from case_center
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jinbiao.cloud.mbg.model.CaseCenterExample">
+    delete from case_center
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jinbiao.cloud.mbg.model.CaseCenter">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into case_center (user_id, user_name, phone, 
+      province, city, case_type, 
+      case_stage, remark_value, update_time, 
+      create_time, service_type, user_demand_type, 
+      status, origin, submit_userid, 
+      case_session_id, price, law_firm_ids, 
+      follower_ids, has_mark, phone_uuid, 
+      help_intention, found_lawyer_flag, unresolved_reason, 
+      party_location, prosecutor_location, has_legal_affairs_flag, 
+      case_level, case_level_value, case_follow_status, 
+      case_source, case_source_code, im_case_card_flag, 
+      call_out_flag, disable, case_circulate_status, 
+      old_case_id, original_case_desc, case_desc, 
+      remark_target, remark, files_url, 
+      loan_demand)
+    values (#{userId,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{caseType,jdbcType=VARCHAR}, 
+      #{caseStage,jdbcType=VARCHAR}, #{remarkValue,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{serviceType,jdbcType=BIGINT}, #{userDemandType,jdbcType=TINYINT}, 
+      #{status,jdbcType=TINYINT}, #{origin,jdbcType=TINYINT}, #{submitUserid,jdbcType=BIGINT}, 
+      #{caseSessionId,jdbcType=BIGINT}, #{price,jdbcType=DECIMAL}, #{lawFirmIds,jdbcType=VARCHAR}, 
+      #{followerIds,jdbcType=VARCHAR}, #{hasMark,jdbcType=INTEGER}, #{phoneUuid,jdbcType=VARCHAR}, 
+      #{helpIntention,jdbcType=TINYINT}, #{foundLawyerFlag,jdbcType=TINYINT}, #{unresolvedReason,jdbcType=VARCHAR}, 
+      #{partyLocation,jdbcType=VARCHAR}, #{prosecutorLocation,jdbcType=VARCHAR}, #{hasLegalAffairsFlag,jdbcType=TINYINT}, 
+      #{caseLevel,jdbcType=VARCHAR}, #{caseLevelValue,jdbcType=INTEGER}, #{caseFollowStatus,jdbcType=INTEGER}, 
+      #{caseSource,jdbcType=VARCHAR}, #{caseSourceCode,jdbcType=INTEGER}, #{imCaseCardFlag,jdbcType=TINYINT}, 
+      #{callOutFlag,jdbcType=INTEGER}, #{disable,jdbcType=INTEGER}, #{caseCirculateStatus,jdbcType=INTEGER}, 
+      #{oldCaseId,jdbcType=BIGINT}, #{originalCaseDesc,jdbcType=LONGVARCHAR}, #{caseDesc,jdbcType=LONGVARCHAR}, 
+      #{remarkTarget,jdbcType=LONGVARCHAR}, #{remark,jdbcType=LONGVARCHAR}, #{filesUrl,jdbcType=LONGVARCHAR}, 
+      #{loanDemand,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jinbiao.cloud.mbg.model.CaseCenter">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into case_center
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="province != null">
+        province,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="caseType != null">
+        case_type,
+      </if>
+      <if test="caseStage != null">
+        case_stage,
+      </if>
+      <if test="remarkValue != null">
+        remark_value,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="serviceType != null">
+        service_type,
+      </if>
+      <if test="userDemandType != null">
+        user_demand_type,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="origin != null">
+        origin,
+      </if>
+      <if test="submitUserid != null">
+        submit_userid,
+      </if>
+      <if test="caseSessionId != null">
+        case_session_id,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="lawFirmIds != null">
+        law_firm_ids,
+      </if>
+      <if test="followerIds != null">
+        follower_ids,
+      </if>
+      <if test="hasMark != null">
+        has_mark,
+      </if>
+      <if test="phoneUuid != null">
+        phone_uuid,
+      </if>
+      <if test="helpIntention != null">
+        help_intention,
+      </if>
+      <if test="foundLawyerFlag != null">
+        found_lawyer_flag,
+      </if>
+      <if test="unresolvedReason != null">
+        unresolved_reason,
+      </if>
+      <if test="partyLocation != null">
+        party_location,
+      </if>
+      <if test="prosecutorLocation != null">
+        prosecutor_location,
+      </if>
+      <if test="hasLegalAffairsFlag != null">
+        has_legal_affairs_flag,
+      </if>
+      <if test="caseLevel != null">
+        case_level,
+      </if>
+      <if test="caseLevelValue != null">
+        case_level_value,
+      </if>
+      <if test="caseFollowStatus != null">
+        case_follow_status,
+      </if>
+      <if test="caseSource != null">
+        case_source,
+      </if>
+      <if test="caseSourceCode != null">
+        case_source_code,
+      </if>
+      <if test="imCaseCardFlag != null">
+        im_case_card_flag,
+      </if>
+      <if test="callOutFlag != null">
+        call_out_flag,
+      </if>
+      <if test="disable != null">
+        disable,
+      </if>
+      <if test="caseCirculateStatus != null">
+        case_circulate_status,
+      </if>
+      <if test="oldCaseId != null">
+        old_case_id,
+      </if>
+      <if test="originalCaseDesc != null">
+        original_case_desc,
+      </if>
+      <if test="caseDesc != null">
+        case_desc,
+      </if>
+      <if test="remarkTarget != null">
+        remark_target,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="filesUrl != null">
+        files_url,
+      </if>
+      <if test="loanDemand != null">
+        loan_demand,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="caseType != null">
+        #{caseType,jdbcType=VARCHAR},
+      </if>
+      <if test="caseStage != null">
+        #{caseStage,jdbcType=VARCHAR},
+      </if>
+      <if test="remarkValue != null">
+        #{remarkValue,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="serviceType != null">
+        #{serviceType,jdbcType=BIGINT},
+      </if>
+      <if test="userDemandType != null">
+        #{userDemandType,jdbcType=TINYINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="origin != null">
+        #{origin,jdbcType=TINYINT},
+      </if>
+      <if test="submitUserid != null">
+        #{submitUserid,jdbcType=BIGINT},
+      </if>
+      <if test="caseSessionId != null">
+        #{caseSessionId,jdbcType=BIGINT},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="lawFirmIds != null">
+        #{lawFirmIds,jdbcType=VARCHAR},
+      </if>
+      <if test="followerIds != null">
+        #{followerIds,jdbcType=VARCHAR},
+      </if>
+      <if test="hasMark != null">
+        #{hasMark,jdbcType=INTEGER},
+      </if>
+      <if test="phoneUuid != null">
+        #{phoneUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="helpIntention != null">
+        #{helpIntention,jdbcType=TINYINT},
+      </if>
+      <if test="foundLawyerFlag != null">
+        #{foundLawyerFlag,jdbcType=TINYINT},
+      </if>
+      <if test="unresolvedReason != null">
+        #{unresolvedReason,jdbcType=VARCHAR},
+      </if>
+      <if test="partyLocation != null">
+        #{partyLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="prosecutorLocation != null">
+        #{prosecutorLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="hasLegalAffairsFlag != null">
+        #{hasLegalAffairsFlag,jdbcType=TINYINT},
+      </if>
+      <if test="caseLevel != null">
+        #{caseLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="caseLevelValue != null">
+        #{caseLevelValue,jdbcType=INTEGER},
+      </if>
+      <if test="caseFollowStatus != null">
+        #{caseFollowStatus,jdbcType=INTEGER},
+      </if>
+      <if test="caseSource != null">
+        #{caseSource,jdbcType=VARCHAR},
+      </if>
+      <if test="caseSourceCode != null">
+        #{caseSourceCode,jdbcType=INTEGER},
+      </if>
+      <if test="imCaseCardFlag != null">
+        #{imCaseCardFlag,jdbcType=TINYINT},
+      </if>
+      <if test="callOutFlag != null">
+        #{callOutFlag,jdbcType=INTEGER},
+      </if>
+      <if test="disable != null">
+        #{disable,jdbcType=INTEGER},
+      </if>
+      <if test="caseCirculateStatus != null">
+        #{caseCirculateStatus,jdbcType=INTEGER},
+      </if>
+      <if test="oldCaseId != null">
+        #{oldCaseId,jdbcType=BIGINT},
+      </if>
+      <if test="originalCaseDesc != null">
+        #{originalCaseDesc,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="caseDesc != null">
+        #{caseDesc,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="remarkTarget != null">
+        #{remarkTarget,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="filesUrl != null">
+        #{filesUrl,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="loanDemand != null">
+        #{loanDemand,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jinbiao.cloud.mbg.model.CaseCenterExample" resultType="java.lang.Long">
+    select count(*) from case_center
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update case_center
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.userName != null">
+        user_name = #{record.userName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phone != null">
+        phone = #{record.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.province != null">
+        province = #{record.province,jdbcType=VARCHAR},
+      </if>
+      <if test="record.city != null">
+        city = #{record.city,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caseType != null">
+        case_type = #{record.caseType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caseStage != null">
+        case_stage = #{record.caseStage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remarkValue != null">
+        remark_value = #{record.remarkValue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.serviceType != null">
+        service_type = #{record.serviceType,jdbcType=BIGINT},
+      </if>
+      <if test="record.userDemandType != null">
+        user_demand_type = #{record.userDemandType,jdbcType=TINYINT},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.origin != null">
+        origin = #{record.origin,jdbcType=TINYINT},
+      </if>
+      <if test="record.submitUserid != null">
+        submit_userid = #{record.submitUserid,jdbcType=BIGINT},
+      </if>
+      <if test="record.caseSessionId != null">
+        case_session_id = #{record.caseSessionId,jdbcType=BIGINT},
+      </if>
+      <if test="record.price != null">
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.lawFirmIds != null">
+        law_firm_ids = #{record.lawFirmIds,jdbcType=VARCHAR},
+      </if>
+      <if test="record.followerIds != null">
+        follower_ids = #{record.followerIds,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hasMark != null">
+        has_mark = #{record.hasMark,jdbcType=INTEGER},
+      </if>
+      <if test="record.phoneUuid != null">
+        phone_uuid = #{record.phoneUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.helpIntention != null">
+        help_intention = #{record.helpIntention,jdbcType=TINYINT},
+      </if>
+      <if test="record.foundLawyerFlag != null">
+        found_lawyer_flag = #{record.foundLawyerFlag,jdbcType=TINYINT},
+      </if>
+      <if test="record.unresolvedReason != null">
+        unresolved_reason = #{record.unresolvedReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.partyLocation != null">
+        party_location = #{record.partyLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.prosecutorLocation != null">
+        prosecutor_location = #{record.prosecutorLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hasLegalAffairsFlag != null">
+        has_legal_affairs_flag = #{record.hasLegalAffairsFlag,jdbcType=TINYINT},
+      </if>
+      <if test="record.caseLevel != null">
+        case_level = #{record.caseLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caseLevelValue != null">
+        case_level_value = #{record.caseLevelValue,jdbcType=INTEGER},
+      </if>
+      <if test="record.caseFollowStatus != null">
+        case_follow_status = #{record.caseFollowStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.caseSource != null">
+        case_source = #{record.caseSource,jdbcType=VARCHAR},
+      </if>
+      <if test="record.caseSourceCode != null">
+        case_source_code = #{record.caseSourceCode,jdbcType=INTEGER},
+      </if>
+      <if test="record.imCaseCardFlag != null">
+        im_case_card_flag = #{record.imCaseCardFlag,jdbcType=TINYINT},
+      </if>
+      <if test="record.callOutFlag != null">
+        call_out_flag = #{record.callOutFlag,jdbcType=INTEGER},
+      </if>
+      <if test="record.disable != null">
+        disable = #{record.disable,jdbcType=INTEGER},
+      </if>
+      <if test="record.caseCirculateStatus != null">
+        case_circulate_status = #{record.caseCirculateStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.oldCaseId != null">
+        old_case_id = #{record.oldCaseId,jdbcType=BIGINT},
+      </if>
+      <if test="record.originalCaseDesc != null">
+        original_case_desc = #{record.originalCaseDesc,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.caseDesc != null">
+        case_desc = #{record.caseDesc,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.remarkTarget != null">
+        remark_target = #{record.remarkTarget,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.filesUrl != null">
+        files_url = #{record.filesUrl,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.loanDemand != null">
+        loan_demand = #{record.loanDemand,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update case_center
+    set id = #{record.id,jdbcType=BIGINT},
+      user_id = #{record.userId,jdbcType=BIGINT},
+      user_name = #{record.userName,jdbcType=VARCHAR},
+      phone = #{record.phone,jdbcType=VARCHAR},
+      province = #{record.province,jdbcType=VARCHAR},
+      city = #{record.city,jdbcType=VARCHAR},
+      case_type = #{record.caseType,jdbcType=VARCHAR},
+      case_stage = #{record.caseStage,jdbcType=VARCHAR},
+      remark_value = #{record.remarkValue,jdbcType=VARCHAR},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      service_type = #{record.serviceType,jdbcType=BIGINT},
+      user_demand_type = #{record.userDemandType,jdbcType=TINYINT},
+      status = #{record.status,jdbcType=TINYINT},
+      origin = #{record.origin,jdbcType=TINYINT},
+      submit_userid = #{record.submitUserid,jdbcType=BIGINT},
+      case_session_id = #{record.caseSessionId,jdbcType=BIGINT},
+      price = #{record.price,jdbcType=DECIMAL},
+      law_firm_ids = #{record.lawFirmIds,jdbcType=VARCHAR},
+      follower_ids = #{record.followerIds,jdbcType=VARCHAR},
+      has_mark = #{record.hasMark,jdbcType=INTEGER},
+      phone_uuid = #{record.phoneUuid,jdbcType=VARCHAR},
+      help_intention = #{record.helpIntention,jdbcType=TINYINT},
+      found_lawyer_flag = #{record.foundLawyerFlag,jdbcType=TINYINT},
+      unresolved_reason = #{record.unresolvedReason,jdbcType=VARCHAR},
+      party_location = #{record.partyLocation,jdbcType=VARCHAR},
+      prosecutor_location = #{record.prosecutorLocation,jdbcType=VARCHAR},
+      has_legal_affairs_flag = #{record.hasLegalAffairsFlag,jdbcType=TINYINT},
+      case_level = #{record.caseLevel,jdbcType=VARCHAR},
+      case_level_value = #{record.caseLevelValue,jdbcType=INTEGER},
+      case_follow_status = #{record.caseFollowStatus,jdbcType=INTEGER},
+      case_source = #{record.caseSource,jdbcType=VARCHAR},
+      case_source_code = #{record.caseSourceCode,jdbcType=INTEGER},
+      im_case_card_flag = #{record.imCaseCardFlag,jdbcType=TINYINT},
+      call_out_flag = #{record.callOutFlag,jdbcType=INTEGER},
+      disable = #{record.disable,jdbcType=INTEGER},
+      case_circulate_status = #{record.caseCirculateStatus,jdbcType=INTEGER},
+      old_case_id = #{record.oldCaseId,jdbcType=BIGINT},
+      original_case_desc = #{record.originalCaseDesc,jdbcType=LONGVARCHAR},
+      case_desc = #{record.caseDesc,jdbcType=LONGVARCHAR},
+      remark_target = #{record.remarkTarget,jdbcType=LONGVARCHAR},
+      remark = #{record.remark,jdbcType=LONGVARCHAR},
+      files_url = #{record.filesUrl,jdbcType=LONGVARCHAR},
+      loan_demand = #{record.loanDemand,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update case_center
+    set id = #{record.id,jdbcType=BIGINT},
+      user_id = #{record.userId,jdbcType=BIGINT},
+      user_name = #{record.userName,jdbcType=VARCHAR},
+      phone = #{record.phone,jdbcType=VARCHAR},
+      province = #{record.province,jdbcType=VARCHAR},
+      city = #{record.city,jdbcType=VARCHAR},
+      case_type = #{record.caseType,jdbcType=VARCHAR},
+      case_stage = #{record.caseStage,jdbcType=VARCHAR},
+      remark_value = #{record.remarkValue,jdbcType=VARCHAR},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      service_type = #{record.serviceType,jdbcType=BIGINT},
+      user_demand_type = #{record.userDemandType,jdbcType=TINYINT},
+      status = #{record.status,jdbcType=TINYINT},
+      origin = #{record.origin,jdbcType=TINYINT},
+      submit_userid = #{record.submitUserid,jdbcType=BIGINT},
+      case_session_id = #{record.caseSessionId,jdbcType=BIGINT},
+      price = #{record.price,jdbcType=DECIMAL},
+      law_firm_ids = #{record.lawFirmIds,jdbcType=VARCHAR},
+      follower_ids = #{record.followerIds,jdbcType=VARCHAR},
+      has_mark = #{record.hasMark,jdbcType=INTEGER},
+      phone_uuid = #{record.phoneUuid,jdbcType=VARCHAR},
+      help_intention = #{record.helpIntention,jdbcType=TINYINT},
+      found_lawyer_flag = #{record.foundLawyerFlag,jdbcType=TINYINT},
+      unresolved_reason = #{record.unresolvedReason,jdbcType=VARCHAR},
+      party_location = #{record.partyLocation,jdbcType=VARCHAR},
+      prosecutor_location = #{record.prosecutorLocation,jdbcType=VARCHAR},
+      has_legal_affairs_flag = #{record.hasLegalAffairsFlag,jdbcType=TINYINT},
+      case_level = #{record.caseLevel,jdbcType=VARCHAR},
+      case_level_value = #{record.caseLevelValue,jdbcType=INTEGER},
+      case_follow_status = #{record.caseFollowStatus,jdbcType=INTEGER},
+      case_source = #{record.caseSource,jdbcType=VARCHAR},
+      case_source_code = #{record.caseSourceCode,jdbcType=INTEGER},
+      im_case_card_flag = #{record.imCaseCardFlag,jdbcType=TINYINT},
+      call_out_flag = #{record.callOutFlag,jdbcType=INTEGER},
+      disable = #{record.disable,jdbcType=INTEGER},
+      case_circulate_status = #{record.caseCirculateStatus,jdbcType=INTEGER},
+      old_case_id = #{record.oldCaseId,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jinbiao.cloud.mbg.model.CaseCenter">
+    update case_center
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="caseType != null">
+        case_type = #{caseType,jdbcType=VARCHAR},
+      </if>
+      <if test="caseStage != null">
+        case_stage = #{caseStage,jdbcType=VARCHAR},
+      </if>
+      <if test="remarkValue != null">
+        remark_value = #{remarkValue,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="serviceType != null">
+        service_type = #{serviceType,jdbcType=BIGINT},
+      </if>
+      <if test="userDemandType != null">
+        user_demand_type = #{userDemandType,jdbcType=TINYINT},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="origin != null">
+        origin = #{origin,jdbcType=TINYINT},
+      </if>
+      <if test="submitUserid != null">
+        submit_userid = #{submitUserid,jdbcType=BIGINT},
+      </if>
+      <if test="caseSessionId != null">
+        case_session_id = #{caseSessionId,jdbcType=BIGINT},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="lawFirmIds != null">
+        law_firm_ids = #{lawFirmIds,jdbcType=VARCHAR},
+      </if>
+      <if test="followerIds != null">
+        follower_ids = #{followerIds,jdbcType=VARCHAR},
+      </if>
+      <if test="hasMark != null">
+        has_mark = #{hasMark,jdbcType=INTEGER},
+      </if>
+      <if test="phoneUuid != null">
+        phone_uuid = #{phoneUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="helpIntention != null">
+        help_intention = #{helpIntention,jdbcType=TINYINT},
+      </if>
+      <if test="foundLawyerFlag != null">
+        found_lawyer_flag = #{foundLawyerFlag,jdbcType=TINYINT},
+      </if>
+      <if test="unresolvedReason != null">
+        unresolved_reason = #{unresolvedReason,jdbcType=VARCHAR},
+      </if>
+      <if test="partyLocation != null">
+        party_location = #{partyLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="prosecutorLocation != null">
+        prosecutor_location = #{prosecutorLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="hasLegalAffairsFlag != null">
+        has_legal_affairs_flag = #{hasLegalAffairsFlag,jdbcType=TINYINT},
+      </if>
+      <if test="caseLevel != null">
+        case_level = #{caseLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="caseLevelValue != null">
+        case_level_value = #{caseLevelValue,jdbcType=INTEGER},
+      </if>
+      <if test="caseFollowStatus != null">
+        case_follow_status = #{caseFollowStatus,jdbcType=INTEGER},
+      </if>
+      <if test="caseSource != null">
+        case_source = #{caseSource,jdbcType=VARCHAR},
+      </if>
+      <if test="caseSourceCode != null">
+        case_source_code = #{caseSourceCode,jdbcType=INTEGER},
+      </if>
+      <if test="imCaseCardFlag != null">
+        im_case_card_flag = #{imCaseCardFlag,jdbcType=TINYINT},
+      </if>
+      <if test="callOutFlag != null">
+        call_out_flag = #{callOutFlag,jdbcType=INTEGER},
+      </if>
+      <if test="disable != null">
+        disable = #{disable,jdbcType=INTEGER},
+      </if>
+      <if test="caseCirculateStatus != null">
+        case_circulate_status = #{caseCirculateStatus,jdbcType=INTEGER},
+      </if>
+      <if test="oldCaseId != null">
+        old_case_id = #{oldCaseId,jdbcType=BIGINT},
+      </if>
+      <if test="originalCaseDesc != null">
+        original_case_desc = #{originalCaseDesc,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="caseDesc != null">
+        case_desc = #{caseDesc,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="remarkTarget != null">
+        remark_target = #{remarkTarget,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="filesUrl != null">
+        files_url = #{filesUrl,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="loanDemand != null">
+        loan_demand = #{loanDemand,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.jinbiao.cloud.mbg.model.CaseCenter">
+    update case_center
+    set user_id = #{userId,jdbcType=BIGINT},
+      user_name = #{userName,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      case_type = #{caseType,jdbcType=VARCHAR},
+      case_stage = #{caseStage,jdbcType=VARCHAR},
+      remark_value = #{remarkValue,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      service_type = #{serviceType,jdbcType=BIGINT},
+      user_demand_type = #{userDemandType,jdbcType=TINYINT},
+      status = #{status,jdbcType=TINYINT},
+      origin = #{origin,jdbcType=TINYINT},
+      submit_userid = #{submitUserid,jdbcType=BIGINT},
+      case_session_id = #{caseSessionId,jdbcType=BIGINT},
+      price = #{price,jdbcType=DECIMAL},
+      law_firm_ids = #{lawFirmIds,jdbcType=VARCHAR},
+      follower_ids = #{followerIds,jdbcType=VARCHAR},
+      has_mark = #{hasMark,jdbcType=INTEGER},
+      phone_uuid = #{phoneUuid,jdbcType=VARCHAR},
+      help_intention = #{helpIntention,jdbcType=TINYINT},
+      found_lawyer_flag = #{foundLawyerFlag,jdbcType=TINYINT},
+      unresolved_reason = #{unresolvedReason,jdbcType=VARCHAR},
+      party_location = #{partyLocation,jdbcType=VARCHAR},
+      prosecutor_location = #{prosecutorLocation,jdbcType=VARCHAR},
+      has_legal_affairs_flag = #{hasLegalAffairsFlag,jdbcType=TINYINT},
+      case_level = #{caseLevel,jdbcType=VARCHAR},
+      case_level_value = #{caseLevelValue,jdbcType=INTEGER},
+      case_follow_status = #{caseFollowStatus,jdbcType=INTEGER},
+      case_source = #{caseSource,jdbcType=VARCHAR},
+      case_source_code = #{caseSourceCode,jdbcType=INTEGER},
+      im_case_card_flag = #{imCaseCardFlag,jdbcType=TINYINT},
+      call_out_flag = #{callOutFlag,jdbcType=INTEGER},
+      disable = #{disable,jdbcType=INTEGER},
+      case_circulate_status = #{caseCirculateStatus,jdbcType=INTEGER},
+      old_case_id = #{oldCaseId,jdbcType=BIGINT},
+      original_case_desc = #{originalCaseDesc,jdbcType=LONGVARCHAR},
+      case_desc = #{caseDesc,jdbcType=LONGVARCHAR},
+      remark_target = #{remarkTarget,jdbcType=LONGVARCHAR},
+      remark = #{remark,jdbcType=LONGVARCHAR},
+      files_url = #{filesUrl,jdbcType=LONGVARCHAR},
+      loan_demand = #{loanDemand,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jinbiao.cloud.mbg.model.CaseCenter">
+    update case_center
+    set user_id = #{userId,jdbcType=BIGINT},
+      user_name = #{userName,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      case_type = #{caseType,jdbcType=VARCHAR},
+      case_stage = #{caseStage,jdbcType=VARCHAR},
+      remark_value = #{remarkValue,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      service_type = #{serviceType,jdbcType=BIGINT},
+      user_demand_type = #{userDemandType,jdbcType=TINYINT},
+      status = #{status,jdbcType=TINYINT},
+      origin = #{origin,jdbcType=TINYINT},
+      submit_userid = #{submitUserid,jdbcType=BIGINT},
+      case_session_id = #{caseSessionId,jdbcType=BIGINT},
+      price = #{price,jdbcType=DECIMAL},
+      law_firm_ids = #{lawFirmIds,jdbcType=VARCHAR},
+      follower_ids = #{followerIds,jdbcType=VARCHAR},
+      has_mark = #{hasMark,jdbcType=INTEGER},
+      phone_uuid = #{phoneUuid,jdbcType=VARCHAR},
+      help_intention = #{helpIntention,jdbcType=TINYINT},
+      found_lawyer_flag = #{foundLawyerFlag,jdbcType=TINYINT},
+      unresolved_reason = #{unresolvedReason,jdbcType=VARCHAR},
+      party_location = #{partyLocation,jdbcType=VARCHAR},
+      prosecutor_location = #{prosecutorLocation,jdbcType=VARCHAR},
+      has_legal_affairs_flag = #{hasLegalAffairsFlag,jdbcType=TINYINT},
+      case_level = #{caseLevel,jdbcType=VARCHAR},
+      case_level_value = #{caseLevelValue,jdbcType=INTEGER},
+      case_follow_status = #{caseFollowStatus,jdbcType=INTEGER},
+      case_source = #{caseSource,jdbcType=VARCHAR},
+      case_source_code = #{caseSourceCode,jdbcType=INTEGER},
+      im_case_card_flag = #{imCaseCardFlag,jdbcType=TINYINT},
+      call_out_flag = #{callOutFlag,jdbcType=INTEGER},
+      disable = #{disable,jdbcType=INTEGER},
+      case_circulate_status = #{caseCirculateStatus,jdbcType=INTEGER},
+      old_case_id = #{oldCaseId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

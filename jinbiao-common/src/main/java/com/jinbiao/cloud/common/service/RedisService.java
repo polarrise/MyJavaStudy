@@ -1,4 +1,4 @@
-package com.powersi.common.service;
+package com.jinbiao.cloud.common.service;
 
 import java.util.List;
 import java.util.Map;
