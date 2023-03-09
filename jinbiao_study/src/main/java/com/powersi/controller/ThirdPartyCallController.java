@@ -5,10 +5,7 @@ import com.powersi.qo.UserInfoQO;
 import com.powersi.service.ThirdPartyCallService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Author：Jinbiao
@@ -21,6 +18,18 @@ public class ThirdPartyCallController {
 
     @Autowired
     private ThirdPartyCallService thirdPartyCallService;
+
+
+    /**
+     * 白名单放行，通过appId简单获取私钥：
+     * @param appId
+     * @return
+     */
+    @GetMapping("/getSecret")
+    @ResponseBody
+    public CommonResult<String> getSecret(String appId) {
+        return CommonResult.success(thirdPartyCallService.getSecret(appId));
+    }
 
     /**
      * idea如何本地调试远程服务器的代码？

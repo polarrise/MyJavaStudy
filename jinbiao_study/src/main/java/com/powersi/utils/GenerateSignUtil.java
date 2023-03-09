@@ -12,9 +12,9 @@ import java.util.SortedMap;
  */
 public class GenerateSignUtil {
 
-    public static String generateSign(SortedMap<String, String> map, RequestHeader requestHeader){
+    public static String generateSign(SortedMap<String, String> map, RequestHeader requestHeader,String secret){
 
-        String params = requestHeader.getNonceStr() + requestHeader.getTimestamp() + JSON.toJSONString(map);
+        String params = requestHeader.getNonceStr() + requestHeader.getTimestamp() + JSON.toJSONString(map)+ secret;
         return  DigestUtils.md5DigestAsHex(params.getBytes()).toUpperCase();
     }
 }

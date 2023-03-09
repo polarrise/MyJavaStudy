@@ -59,6 +59,7 @@ public class SignFilter implements Filter {
         requestHeader.setNonceStr(httpRequest.getHeader("nonceStr"));
         requestHeader.setSign(httpRequest.getHeader("signature"));
         String header = httpRequest.getHeader("timestamp");
+        requestHeader.setAppId(httpRequest.getHeader("appId"));
         if (StringUtils.isEmpty(header)) {
             responseFail(httpResponse, ResultCode.FORBIDDEN);
             return;

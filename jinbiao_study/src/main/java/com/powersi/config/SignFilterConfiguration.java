@@ -27,7 +27,7 @@ public class SignFilterConfiguration {
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setFilter(signFilter());
         registration.setInitParameters(initParametersMap);
-        registration.addUrlPatterns("/thirdPartyService/*");
+        registration.addUrlPatterns("/thirdPartyService/getUserDetailInfo");
         registration.setName("SignFilter");
         // 设置过滤器被调用的顺序
         registration.setOrder(1);

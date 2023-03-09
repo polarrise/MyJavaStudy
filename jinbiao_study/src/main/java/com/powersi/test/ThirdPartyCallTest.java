@@ -73,7 +73,6 @@ public class ThirdPartyCallTest {
         return obj;
     }
 
-
     public static void main(String[] args) {
 
         SortedMap<String, String> paramMap = new TreeMap<>();
@@ -86,14 +85,24 @@ public class ThirdPartyCallTest {
         requestHeader.setNonceStr(nonceStr);
         requestHeader.setTimestamp(timestamp);
 
-        //客户端依据请求参数对象、随机字符串、时间戳。 经过MD5加密/SHA安全散列算法之后生成签名
-        String signature = GenerateSignUtil.generateSign(paramMap, requestHeader);
+        //客户端先获取服务端的私钥secret
+        ResponseBody screteResponseBody = HttpUtil.doGet("http://localhost:8011/jinbiao-cool/thirdPartyService/getSecret?appId=wx06a1cbb1c86a9b04", null);
+        if(screteResponseBody == null){
+            System.out.println("私钥获取不成功!");
+            return;
+        }
+        CommonResult screteCommonResult = (CommonResult) JSONTOBean(screteResponseBody, CommonResult.class);
+        String secret = (String) screteCommonResult.getData();
+
+        //客户端依据请求参数对象、随机字符串、时间戳、secret。 经过MD5加密/SHA安全散列算法之后生成签名
+        String signature = GenerateSignUtil.generateSign(paramMap, requestHeader,secret);
 
         System.out.println(requestHeader);
         System.out.println(signature);
 
         //请求方与被请求方 约定要传的参数. 包括:随机字符串、时间戳、md5加密后的签名:
         Map<String, String> headers = new HashMap<>(3);
+        headers.put("appId","wx06a1cbb1c86a9b04");
         headers.put("nonceStr",nonceStr);
         headers.put("signature",signature);
         headers.put("timestamp", timestamp.toString());

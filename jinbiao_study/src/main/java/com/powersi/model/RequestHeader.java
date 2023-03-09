@@ -11,4 +11,5 @@ public class RequestHeader {
 
     private String nonceStr;
 
+    private String appId;
 }

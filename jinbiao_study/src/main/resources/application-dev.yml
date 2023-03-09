@@ -70,7 +70,7 @@ jwt:
 secure:
   ignored:
     urls: #安全路径白名单
-    - /loginVerfy/**
+    - /thirdPartyService/**
 
 mybatis:
   mapper-locations: classpath:mapping/*Mapper.xml

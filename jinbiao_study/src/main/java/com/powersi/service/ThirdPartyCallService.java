@@ -4,6 +4,7 @@ import com.powersi.entity.User;
 import com.powersi.model.RequestHeader;
 import com.powersi.qo.UserInfoQO;
 
+import java.util.Map;
 import java.util.SortedMap;
 
 /**
@@ -16,6 +17,8 @@ public interface ThirdPartyCallService {
 
     boolean verifySign(SortedMap<String, String> map, RequestHeader requestHeader);
 
+
+    String getSecret(String appId);
     /**
      * 获取用户信息
      * @return
