@@ -49,4 +49,56 @@ public class KafkaConsumer {
             log.error("kafka消息监听异常：", e);
         }
     }
+
+
+    /**
+     * @KafkaListener(groupId = "testGroup", topicPartitions = {
+     *             @TopicPartition(topic = "topic1", partitions = {"0", "1"}),
+     *             @TopicPartition(topic = "topic2", partitions = "0",
+     *                     partitionOffsets = @PartitionOffset(partition = "1", initialOffset = "100"))
+     *     },concurrency = "6")
+     *  //concurrency就是同组下的消费者个数，就是并发消费数，必须小于等于分区总数
+     * @param records    演示消费异常造成的重复消费问题===
+     */
+    @KafkaListener(topics = "Jinbiao_topic",groupId ="jinbiaoGroup")
+    public void listenJinbiaoGroup(List<ConsumerRecord<String, Object>> records){
+        /**
+         *  retries: 3 重试次数, 所以执行三次都没成功就不重试了--   会造成1/2/3条数据消费3次!!!
+         */
+        log.info("kafka消息监听主题Jinbiao_topic：共收到{}条消息, records = {}", records.size(), records);
+        int count =0;
+        for (ConsumerRecord<String, Object> record:records) {
+            count++;
+            System.out.println(record.value());
+            if(count == 3){
+                throw new RuntimeException();
+            }
+        }
+        //手动提交offset
+        //ack.acknowledge();
+    }
+
+    @KafkaListener(topics = "Jinbiao_topic",groupId ="jinbiaoGroup5")
+    public void listenJinbiaoGroup2(List<ConsumerRecord<String, Object>> records) throws InterruptedException {
+        log.info("kafka消息监听主题Jinbiao_topic：共收到{}条消息, records = {}", records.size(), records);
+        int count =0;
+        for (ConsumerRecord<String, Object> record:records) {
+            count++;
+            System.out.println(record.value());
+            if(count == 3){
+               Thread.sleep(10000);
+            }
+        }
+        //手动提交offset
+        //ack.acknowledge();
+    }
+
+    //配置多个消费组
+    /*@KafkaListener(topics = "my-replicated-topic",groupId = "tulingGroup")
+    public void listenTulingGroup(ConsumerRecord<String, String> record, Acknowledgment ack) {
+        String value = record.value();
+        System.out.println(value);
+        System.out.println(record);
+        ack.acknowledge();
+    }*/
 }
