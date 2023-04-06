@@ -1,10 +1,10 @@
 package com.jinbiao.spring_study.service;
 
+import com.sun.istack.internal.NotNull;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
-import javax.validation.constraints.NotNull;
 
 @Component
 public class SpringContextHolder implements ApplicationContextAware {

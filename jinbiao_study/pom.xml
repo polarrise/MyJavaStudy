@@ -12,7 +12,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.powersi</groupId>
+            <groupId>com.jinbiao</groupId>
             <artifactId>jinbiao-common</artifactId>
             <version>0.0.1</version>
         </dependency>
@@ -49,6 +49,22 @@
             <groupId>org.redisson</groupId>
             <artifactId>redisson</artifactId>
             <version>2.11.5</version>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+            <version>2.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>6.0.16.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-test</artifactId>
+            <version>2.3.12.RELEASE</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

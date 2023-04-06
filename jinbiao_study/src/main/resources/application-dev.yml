@@ -10,6 +10,8 @@ server:
     context-path: /jinbiao-cool
 
 spring:
+  main:
+    allow-bean-definition-overriding: true # 意思是后来发现的bean会覆盖之前相同名称的bean
   application:
     #(改)项目名称，建议使用hsa-tps-local，和包名一致
     name: jinbiao-cool

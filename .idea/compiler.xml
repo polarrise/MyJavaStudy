@@ -8,15 +8,19 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="jinbiao_study" />
+        <module name="jinbiao_security" />
+        <module name="jinbiao-order" />
         <module name="jinbiao-common" />
         <module name="jinbiao_im" />
         <module name="jinbiao-mbg" />
-        <module name="jinbiao_security" />
+        <module name="jinbiao-user" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="jinbiao-common" target="1.8" />
       <module name="jinbiao-mbg" target="1.8" />
+      <module name="jinbiao-order" target="1.8" />
+      <module name="jinbiao-user" target="1.8" />
       <module name="jinbiao_cloud" target="1.8" />
       <module name="jinbiao_im" target="1.8" />
       <module name="jinbiao_security" target="1.8" />
@@ -27,6 +31,8 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="jinbiao-common" options="-parameters" />
       <module name="jinbiao-mbg" options="-parameters" />
+      <module name="jinbiao-order" options="-parameters" />
+      <module name="jinbiao-user" options="-parameters" />
       <module name="jinbiao_cloud" options="" />
       <module name="jinbiao_im" options="-parameters" />
       <module name="jinbiao_security" options="-parameters" />

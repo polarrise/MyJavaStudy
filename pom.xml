@@ -9,11 +9,13 @@
         <module>jinbiao_study</module>
         <module>jinbiao-common</module>
         <module>jinbiao-mbg</module>
+        <module>jinbiao-order</module>
+        <module>jinbiao-user</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.0.9.RELEASE</version>
+        <version>2.3.12.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -26,7 +28,10 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <spring-cloud.version>Hoxton.SR12</spring-cloud.version>
+        <spring-cloud-alibaba.version>2.2.8.RELEASE</spring-cloud-alibaba.version>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -70,11 +75,6 @@
             <version>2.7.0</version>
         </dependency>
         <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>2.7.0</version>
-        </dependency>
-        <dependency>
             <groupId>com.vaadin.external.google</groupId>
             <artifactId>android-json</artifactId>
             <version>0.0.20131108.vaadin1</version>
@@ -92,21 +92,15 @@
             <version>4.3.1</version>
         </dependency>
         <dependency>
-            <groupId>com.alibaba.boot</groupId>
-            <artifactId>dubbo-spring-boot-starter</artifactId>
-            <version>0.2.0</version>
-          <!--  <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-log4j12</artifactId>
-                </exclusion>
-            </exclusions>-->
-        </dependency>
-
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.10</version>
+            <!--排除依赖  <exclusions>
+              <exclusion>
+                  <groupId>org.slf4j</groupId>
+                  <artifactId>slf4j-log4j12</artifactId>
+              </exclusion>
+          </exclusions>-->
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -122,11 +116,6 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-test</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.openjdk.jol</groupId>
             <artifactId>jol-core</artifactId>
@@ -141,11 +130,6 @@
             <artifactId>gson</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
-            <version>4.1.32.Final</version>
-        </dependency>
 
         <!-- WebSocket -->
         <dependency>
@@ -161,7 +145,6 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
-            <version>2.0</version>
         </dependency>
 
         <!--2. 连接池依赖-->
@@ -169,20 +152,6 @@
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
             <version>1.1.23</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>26.0-jre</version>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
         </dependency>
 
         <dependency>
@@ -199,6 +168,27 @@
         </dependency>
 
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
 
     <!-- 被当作jar包被其他项目引用需要包这块去掉，不然就会找不到程序包 -->
     <!--<build>

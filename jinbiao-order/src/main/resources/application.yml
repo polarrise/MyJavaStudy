@@ -1,0 +1,35 @@
+server:
+  port: 8020
+  #(改)应用上下文，统一用/jinbiao-order
+  servlet:
+    context-path: /jinbiao-order
+
+spring:
+  application:
+    name: jinbiao-order  #微服务名称
+
+  #配置nacos注册中心地址
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        #namespace: bc50d386-8870-4a26-8803-0187486c57be
+        #cluster-name: SH
+
+  #数据库配置
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://127.0.0.1:3306/xiaofa_lawyer?connectTimeout=1000000&socketTimeout=3000000&autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8&allowMultiQueries=true
+    driver-class-name: com.mysql.jdbc.Driver
+
+
+#暴露actuator端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+
+
