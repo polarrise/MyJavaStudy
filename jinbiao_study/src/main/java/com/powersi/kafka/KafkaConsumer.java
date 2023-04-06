@@ -5,6 +5,7 @@ import com.powersi.utils.GsonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -60,8 +61,8 @@ public class KafkaConsumer {
      *  //concurrency就是同组下的消费者个数，就是并发消费数，必须小于等于分区总数
      * @param records    演示消费异常造成的重复消费问题===
      */
-    @KafkaListener(topics = "Jinbiao_topic",groupId ="jinbiaoGroup")
-    public void listenJinbiaoGroup(List<ConsumerRecord<String, Object>> records){
+    @KafkaListener(topics = "Jinbiao_topic",groupId ="jinbiao22")
+    public void listenJinbiaoGroup(List<ConsumerRecord<String, Object>> records, Acknowledgment ack){
         /**
          *  retries: 3 重试次数, 所以执行三次都没成功就不重试了--   会造成1/2/3条数据消费3次!!!
          */
@@ -69,16 +70,17 @@ public class KafkaConsumer {
         int count =0;
         for (ConsumerRecord<String, Object> record:records) {
             count++;
-            System.out.println(record.value());
+            System.out.println("写入数据库:"+record.value());
             if(count == 3){
                 throw new RuntimeException();
             }
         }
+        System.out.println("抛出异常，手动提交offset--");
         //手动提交offset
-        //ack.acknowledge();
+        ack.acknowledge();
     }
 
-    @KafkaListener(topics = "Jinbiao_topic",groupId ="jinbiaoGroup5")
+    @KafkaListener(topics = "Jinbiao_topic1",groupId ="jinbiaoGroup5")
     public void listenJinbiaoGroup2(List<ConsumerRecord<String, Object>> records) throws InterruptedException {
         log.info("kafka消息监听主题Jinbiao_topic：共收到{}条消息, records = {}", records.size(), records);
         int count =0;
