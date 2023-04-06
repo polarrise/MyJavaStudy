@@ -188,6 +188,9 @@ public class CaseCenterServiceImpl implements CaseCenterService, ApplicationList
     /**
      * 1.创建异步任务: CompletableFuture创建异步任务，一般有supplyAsync(支持返回值)和runAsync(没有返回值)两个方法
      */
+
+    ExecutorService executorService = Executors.newFixedThreadPool(10);
+
     CompletableFuture<CaseCenter>caseCenterFuture = CompletableFuture.supplyAsync(
         ()->{
           try {
@@ -198,7 +201,7 @@ public class CaseCenterServiceImpl implements CaseCenterService, ApplicationList
           CaseCenter caseCenter = personDao.getCaseInfoById(id);
           System.out.println("查询案源信息异步任务:"+caseCenter);
           return caseCenter;
-        }
+        },executorService
     );
     Thread.sleep(400); //模拟主线程其它操作耗时
 
@@ -217,7 +220,7 @@ public class CaseCenterServiceImpl implements CaseCenterService, ApplicationList
 
       redisService.set("user",user);
 
-      kafkaProducer.sendMsg(GsonUtils.toJson(user));
+      //kafkaProducer.sendMsg(GsonUtils.toJson(user));
       return user;
     });
     HashMap<String, Object> map = new HashMap<String, Object>() {{
