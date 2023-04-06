@@ -32,7 +32,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     }
 
     /**
-     * 添加自定义方法擦拿书解析器
+     * 添加自定义方法参数解析器
      *
      * @param resolvers
      */
