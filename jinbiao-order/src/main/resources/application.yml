@@ -14,7 +14,7 @@ spring:
       discovery:
         server-addr: 127.0.0.1:8848
         #namespace: bc50d386-8870-4a26-8803-0187486c57be
-        #cluster-name: SH
+#        cluster-name: SH
 
   #数据库配置
   datasource:

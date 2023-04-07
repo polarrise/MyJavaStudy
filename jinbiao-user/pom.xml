@@ -23,11 +23,18 @@
             <artifactId>jinbiao-mbg</artifactId>
             <version>0.0.1</version>
         </dependency>
-    <!-- nacos服务注册与发现 -->
+
+    <!-- nacos服务注册与发现  移除ribbon支持-->
     <dependency>
         <groupId>com.alibaba.cloud</groupId>
         <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
     </dependency>
+
+        <!-- LoadBalancer -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
