@@ -2,6 +2,7 @@ package com.tuling.mall.user.controller;
 
 
 import com.jinbiao.cloud.common.entity.CommonResult;
+import com.tuling.mall.user.rpc.OrderFeignService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,9 @@ public class UserController {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    OrderFeignService orderFeignService;
+
     @RequestMapping(value = "/findOrderByUserId/{id}")
     public CommonResult findOrderByUserId(@PathVariable("id") Integer id) {
         log.info("根据userId:"+id+"查询订单信息");
@@ -36,6 +40,18 @@ public class UserController {
         String url = "http://jinbiao-order/jinbiao-order/order/findOrderByUserId/"+id;
 
         CommonResult result = restTemplate.getForObject(url,CommonResult.class);
+        return result;
+    }
+
+    /**
+     * 通过openFeign远程服务调用
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/findOrderByUserId2/{id}")
+    public CommonResult findOrderByUserId2(@PathVariable("id") Integer id) {
+        log.info("根据userId:"+id+"查询订单信息");
+        CommonResult result = orderFeignService.findOrderByUserId(id);
         return result;
     }
 
