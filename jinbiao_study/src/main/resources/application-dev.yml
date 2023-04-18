@@ -75,9 +75,11 @@ secure:
   ignored:
     urls: #安全路径白名单
     - /thirdPartyService/**
+    - /loginVerfy/getShearCaptcha1
     - /caseCenterApi/**
     - /upDownload/**
     - /testPubEvent/**
+    - /order/**
 
 mybatis:
   mapper-locations: classpath:mapping/*Mapper.xml

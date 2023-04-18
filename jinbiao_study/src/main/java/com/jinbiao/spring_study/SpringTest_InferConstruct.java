@@ -15,11 +15,22 @@ import java.lang.reflect.Method;
  * @author wangjinbiao
  * @date 2023/2/14 14:11
  * @desc
+ *
+ * Spring注册bean的方式。
+ * 1.加@Controller.Service,Component,Repostory等注解
+ * 2.构造方法注入，@AutoWired熟悉注入，
  */
 public class SpringTest_InferConstruct {
+
   public static void main(String[] args) {
 
     AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class); //加载spring配置文件
+
+    //手动注册bean对象
+    Object o =new Object();
+    applicationContext.getBeanFactory().registerSingleton( "o",o);
+    System.out.println("手动注册bean对象:"+applicationContext.getBean("o"));
+
     UserServiceInitProcess userServiceInitProcess = (UserServiceInitProcess) applicationContext.getBean("userServiceInitProcess");
     userServiceInitProcess.test();
 
@@ -36,7 +47,7 @@ public class SpringTest_InferConstruct {
     System.out.println(applicationContext.getBean("orderService1"));
     System.out.println(applicationContext.getBean("orderService2"));
 
-    SpecifyTestServiceBean specifyTheBean = (SpecifyTestServiceBean)applicationContext.getBean("specifyTheBean");
+    SpecifyTestServiceBean specifyTheBean = (SpecifyTestServiceBean)applicationContext.getBean("specifyTestServiceBean");
     specifyTheBean.findAll();
 
     //反射看实例对象的属性是否加了Autowired注解：

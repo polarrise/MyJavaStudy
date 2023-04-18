@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>demo</artifactId>
+        <groupId>com.powersi</groupId>
+        <version>0.0.1</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.jinbiao</groupId>
+    <artifactId>jinbiao-stock</artifactId>
+
+    <dependencies>
+    <dependency>
+        <groupId>com.jinbiao</groupId>
+        <artifactId>jinbiao-common</artifactId>
+        <version>0.0.1</version>
+    </dependency>
+    <dependency>
+        <groupId>com.jinbiao</groupId>
+        <artifactId>jinbiao-mbg</artifactId>
+        <version>0.0.1</version>
+    </dependency>
+
+    <!-- nacos服务注册与发现 -->
+    <dependency>
+        <groupId>com.alibaba.cloud</groupId>
+        <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+    </dependency>
+
+    <!-- openfeign 远程调用 -->
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-openfeign</artifactId>
+    </dependency>
+
+    <!--引入别的http组件 Apache HttpClient  替换feign Client原生的Http组件HttpUrlConnection-->
+    <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>4.5.7</version>
+    </dependency>
+
+    <!-- seata-->
+    <dependency>
+        <groupId>com.alibaba.cloud</groupId>
+        <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
+    </dependency>
+</dependencies>
+
+</project>

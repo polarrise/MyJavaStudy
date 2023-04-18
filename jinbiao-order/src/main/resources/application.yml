@@ -18,11 +18,49 @@ spring:
 
   #数据库配置
   datasource:
-    username: root
-    password: 123456
-    url: jdbc:mysql://127.0.0.1:3306/xiaofa_lawyer?connectTimeout=1000000&socketTimeout=3000000&autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8&allowMultiQueries=true
-    driver-class-name: com.mysql.jdbc.Driver
+    druid:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/seata_at_order?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+      username: root
+      password: 123456
+      initial-size: 10
+      max-active: 100
+      min-idle: 10
+      max-wait: 60000
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+      filter:
+        stat:
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: false
+        wall:
+          config:
+            multi-statement-allow: true
 
+
+mybatis:
+  mapper-locations: classpath:mapping/*Mapper.xml
+  type-aliases-package: com.powersi.entity
+  #设置sql打印
+  configuration:
+    #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    #设置驼峰命名法
+    map-underscore-to-camel-case: true
+
+# 日志配置
+logging:
+  level:
+    root: info
+    com: debug
 
 #暴露actuator端点
 management:
@@ -30,6 +68,35 @@ management:
     web:
       exposure:
         include: '*'
+
+#注意：请确保client与server的注册中心和配置中心namespace和group一致
+#客户端seata配置,seata的注册中心针对的是TC那边的配置中心、注册中心、服务分组、namespace必须和TC配置成一样，
+seata:
+  application-id: ${spring.application.name}
+  # seata 服务分组，要与服务端配置service.vgroup_mapping的后缀对应
+  tx-service-group: default_tx_group
+  enable-auto-data-source-proxy: true
+  registry:
+    # 指定nacos作为注册中心
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: 127.0.0.1:8848
+      namespace:
+      group: SEATA_GROUP
+  config:
+    # 指定nacos作为配置中心
+    type: nacos
+    nacos:
+      server-addr: 127.0.0.1:8848
+      namespace: d317c984-c0f3-4fc9-bbae-b64df9d685ca
+      group: SEATA_GROUP
+      data-id: seataServer.properties      #与nacos配置中心的的data-id一致
+
+      #之前createOrder下单接口一直报错(一两天都没解决)： io.seata.common.exception.FrameworkException: No available service
+      #  can not get cluster name in registry config 'service.vgroupMapping.default_tx_group', please make s
+      #原因:要在nacos上新建一个命名空间,然后用它自动生成的命名空间id，不要自定义指定命名空间id,造成客户端拉取不到TC配置中心的配置
+
 
 
 

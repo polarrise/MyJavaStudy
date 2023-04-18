@@ -2,13 +2,14 @@ package com.jinbiao.cloud.mbg.model;
 
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 public class Account implements Serializable {
     private Integer id;
 
-    private String name;
+    private Integer userId;
 
-    private String balance;
+    private BigDecimal money;
 
     private static final long serialVersionUID = 1L;
 
@@ -20,20 +21,20 @@ public class Account implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public String getBalance() {
-        return balance;
+    public BigDecimal getMoney() {
+        return money;
     }
 
-    public void setBalance(String balance) {
-        this.balance = balance;
+    public void setMoney(BigDecimal money) {
+        this.money = money;
     }
 
     @Override
@@ -43,8 +44,8 @@ public class Account implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", name=").append(name);
-        sb.append(", balance=").append(balance);
+        sb.append(", userId=").append(userId);
+        sb.append(", money=").append(money);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

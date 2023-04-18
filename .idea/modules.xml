@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/jinbiao-common/jinbiao-common.iml" filepath="$PROJECT_DIR$/jinbiao-common/jinbiao-common.iml" />
       <module fileurl="file://$PROJECT_DIR$/jinbiao-mbg/jinbiao-mbg.iml" filepath="$PROJECT_DIR$/jinbiao-mbg/jinbiao-mbg.iml" />
       <module fileurl="file://$PROJECT_DIR$/jinbiao-order/jinbiao-order.iml" filepath="$PROJECT_DIR$/jinbiao-order/jinbiao-order.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jinbiao-stock/jinbiao-stock.iml" filepath="$PROJECT_DIR$/jinbiao-stock/jinbiao-stock.iml" />
       <module fileurl="file://$PROJECT_DIR$/jinbiao-user/jinbiao-user.iml" filepath="$PROJECT_DIR$/jinbiao-user/jinbiao-user.iml" />
       <module fileurl="file://$PROJECT_DIR$/jinbiao_cloud.iml" filepath="$PROJECT_DIR$/jinbiao_cloud.iml" />
       <module fileurl="file://$PROJECT_DIR$/jinbiao_im/jinbiao_im.iml" filepath="$PROJECT_DIR$/jinbiao_im/jinbiao_im.iml" />
