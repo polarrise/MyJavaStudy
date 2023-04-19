@@ -4,6 +4,7 @@ package com.tuling.mall.user.controller;
 import com.jinbiao.cloud.common.entity.CommonResult;
 import com.tuling.mall.user.rpc.OrderFeignService;
 import com.tuling.mall.user.service.UserService;
+import com.tuling.mall.user.service.UserServiceByTCC;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,6 +35,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserServiceByTCC userServiceByTCC;
 
 
     @RequestMapping(value = "/findOrderByUserId/{id}")
@@ -70,9 +74,16 @@ public class UserController {
      * @throws Exception
      */
     @RequestMapping("/debit")
-    public Boolean debit(Integer userId, BigDecimal money) throws Exception {
+    public Boolean debit(Integer userId, BigDecimal money){
         // 用户账户扣款
         userService.debit(userId, money);
+        return true;
+    }
+
+    @RequestMapping("/debitByTCC")
+    public Boolean userServiceByTCC(Integer userId, BigDecimal money) {
+        // 用户账户扣款
+        userServiceByTCC.debit(userId, money);
         return true;
     }
 

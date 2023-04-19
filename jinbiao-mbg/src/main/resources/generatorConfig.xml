@@ -33,7 +33,7 @@
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.jinbiao.cloud.mbg.mapper"
                              targetProject="jinbiao-mbg/src/main/java"/>
         <!--生成全部表tableName设为%-->
-        <table tableName="%">
+        <table tableName="stock">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
     </context>

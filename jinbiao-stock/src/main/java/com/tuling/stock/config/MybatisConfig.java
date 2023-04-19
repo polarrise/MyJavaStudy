@@ -1,4 +1,4 @@
-package com.tuling.storage.config;
+package com.tuling.stock.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -17,9 +17,9 @@ import javax.sql.DataSource;
  *
  */
 @Configuration
-@MapperScan("com.jinbiao.cloud.mbg.*")
+@MapperScan({"com.jinbiao.cloud.mbg.*"})
 public class MybatisConfig {
-    
+
     /**
      * 从配置文件获取属性构造datasource，注意前缀，这里用的是druid，根据自己情况配置,
      * 原生datasource前缀取"spring.datasource"
@@ -40,7 +40,7 @@ public class MybatisConfig {
         factoryBean.setDataSource(dataSource);
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         factoryBean.setMapperLocations(resolver.getResources("classpath*:mybatis/**/*-mapper.xml"));
-        
+
         org.apache.ibatis.session.Configuration configuration=new org.apache.ibatis.session.Configuration();
         //使用jdbc的getGeneratedKeys获取数据库自增主键值
         configuration.setUseGeneratedKeys(true);
@@ -49,8 +49,8 @@ public class MybatisConfig {
         //自动使用驼峰命名属性映射字段，如userId ---> user_id
         configuration.setMapUnderscoreToCamelCase(true);
         factoryBean.setConfiguration(configuration);
-        
+
         return factoryBean.getObject();
     }
-    
+
 }

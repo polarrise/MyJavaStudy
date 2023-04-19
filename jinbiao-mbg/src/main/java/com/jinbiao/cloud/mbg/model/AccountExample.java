@@ -284,6 +284,66 @@ public class AccountExample {
             addCriterion("money not between", value1, value2, "money");
             return (Criteria) this;
         }
+
+        public Criteria andFreezeMoneyIsNull() {
+            addCriterion("freeze_money is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFreezeMoneyIsNotNull() {
+            addCriterion("freeze_money is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFreezeMoneyEqualTo(BigDecimal value) {
+            addCriterion("freeze_money =", value, "freezeMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andFreezeMoneyNotEqualTo(BigDecimal value) {
+            addCriterion("freeze_money <>", value, "freezeMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andFreezeMoneyGreaterThan(BigDecimal value) {
+            addCriterion("freeze_money >", value, "freezeMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andFreezeMoneyGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("freeze_money >=", value, "freezeMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andFreezeMoneyLessThan(BigDecimal value) {
+            addCriterion("freeze_money <", value, "freezeMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andFreezeMoneyLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("freeze_money <=", value, "freezeMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andFreezeMoneyIn(List<BigDecimal> values) {
+            addCriterion("freeze_money in", values, "freezeMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andFreezeMoneyNotIn(List<BigDecimal> values) {
+            addCriterion("freeze_money not in", values, "freezeMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andFreezeMoneyBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("freeze_money between", value1, value2, "freezeMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andFreezeMoneyNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("freeze_money not between", value1, value2, "freezeMoney");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

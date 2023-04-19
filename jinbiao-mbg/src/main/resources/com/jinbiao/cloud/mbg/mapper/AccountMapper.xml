@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jinbiao.cloud.mbg.mapper.seata_at_account.AccountMapper">
+<mapper namespace="com.jinbiao.cloud.mbg.mapper.AccountMapper">
   <resultMap id="BaseResultMap" type="com.jinbiao.cloud.mbg.model.Account">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="money" jdbcType="DECIMAL" property="money" />
+    <result column="freeze_money" jdbcType="DECIMAL" property="freezeMoney" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -65,7 +66,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, user_id, money
+    id, user_id, money, freeze_money
   </sql>
   <select id="selectByExample" parameterType="com.jinbiao.cloud.mbg.model.AccountExample" resultMap="BaseResultMap">
     select
@@ -101,8 +102,10 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into account (user_id, money)
-    values (#{userId,jdbcType=INTEGER}, #{money,jdbcType=DECIMAL})
+    insert into account (user_id, money, freeze_money
+      )
+    values (#{userId,jdbcType=INTEGER}, #{money,jdbcType=DECIMAL}, #{freezeMoney,jdbcType=DECIMAL}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.jinbiao.cloud.mbg.model.Account">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -116,6 +119,9 @@
       <if test="money != null">
         money,
       </if>
+      <if test="freezeMoney != null">
+        freeze_money,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="userId != null">
@@ -123,6 +129,9 @@
       </if>
       <if test="money != null">
         #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="freezeMoney != null">
+        #{freezeMoney,jdbcType=DECIMAL},
       </if>
     </trim>
   </insert>
@@ -144,6 +153,9 @@
       <if test="record.money != null">
         money = #{record.money,jdbcType=DECIMAL},
       </if>
+      <if test="record.freezeMoney != null">
+        freeze_money = #{record.freezeMoney,jdbcType=DECIMAL},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -153,7 +165,8 @@
     update account
     set id = #{record.id,jdbcType=INTEGER},
       user_id = #{record.userId,jdbcType=INTEGER},
-      money = #{record.money,jdbcType=DECIMAL}
+      money = #{record.money,jdbcType=DECIMAL},
+      freeze_money = #{record.freezeMoney,jdbcType=DECIMAL}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -167,13 +180,17 @@
       <if test="money != null">
         money = #{money,jdbcType=DECIMAL},
       </if>
+      <if test="freezeMoney != null">
+        freeze_money = #{freezeMoney,jdbcType=DECIMAL},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.jinbiao.cloud.mbg.model.Account">
     update account
     set user_id = #{userId,jdbcType=INTEGER},
-      money = #{money,jdbcType=DECIMAL}
+      money = #{money,jdbcType=DECIMAL},
+      freeze_money = #{freezeMoney,jdbcType=DECIMAL}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

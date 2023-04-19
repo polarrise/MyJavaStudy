@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication(scanBasePackages = "com.tuling")
-@MapperScan({"com.tuling.mall.order.dao,com.jinbiao.cloud.mbg.*"})
+@MapperScan({"com.tuling.mall.order.dao,com.jinbiao.cloud.mbg.*","com.tuling.mall.order.mapper"})
 @EnableFeignClients
 //@EnableDiscoveryClient
 public class MallOrderApplication {

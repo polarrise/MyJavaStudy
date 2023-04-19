@@ -1,7 +1,7 @@
-package com.tuling.storage.service;
+package com.tuling.stock.service;
 
 public interface StockService {
-    
+
     /**
      * 扣减库存
      * @param productId 商品编号

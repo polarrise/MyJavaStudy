@@ -11,6 +11,8 @@ public class Account implements Serializable {
 
     private BigDecimal money;
 
+    private BigDecimal freezeMoney;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -37,6 +39,14 @@ public class Account implements Serializable {
         this.money = money;
     }
 
+    public BigDecimal getFreezeMoney() {
+        return freezeMoney;
+    }
+
+    public void setFreezeMoney(BigDecimal freezeMoney) {
+        this.freezeMoney = freezeMoney;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -46,6 +56,7 @@ public class Account implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", userId=").append(userId);
         sb.append(", money=").append(money);
+        sb.append(", freezeMoney=").append(freezeMoney);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

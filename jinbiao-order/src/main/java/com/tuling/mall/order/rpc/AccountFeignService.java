@@ -15,4 +15,7 @@ public interface AccountFeignService {
     
     @RequestMapping("/debit")
     Boolean debit(@RequestParam("userId") Integer userId, @RequestParam("money") int money);
+
+    @RequestMapping("/debitByTCC")
+    Boolean debitByTCC(@RequestParam("userId") Integer userId, @RequestParam("money") int money);
 }

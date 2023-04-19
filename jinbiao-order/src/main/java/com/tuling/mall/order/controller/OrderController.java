@@ -4,7 +4,9 @@ package com.tuling.mall.order.controller;
 import com.jinbiao.cloud.common.entity.CommonResult;
 import com.jinbiao.cloud.mbg.model.TOrder;
 import com.tuling.mall.order.entity.OrderEntity;
+import com.tuling.mall.order.service.BussinessService;
 import com.tuling.mall.order.service.OrderService;
+import com.tuling.mall.order.service.OrderServiceByTCC;
 import com.tuling.mall.order.vo.OrderVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+
+    @Autowired
+    private BussinessService bussinessService;
 
     /**
      * 根据用户id查询订单信息
@@ -56,6 +61,13 @@ public class OrderController {
     public CommonResult saveOrder(@RequestBody OrderVo orderVo){
         log.info("收到下单请求,用户:{}, 商品编号:{}", orderVo.getUserId(), orderVo.getProductId());
         TOrder order = orderService.saveOrder(orderVo);
+        return CommonResult.success(order);
+    }
+
+    @PostMapping("/createOrderByTCC")
+    public CommonResult createOrderByTCC(@RequestBody OrderVo orderVo){
+        log.info("收到下单请求,用户:{}, 商品编号:{}", orderVo.getUserId(), orderVo.getProductId());
+        TOrder order = bussinessService.saveOrder(orderVo);
         return CommonResult.success(order);
     }
 

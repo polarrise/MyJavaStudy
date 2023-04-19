@@ -31,6 +31,12 @@ public class FallbackAccountFeignServiceFactory implements FallbackFactory<Accou
 //                }
                 return false;
             }
+
+            @Override
+            public Boolean debitByTCC(Integer userId, int money) {
+                log.info("账户服务异常降级了");
+                return false;
+            }
         };
     }
 }

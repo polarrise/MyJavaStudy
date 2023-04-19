@@ -1,4 +1,4 @@
-package com.tuling.storage.config;
+package com.tuling.stock.config;
 
 import feign.Logger;
 import feign.Request;
