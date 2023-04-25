@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  *
@@ -23,10 +24,10 @@ public class OrderEntity implements Serializable {
 	/**
 	 * 商品编号
 	 */
-	private String commodityCode;
+	private String productId;
 
 	private Integer count;
 
-	private Integer amount;
+	private BigDecimal money;
 
 }

@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/jinbiao-common/jinbiao-common.iml" filepath="$PROJECT_DIR$/jinbiao-common/jinbiao-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jinbiao-gateway/jinbiao-gateway.iml" filepath="$PROJECT_DIR$/jinbiao-gateway/jinbiao-gateway.iml" />
       <module fileurl="file://$PROJECT_DIR$/jinbiao-mbg/jinbiao-mbg.iml" filepath="$PROJECT_DIR$/jinbiao-mbg/jinbiao-mbg.iml" />
       <module fileurl="file://$PROJECT_DIR$/jinbiao-order/jinbiao-order.iml" filepath="$PROJECT_DIR$/jinbiao-order/jinbiao-order.iml" />
       <module fileurl="file://$PROJECT_DIR$/jinbiao-stock/jinbiao-stock.iml" filepath="$PROJECT_DIR$/jinbiao-stock/jinbiao-stock.iml" />

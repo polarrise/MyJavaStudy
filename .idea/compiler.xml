@@ -11,6 +11,7 @@
         <module name="jinbiao-stock" />
         <module name="jinbiao_security" />
         <module name="jinbiao-order" />
+        <module name="jinbiao-gateway" />
         <module name="jinbiao-common" />
         <module name="jinbiao_im" />
         <module name="jinbiao-mbg" />
@@ -19,6 +20,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="jinbiao-common" target="1.8" />
+      <module name="jinbiao-gateway" target="1.8" />
       <module name="jinbiao-mbg" target="1.8" />
       <module name="jinbiao-order" target="1.8" />
       <module name="jinbiao-stock" target="1.8" />
@@ -32,6 +34,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="jinbiao-common" options="-parameters" />
+      <module name="jinbiao-gateway" options="-parameters" />
       <module name="jinbiao-mbg" options="-parameters" />
       <module name="jinbiao-order" options="-parameters" />
       <module name="jinbiao-stock" options="-parameters" />

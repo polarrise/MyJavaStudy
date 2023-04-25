@@ -11,6 +11,8 @@ import com.tuling.mall.order.vo.OrderVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -71,4 +73,28 @@ public class OrderController {
         return CommonResult.success(order);
     }
 
+    @GetMapping("/testgateway")
+    public CommonResult<String> testGateway(HttpServletRequest request){
+        log.info("gateWay获取请求头X-Request-info："
+                +request.getHeader("X-Request-info"));
+        return CommonResult.success("网关配置了filter：AddRequestHeader,订单服务添加了添加请求头："+request.getHeader("X-Request-info"));
+    }
+
+    @GetMapping("/testgateway2")
+    public CommonResult<String> testGateway(@RequestHeader("X-Request-info") String color){
+        log.info("gateWay获取请求头X-Request-info："+color);
+        return CommonResult.success("网关配置了filter：AddRequestHeader,订单服务添加了添加请求头："+color);
+    }
+
+    /**
+     * 获取网关的过滤器工厂中的请求参数color
+     * @param color
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/testgateway3")
+    public CommonResult<String> testGateway3(@RequestParam("color") String color){
+        log.info("gateWay获取请求参数color:"+color);
+        return CommonResult.success("订单服务获取gateWay传的请求参数color:"+color);
+    }
 }

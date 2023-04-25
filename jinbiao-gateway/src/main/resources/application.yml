@@ -1,0 +1,128 @@
+server:
+  port: 8888
+  #(改)应用上下文
+#  servlet:
+#    context-path:
+
+spring:
+  application:
+    name: jinbiao-gateway  #微服务名称
+  main:
+    allow-bean-definition-overriding: true
+  #配置nacos注册中心地址
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        #namespace: bc50d386-8870-4a26-8803-0187486c57be
+#        cluster-name:
+    sentinel:
+      transport:
+        # 添加sentinel的控制台地址
+        dashboard: 127.0.0.1:8080
+      datasource:
+        #route维度：流控规则
+        gateway-flow-rules:
+          nacos:
+            server-addr: 127.0.0.1:8848
+            dataId: ${spring.application.name}-gateway-flow-rules
+            groupId: SENTINEL_GROUP
+            data-type: json
+            rule-type: gw-flow
+        #api维度
+        gateway-api-rules:
+          nacos:
+            server-addr: 127.0.0.1:8848
+            dataId: ${spring.application.name}-gateway-api-rules
+            groupId: SENTINEL_GROUP
+            data-type: json
+            rule-type: gw-api-group
+        #降级规则
+        degrade-rules:
+          nacos:
+            server-addr: 127.0.0.1:8848
+            dataId: ${spring.application.name}-degrade-rules
+            groupId: SENTINEL_GROUP
+            data-type: json
+            rule-type: degrade
+        #系统规则
+        system-rules:
+          nacos:
+            server-addr: 127.0.0.1:8848
+            dataId: ${spring.application.name}-system-rules
+            groupId: SENTINEL_GROUP
+            data-type: json
+            rule-type: system
+    #网关路由的配置：
+    gateway:
+      #设置路由：路由id、路由到微服务的uri、断言
+      routes:
+        - id: jinbiao-order  #路由ID，全局唯一，建议配置服务名
+          uri: lb://jinbiao-order  #lb 整合负载均衡器ribbon,loadbalancer
+          #添加请求头-网关过滤器工厂
+          filters:
+            - AddRequestHeader=X-Request-info, jinbiao  #添加请求头
+            - AddRequestParameter=color, blue   # 添加请求参数
+#            - CheckAuth=jinbiao,男,CheckAuthGatewayFilterFactory  # 限定在订单服务下新增过滤器，CheckAuth为自定义过滤器工厂的前缀
+            - name: RequestRateLimiter   #限流过滤器
+              args:
+                redis-rate-limiter.replenishRate: 1 #令牌桶每秒填充速率
+                redis-rate-limiter.burstCapacity: 2 #令牌桶的总容量
+                key-resolver: "#{@keyResolver}" #使用SpEL表达式，从Spring容器中获取Bean对象
+          predicates:
+            - Path=/jinbiao-order/**   # 断言，路径相匹配的进行路由
+            #- Header=X-Request-Id, \d+ #断言，访问目标服务必须要带这个请求头，否则404.
+
+        - id: jinbiao-user   #路由ID，全局唯一，建议配置服务名
+          uri: lb://jinbiao-user  #lb 整合负载均衡器ribbon,loadbalancer
+          predicates:
+            - Path=/user/**   # 断言，路径相匹配的进行路由
+      #解决跨域问题：通过yml配置的方式：
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - DELETE
+              - PUT
+              - OPTION
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 0
+    timeout: 5000
+    lettuce:
+      pool:
+        max-active: 200
+        max-wait: 10000
+        max-idle: 100
+        min-idle: 10
+
+  #数据库配置
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://127.0.0.1:3306/xiaofa_lawyer?connectTimeout=1000000&socketTimeout=3000000&autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8&allowMultiQueries=true
+    driver-class-name: com.mysql.jdbc.Driver
+
+
+mybatis:
+  mapper-locations: classpath:mapping/*Mapper.xml
+  type-aliases-package: com.powersi.entity
+  #设置sql打印
+  configuration:
+    #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    #设置驼峰命名法
+    map-underscore-to-camel-case: true
+
+# 日志配置
+logging:
+  level:
+    root: info
+    com: debug
+
+
+
+
