@@ -8,7 +8,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableFeignClients
-@MapperScan({"com.jinbiao.cloud.mbg.*"})
+@MapperScan({"com.tuling.mall.user.dao","com.jinbiao.cloud.mbg.*"})
 public class MallUserApplication {
 
     public static void main(String[] args) {

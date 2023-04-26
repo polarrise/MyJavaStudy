@@ -46,7 +46,6 @@ spring:
           config:
             multi-statement-allow: true
 
-
 mybatis:
   mapper-locations: classpath:mapping/*Mapper.xml
   type-aliases-package: com.powersi.entity
@@ -62,7 +61,7 @@ logging:
     root: info
     com: debug
 
-#暴露actuator端点
+#暴露actuator端点,添加Sentinel后，需要暴露/actuator/sentinel端点,而Springboot默认是没有暴露该端点的，所以需要设置
 management:
   endpoints:
     web:

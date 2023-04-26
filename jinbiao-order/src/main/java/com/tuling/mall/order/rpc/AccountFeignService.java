@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 /**
  * @author Fox
  */
-@FeignClient(name = "jinbiao-user",path = "/jinbiao-user/user")
+@FeignClient(name = "jinbiao-user",path = "/jinbiao-user/user",fallback = FallbackAccountFeignServiceFactory.class)
 @Repository
 public interface AccountFeignService {
     

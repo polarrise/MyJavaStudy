@@ -2,9 +2,13 @@ package com.tuling.mall.user.service.impl;
 
 
 import cn.hutool.core.collection.CollectionUtil;
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.jinbiao.cloud.mbg.mapper.AccountMapper;
 import com.jinbiao.cloud.mbg.model.Account;
 import com.jinbiao.cloud.mbg.model.AccountExample;
+import com.tuling.mall.user.dao.UserDao;
+import com.tuling.mall.user.entity.UserEntity;
 import com.tuling.mall.user.service.UserService;
 import io.seata.core.context.RootContext;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +31,9 @@ public class UserServiceImpl implements UserService {
     
     @Autowired
     private AccountMapper accountMapper;
+
+    @Autowired
+    private UserDao userDao;
     
     /**
      * 扣减用户金额
@@ -50,7 +57,8 @@ public class UserServiceImpl implements UserService {
 //        }
         log.info("扣减用户 {} 余额结果:{}", userId, record > 0 ? "操作成功" : "扣减余额失败");
     }
-    
+
+
     private void checkBalance(Integer userId, BigDecimal money){
         log.info("检查用户 {} 余额", userId);
         AccountExample accountExample = new AccountExample();
@@ -67,5 +75,20 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("余额不足");
         }
         
+    }
+
+
+    @Override
+    //@SentinelResource(value = "getUser")
+    @SentinelResource(value = "getUser",blockHandler = "handleException")
+    public UserEntity getById(Integer id) {
+
+        return userDao.getById(id);
+    }
+
+    public UserEntity handleException(Integer id, BlockException ex) {
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUsername("===被限流降级啦===");
+        return userEntity;
     }
 }

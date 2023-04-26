@@ -22,6 +22,13 @@ spring:
 #    loadbalancer:
 #      ribbon:
 #        enabled: false
+    #使用sentinel限流、熔断规则
+    sentinel:
+      transport:
+        # 添加sentinel的控制台地址
+        dashboard: 127.0.0.1:8080
+        # 指定应用与Sentinel控制台交互的端口，应用本地会起一个该端口占用的HttpServer
+        port: 8719
 
   #数据库配置
   datasource:
@@ -71,6 +78,7 @@ ribbon:
     enabled: true
     clients: jinbiao-order
 
+#暴露actuator端点,添加Sentinel后，需要暴露/actuator/sentinel端点,而Springboot默认是没有暴露该端点的，所以需要设置
 management:
   endpoints:
     web:
@@ -84,6 +92,12 @@ logging:
     com: debug
 
 feign:
+# 配置 Feign 远程调用
+  circuitbreaker:
+    enable: true
+  hystrix:
+    # 为 Feign 开启 Hystrix熔断机制，就可以使用回调
+    enabled: true
   #feign 使用 okhttp
 #  httpclient:
 #    enabled: false
