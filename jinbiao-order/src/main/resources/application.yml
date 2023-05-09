@@ -7,6 +7,16 @@ server:
 spring:
   application:
     name: jinbiao-order  #微服务名称
+  data:
+    mongodb:
+      uri: mongodb://jinbiao:jinbiao@192.168.213.128:27017/test?authSource=admin
+      #uri等同于下面的配置
+      #database: test
+      #host: 192.168.65.174
+      #port: 27017
+      #username: jinbiao
+      #password: jinbiao
+      #authentication-database: admin
 
   #配置nacos注册中心地址
   cloud:
