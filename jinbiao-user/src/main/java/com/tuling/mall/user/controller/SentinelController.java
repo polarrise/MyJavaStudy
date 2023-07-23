@@ -118,4 +118,16 @@ public class SentinelController {
         return result;
     }
 
+    @RequestMapping("/info/{id}")
+    @SentinelResource(value = "userinfo", blockHandler = "handleException")
+    public CommonResult info(@PathVariable("id") Integer id){
+        UserEntity user = userService.getById(id);
+
+        if(id==4){
+            throw new IllegalArgumentException("异常参数");
+        }
+
+        return CommonResult.success(user);
+    }
+
 }

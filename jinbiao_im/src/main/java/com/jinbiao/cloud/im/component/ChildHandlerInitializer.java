@@ -10,8 +10,14 @@ import io.netty.handler.stream.ChunkedWriteHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 
 
+
+
 public class ChildHandlerInitializer extends io.netty.channel.ChannelInitializer<SocketChannel> {
 
+    /**
+     * 这个方法提供了一种将多个ChannelHandler 添加到一个ChannelPipeline 中的简便方法。
+     * @param ch
+     */
     @Override
     protected void initChannel(SocketChannel ch) {
         WSServerHandler wsServerHandler = new WSServerHandler();

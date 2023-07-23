@@ -50,7 +50,7 @@ public class MsgConsumer {
 
         consumer.subscribe(Arrays.asList(TOPIC_NAME));
 
-        // 消费指定分区
+        // kafka消费指定分区
         //consumer.assign(Arrays.asList(new TopicPartition(TOPIC_NAME, 0)));
 
         //消息回溯消费

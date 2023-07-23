@@ -29,6 +29,8 @@ spring:
         dashboard: 127.0.0.1:8080
         # 指定应用与Sentinel控制台交互的端口，应用本地会起一个该端口占用的HttpServer
         port: 8719
+      # 将其配置为 false 即可根据不同的 URL 进行链路限流
+      web-context-unify: false
 
   #数据库配置
   datasource:

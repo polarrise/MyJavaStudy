@@ -23,6 +23,7 @@ import org.springframework.util.StringUtils;
 @Slf4j
 @Component
 @DependsOn(value = {"wsServiceImpl", "springContextHolder"})
+// 一定要注意：：：自己写入站handler要么继续往后传递，要么继承extends SimpleChannelInboundHandler<ByteBuf>，它会帮我们去释放buffer。不然一定会存在内存泄漏
 public class WSServerHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
 
     private static final WsService wsService = SpringContextHolder.getBean("wsServiceImpl", WsServiceImpl.class);
