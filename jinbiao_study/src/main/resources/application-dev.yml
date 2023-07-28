@@ -10,6 +10,10 @@ server:
     context-path: /jinbiao-cool
 
 spring:
+  elasticsearch:
+    uris: http://localhost:9200
+    connection-timeout: 3s
+
   main:
     allow-bean-definition-overriding: true # 意思是后来发现的bean会覆盖之前相同名称的bean
   application:
@@ -22,8 +26,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
 
   redis:
-    database: 0
-    timeout: 3000
+
     #本机redis
 #    host: 127.0.0.1 # Redis服务器地址
 #    database: 0 # Redis数据库索引（默认为0）
@@ -37,9 +40,9 @@ spring:
 #      nodes: 192.168.213.128:26379,192.168.213.128:26380,192.168.213.128:26381
 
     #集群cluster模式
-    password: jinbiao
-    cluster:
-      nodes:  192.168.213.128:8001,192.168.213.129:8002,192.168.213.130:8003,192.168.213.128:8004,192.168.213.129:8005,192.168.213.130:8006
+#    password: jinbiao
+#    cluster:
+#      nodes:  192.168.213.128:8001,192.168.213.129:8002,192.168.213.130:8003,192.168.213.128:8004,192.168.213.129:8005,192.168.213.130:8006
     lettuce:
       pool:
         max-active: 100           # 默认8
@@ -93,6 +96,7 @@ secure:
     - /upDownload/**
     - /testPubEvent/**
     - /order/**
+    - /testES/**
 
 mybatis:
   mapper-locations: classpath:mapping/*Mapper.xml

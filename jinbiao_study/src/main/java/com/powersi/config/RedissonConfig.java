@@ -14,7 +14,7 @@ import org.springframework.util.StringUtils;
 @Configuration
 public class RedissonConfig {
 
-    @Value("${spring.redis.host:192.168.213.128}")
+    @Value("${spring.redis.host:127.0.0.1}")
     private String host;
     @Value("${spring.redis.port:6379}")
     private String port;
