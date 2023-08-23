@@ -22,6 +22,7 @@ spring:
 #    loadbalancer:
 #      ribbon:
 #        enabled: false
+
     #使用sentinel限流、熔断规则
     sentinel:
       transport:
@@ -100,21 +101,21 @@ feign:
   hystrix:
     # 为 Feign 开启 Hystrix熔断机制，就可以使用回调
     enabled: true
-  #feign 使用 okhttp
-#  httpclient:
-#    enabled: false
+  #feign 使用 okhttp不需要再指定gzip压缩，使用httpclient需要指定下使用gzip压缩数据传输，提升传输性能,rpc日志： Accept-Encoding: gzip
+  httpclient:
+    enabled: true
 #  okhttp:
 #    enabled: true
-#  client:
-#    config:
-#      jinbiao-order:   #对应微服务
-#        loggerLevel: BASIC
-#        requestInterceptors[0]:  #配置拦截器
-#          com.tuling.mall.user.config.FeignAuthRequestInterceptor
-        # 连接超时时间，默认2s
-#        connectTimeout: 2000
-#        # 请求处理超时时间，默认5s
-#        readTimeout: 4000
+  client:
+    config:
+      jinbiao-order:   #对应微服务
+        loggerLevel: FULL
+        #配置拦截器
+        requestInterceptors[0]: com.tuling.mall.user.config.FeignAuthRequestInterceptor
+#         连接超时时间，默认2s
+        connectTimeout: 2000
+        # 请求处理超时时间，默认5s
+        readTimeout: 4000
   # 配置 GZIP 来压缩数据
   compression:
     request:

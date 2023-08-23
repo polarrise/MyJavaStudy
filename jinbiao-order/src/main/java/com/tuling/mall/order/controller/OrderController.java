@@ -40,8 +40,9 @@ public class OrderController {
      * @return
      */
     @RequestMapping("/findOrderByUserId/{userId}")
-    public CommonResult findOrderByUserId(@PathVariable("userId") Integer userId) {
-
+    public CommonResult findOrderByUserId(@PathVariable("userId") Integer userId,HttpServletRequest request) {
+        String authorization = request.getHeader("Authorization");
+        System.out.println("authorization:"+authorization);
         //模拟异常
         if(userId == 5){
             throw new IllegalArgumentException("非法参数异常");
