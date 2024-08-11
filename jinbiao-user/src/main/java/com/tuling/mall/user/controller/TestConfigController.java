@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @Desc：测试配置中心：--@Value注解可以获取到配置中心的值，但是无法动态感知修改后的值，需要利用@RefreshScope注解
  */
 @RestController
-@RefreshScope    //动态感知修改后的值
+@RefreshScope    //动态感知修改后的值，注入内存中最新的值
 public class TestConfigController implements ApplicationListener<RefreshScopeRefreshedEvent> {
 
     @Value("${common.name}")
@@ -36,7 +36,7 @@ public class TestConfigController implements ApplicationListener<RefreshScopeRef
     }
 
     /**
-     * 解决动态感知配置文件值后 定时任务失效问题。
+     * 解决动态感知配置文件值后 定时任务失效问题。 只要配置更新就会触发这个事件。调这个方法，就会去重新创建这个bean，定时任务就又生效了
      * @param event
      */
     @Override
