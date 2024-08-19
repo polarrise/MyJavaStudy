@@ -12,12 +12,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @MapperScan({"com.powersi.dao","com.jinbiao.cloud.mbg.*"})
 @SpringBootApplication(scanBasePackages = {"com.powersi"})
 @ComponentScan(basePackages = {"com.powersi.*", "com.config","com.jinbiao.cloud.*"})   //@ComponentScan 用于指定 Spring 在初始化容器时要扫描的包。basePackages 属性用于指定要扫描的包。
 @EnableAspectJAutoProxy  //添加@EnableAspectJAutoProxy注解来放开代理的使用
+@EnableTransactionManagement
+@EnableAsync
 public class SpringBootDemoApplication {
 
     public static void main(String[] args) {

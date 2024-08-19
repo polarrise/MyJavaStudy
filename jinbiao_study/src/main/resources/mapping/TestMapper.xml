@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.powersi.dao.TestDao">
+
+    <insert id="insertTest">
+        insert into test(name) value('test')
+    </insert>
+
+    <insert id="insertTest1">
+        insert into test1(name) value('test1')
+    </insert>
+
+    <insert id="insertTest2">
+        insert into test2(name) value('test2')
+    </insert>
+
+    <insert id="insertTest3">
+        insert into test3(name) value('test3')
+    </insert>
+
+</mapper>

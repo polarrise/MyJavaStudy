@@ -97,6 +97,7 @@ secure:
     - /testPubEvent/**
     - /order/**
     - /testES/**
+    - /manyThread/**
 
 mybatis:
   mapper-locations: classpath:mapping/*Mapper.xml
