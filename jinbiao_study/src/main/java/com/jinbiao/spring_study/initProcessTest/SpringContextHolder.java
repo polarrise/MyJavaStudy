@@ -1,4 +1,4 @@
-package com.jinbiao.spring_study.service;
+package com.jinbiao.spring_study.initProcessTest;
 
 import com.sun.istack.internal.NotNull;
 import org.springframework.beans.BeanUtils;

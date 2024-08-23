@@ -1,9 +1,6 @@
-package com.jinbiao.spring_study;
+package com.jinbiao.spring_study.inferConstructTest;
 
 
-import com.jinbiao.spring_study.service.SpecifyTestServiceBean;
-import com.jinbiao.spring_study.service.UserServiceInitProcess;
-import com.jinbiao.spring_study.service.UserServiceInferConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -20,20 +17,16 @@ import java.lang.reflect.Method;
  * 1.加@Controller.Service,Component,Repostory等注解
  * 2.构造方法注入，@AutoWired熟悉注入，
  */
-public class SpringTest_InferConstruct {
+public class SpringInferConstructTestApplication {
 
   public static void main(String[] args) {
 
-    AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class); //加载spring配置文件
+    AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(InferConstructConfig.class); //加载spring配置文件
 
     //手动注册bean对象
     Object o =new Object();
     applicationContext.getBeanFactory().registerSingleton( "o",o);
     System.out.println("手动注册bean对象:"+applicationContext.getBean("o"));
-
-    UserServiceInitProcess userServiceInitProcess = (UserServiceInitProcess) applicationContext.getBean("userServiceInitProcess");
-    userServiceInitProcess.test();
-
 
     UserServiceInferConstruct userServiceInferConstruct1 = (UserServiceInferConstruct) applicationContext.getBean("userServiceInferConstruct");
     UserServiceInferConstruct userServiceInferConstruct2 = (UserServiceInferConstruct) applicationContext.getBean("userServiceInferConstruct");
@@ -41,14 +34,11 @@ public class SpringTest_InferConstruct {
     System.out.println(userServiceInferConstruct1 == userServiceInferConstruct2);
     userServiceInferConstruct1.test();
 
+    // 1.测试Spring创建的bean默认都是单例bean
     System.out.println("orderService、orderService1、orderService2是不相等的,他们是三个单独的OrderService类型的Bean");
-    System.out.println(applicationContext.getBean("orderService"));
     System.out.println(applicationContext.getBean("orderService"));
     System.out.println(applicationContext.getBean("orderService1"));
     System.out.println(applicationContext.getBean("orderService2"));
-
-    SpecifyTestServiceBean specifyTheBean = (SpecifyTestServiceBean)applicationContext.getBean("specifyTestServiceBean");
-    specifyTheBean.findAll();
 
     //反射看实例对象的属性是否加了Autowired注解：
     for (Field field: userServiceInferConstruct1.getClass().getDeclaredFields()) {

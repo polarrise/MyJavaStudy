@@ -1,6 +1,6 @@
 package com.jinbiao.spring_study.springRegisterBeanWays;
 
-import com.jinbiao.spring_study.springRegisterBeanWays.beans.OrderService;
+import com.jinbiao.spring_study.springRegisterBeanWays.beans.StockService;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.stereotype.Component;
 
@@ -15,16 +15,16 @@ import org.springframework.stereotype.Component;
  * 3、isSingleton()：是否单例；
  */
 @Component
-public class Way3_FactoryBean implements FactoryBean<OrderService> {
+public class Way3_FactoryBean implements FactoryBean<StockService> {
     @Override
-    public OrderService getObject() throws Exception {
-        System.out.println("使用FactoryBean方式注册OrderService");
-        return new OrderService();
+    public StockService getObject() throws Exception {
+        System.out.println("使用FactoryBean方式注册StockService");
+        return new StockService();
     }
 
     @Override
     public Class<?> getObjectType() {
-        return OrderService.class;
+        return StockService.class;
     }
 
     @Override

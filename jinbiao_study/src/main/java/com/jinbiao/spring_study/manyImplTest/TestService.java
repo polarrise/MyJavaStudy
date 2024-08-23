@@ -1,6 +1,6 @@
-package com.jinbiao.spring_study.service.testBeanToMany;
+package com.jinbiao.spring_study.manyImplTest;
 
-import com.jinbiao.spring_study.service.User;
+import com.jinbiao.spring_study.transactionTest.User;
 
 import java.util.List;
 

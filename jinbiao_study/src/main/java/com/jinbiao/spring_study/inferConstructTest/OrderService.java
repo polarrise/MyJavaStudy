@@ -1,4 +1,4 @@
-package com.jinbiao.spring_study.service;
+package com.jinbiao.spring_study.inferConstructTest;
 
 import org.springframework.stereotype.Component;
 

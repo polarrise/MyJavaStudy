@@ -1,6 +1,6 @@
-package com.jinbiao.spring_study.service.testBeanToMany;
+package com.jinbiao.spring_study.manyImplTest;
 
-import com.jinbiao.spring_study.service.User;
+import com.jinbiao.spring_study.transactionTest.User;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
  * @Desc：
  */
 @Component
-public class TestService2 implements TestService {
+public class TestServiceImpl2 implements TestService {
     @Override
     public List<User> findAll() {
         System.out.println("testService2的findAll方法执行了===");

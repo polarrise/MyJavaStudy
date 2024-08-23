@@ -1,6 +1,6 @@
 package com.jinbiao.spring_study.dao;
 
-import com.jinbiao.spring_study.service.User;
+import com.jinbiao.spring_study.transactionTest.User;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;

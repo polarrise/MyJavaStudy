@@ -37,4 +37,8 @@ public class AService {
 
   @Autowired
   private BService bService;
+
+  public void testA(){
+      System.out.println("AService方法执行啦");
+  }
 }

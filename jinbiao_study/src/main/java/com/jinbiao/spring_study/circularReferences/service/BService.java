@@ -13,7 +13,7 @@ public class BService {
   @Autowired
   private AService aService;
 
-  public void test(){
-    System.out.println(aService);
+  public void testB(){
+    System.out.println("BService方法执行啦");
   }
 }

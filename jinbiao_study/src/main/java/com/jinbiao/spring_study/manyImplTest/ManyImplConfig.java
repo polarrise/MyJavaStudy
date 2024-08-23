@@ -1,10 +1,7 @@
-package com.jinbiao.spring_study;
+package com.jinbiao.spring_study.manyImplTest;
 
-import com.jinbiao.spring_study.service.JDBCConfig;
-import com.jinbiao.spring_study.service.OrderService;
-import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.context.annotation.*;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @Configuration用于定义配置类，可替换xml配置文件。 可理解为用spring的时候xml里面的<beans>标签
@@ -13,31 +10,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @EnableAspectJAutoProxy注解，启用了 AOP 功能
  */
 @Configuration
-@ComponentScan({"com.jinbiao.spring_study"})   //扫描包路径下的所有加了@Controller、Service、@Repository、@Component注解的类
-@MapperScan("com.jinbiao.spring_study.dao")   //MyBatis扫描dao接口
-@EnableAspectJAutoProxy(proxyTargetClass = true)  //开启切面
-@PropertySource("classpath:jdbc.properties")     //读取jdbc数据源文件
-@Import({JDBCConfig.class})                     //导入配置类
-@EnableTransactionManagement                   //开启事务管理器
-public class AppConfig {
-
-  //疑问已经在OrderService上加了@Component注解了
-  //@Bean
-  //public OrderService orderService(){
-  //  System.out.println("手动注入Bean到Spring容器中:如果OrderService上加了Component注解了则不会执行了，否则这里会执行==");
-  //  return new OrderService();
-  //}
-
-
-  @Bean
-  public OrderService orderService1(){
-    return new OrderService();
-  }
-
-  @Bean
-  public OrderService orderService2(){
-    return new OrderService();
-  }
+@ComponentScan({"com.jinbiao.spring_study.manyImplTest"})   //扫描包路径下的所有加了@Controller、Service、@Repository、@Component注解的类
+public class ManyImplConfig {
 
 }
 

@@ -1,6 +1,7 @@
-package com.jinbiao.spring_study.service;
+package com.jinbiao.spring_study.initProcessTest;
 
 import com.jinbiao.spring_study.dao.UserDao;
+import com.jinbiao.spring_study.transactionTest.User;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.DisposableBean;

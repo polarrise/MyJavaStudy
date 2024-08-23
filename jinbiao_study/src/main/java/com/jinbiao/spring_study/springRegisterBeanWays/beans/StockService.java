@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  * 第1种方式： 使用@Component注解 + @ComponentScan包扫描方式
  */
 @Component
-public class OrderService {
+public class StockService {
     public void test(){
         System.out.println("打印test信息");
     }

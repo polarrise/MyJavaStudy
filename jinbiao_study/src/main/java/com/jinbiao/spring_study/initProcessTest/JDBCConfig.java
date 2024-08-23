@@ -1,4 +1,4 @@
-package com.jinbiao.spring_study.service;
+package com.jinbiao.spring_study.initProcessTest;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import org.mybatis.spring.SqlSessionFactoryBean;

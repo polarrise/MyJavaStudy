@@ -1,6 +1,6 @@
 package com.jinbiao.spring_study.circularReferences.demo;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,13 +13,12 @@ public class A {
 
   private String name ="Jinbiao";
 
-  @Autowired
   private B b;
 
-  //@Lazy   //在构造方法上@Lazy注解解决构造方法注入的循环依赖
-  //public A(B b){
-  //  this.b = b;
-  //}
+  @Lazy   //在构造方法上@Lazy注解解决构造方法注入的循环依赖
+  public A(B b){
+    this.b = b;
+  }
 
   public String getName() {
     return name;

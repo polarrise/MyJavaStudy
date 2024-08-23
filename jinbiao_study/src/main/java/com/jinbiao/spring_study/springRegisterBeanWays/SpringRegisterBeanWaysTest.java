@@ -1,6 +1,6 @@
 package com.jinbiao.spring_study.springRegisterBeanWays;
 
-import com.jinbiao.spring_study.springRegisterBeanWays.beans.OrderService;
+import com.jinbiao.spring_study.springRegisterBeanWays.beans.StockService;
 import com.jinbiao.spring_study.springRegisterBeanWays.beans.Student;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -19,19 +19,19 @@ public class SpringRegisterBeanWaysTest {
         }
 
         System.out.println();
-        System.out.println("第1种方式注册Bean:使用@Component注解方式注册OrderService=");
-        OrderService orderService = (OrderService) applicationContext.getBean("orderService");
-        orderService.test();
+        System.out.println("第1种方式注册Bean:使用@Component注解方式注册stockService=");
+        StockService stockService = (StockService) applicationContext.getBean("stockService");
+        stockService.test();
 
         System.out.println();
         System.out.println("第2种方式注册Bean:使用@Configuration+@Bean的方式注册orderService1==");
-        OrderService orderService1 = (OrderService) applicationContext.getBean("orderService1");
-        orderService1.test();
+        StockService stockService1 = (StockService) applicationContext.getBean("stockService1");
+        stockService1.test();
 
         System.out.println();
         System.out.println("第3种方式注册Bean:使用FactoryBean方式注册OrderService===");
-        OrderService orderServiceFactoryBean = (OrderService) applicationContext.getBean("way3_FactoryBean");
-        orderServiceFactoryBean.test();
+        StockService stockServiceFactoryBean = (StockService) applicationContext.getBean("way3_FactoryBean");
+        stockServiceFactoryBean.test();
 
         Student student = (Student) applicationContext.getBean("student");
         student.test();

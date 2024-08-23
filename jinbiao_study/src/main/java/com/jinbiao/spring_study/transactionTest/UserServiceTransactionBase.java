@@ -1,4 +1,4 @@
-package com.jinbiao.spring_study.service;
+package com.jinbiao.spring_study.transactionTest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

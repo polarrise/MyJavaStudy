@@ -1,7 +1,5 @@
-package com.jinbiao.spring_study;
+package com.jinbiao.spring_study.initProcessTest;
 
-import com.jinbiao.spring_study.service.SpringContextHolder;
-import com.jinbiao.spring_study.service.UserServiceInitProcess;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
@@ -9,9 +7,9 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
  * @date 2023/2/14 21:54
  * @desc
  */
-public class SpringTest_InitProcess {
+public class SpringInitProcessTestApplication {
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
+        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(InitProcessConfig.class);
         UserServiceInitProcess userServiceInitProcess = (UserServiceInitProcess)applicationContext.getBean("userServiceInitProcess");
         userServiceInitProcess.test();
         System.out.println(userServiceInitProcess.getAdmin());

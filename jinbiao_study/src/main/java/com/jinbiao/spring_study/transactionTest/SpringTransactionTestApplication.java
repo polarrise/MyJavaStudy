@@ -1,6 +1,5 @@
-package com.jinbiao.spring_study;
+package com.jinbiao.spring_study.transactionTest;
 
-import com.jinbiao.spring_study.service.UserServiceTransaction;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
@@ -8,9 +7,9 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
  * @date 2023/2/14 21:54
  * @desc
  */
-public class SpringTest_Transaction {
+public class SpringTransactionTestApplication {
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
+        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(TransactionConfig.class);
         UserServiceTransaction userServiceTransaction = (UserServiceTransaction)applicationContext.getBean("userServiceTransaction");
         //userServiceTransaction.test1();
         //userServiceTransaction.test2();

@@ -1,6 +1,6 @@
 package com.jinbiao.spring_study.springRegisterBeanWays;
 
-import com.jinbiao.spring_study.springRegisterBeanWays.beans.OrderService;
+import com.jinbiao.spring_study.springRegisterBeanWays.beans.StockService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,8 +15,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class Way2_Configuration_Bean {
     @Bean
-    public OrderService orderService1() {
-        System.out.println("使用@Configuration+@Bean的方式注册orderService1");
-        return new OrderService();
+    public StockService stockService1() {
+        System.out.println("使用@Configuration+@Bean的方式注册stockService1");
+        return new StockService();
     }
 }
