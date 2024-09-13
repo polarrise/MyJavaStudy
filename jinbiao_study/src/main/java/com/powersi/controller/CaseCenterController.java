@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import static com.sun.xml.internal.ws.api.model.wsdl.WSDLBoundOperation.ANONYMOUS.required;
+
 @RestController
 @RequestMapping("/caseCenterApi")
 @Api(value = "CaseCenter类Api文档", tags = {"查询CaseCenterController"})
@@ -94,7 +96,7 @@ public class CaseCenterController {
      * @return
      */
     @GetMapping("/test-customValidation")
-    public CommonResult<String> testCustomValidation(@Validated @Mobile String phone) {
+    public CommonResult<String> testCustomValidation(@Mobile(required= true) String phone) {
         return CommonResult.success(phone);
     }
 

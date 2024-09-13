@@ -21,7 +21,7 @@ public class MobileValidator implements ConstraintValidator<Mobile, CharSequence
   private final Pattern pattern = Pattern.compile("^1[34578][0-9]{9}$"); // 验证手机号
 
   /**
-   * 在验证开始前调用注解里的方法，从而获取到一些注解里的参数
+   * 在验证开始前调用注解里的方法，从而获取到一些注解里的参数,required 默认为true也就是开启手机号校验
    * @param constraintAnnotation
    */
   @Override
@@ -29,20 +29,23 @@ public class MobileValidator implements ConstraintValidator<Mobile, CharSequence
     this.required = constraintAnnotation.required();
   }
 
+  /**
+   * 真正执行的校验方法 true? 开启校验 ： 直接不校验=>通过
+   * @param value object to validate
+   * @param context context in which the constraint is evaluated
+   * @return
+   */
   @Override
   public boolean isValid(CharSequence value, ConstraintValidatorContext context) {
-    if(this.required){
-      // 验证
-      return isMobile(value);
-    }
-    if (StringUtils.hasText(value)) {
-      // 验证
-      return isMobile(value);
-    }
-    return true;
+      return this.required ? isMobile(value) : Boolean.TRUE;
   }
+
+  /**
+   * 正则校验手机号
+   * @param str
+   * @return
+   */
   private boolean isMobile(final CharSequence str) {
-    Matcher m = pattern.matcher(str);
-    return m.matches();
+    return pattern.matcher(str).matches();
   }
 }

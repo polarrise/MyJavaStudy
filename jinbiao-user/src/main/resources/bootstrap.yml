@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: jinbiao-user  #微服务名称
+
+  cloud:
+    nacos:
+      config:  #配置nacos配置中心地址
+        server-addr: 127.0.0.1:8848
+        username: nacos
+        password: nacos
+        namespace: 11ff1ae2-97c0-4f43-a3cd-980dfe19326b
+        group: DEFAULT_GROUP
+        data-id: jinbiao-user-dev.yml      #与nacos配置中心的的data-id一致
+        file-extension: yml #指定配置文件的扩展名为yml
+  profiles:
+    active: dev

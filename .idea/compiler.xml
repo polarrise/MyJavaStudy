@@ -3,13 +3,13 @@
   <component name="CompilerConfiguration">
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
-      <profile name="Maven default annotation processors profile" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+      <profile name="Annotation profile for jinbiao_cloud" enabled="true">
+        <sourceOutputDir name="../target/generated-sources/annotations" />
+        <sourceTestOutputDir name="../target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="jinbiao_study" />
-        <module name="jinbiao-stock" />
         <module name="jinbiao_security" />
+        <module name="jinbiao-stock" />
         <module name="jinbiao-order" />
         <module name="jinbiao-gateway" />
         <module name="jinbiao-common" />
@@ -18,18 +18,7 @@
         <module name="jinbiao-user" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="jinbiao-common" target="1.8" />
-      <module name="jinbiao-gateway" target="1.8" />
-      <module name="jinbiao-mbg" target="1.8" />
-      <module name="jinbiao-order" target="1.8" />
-      <module name="jinbiao-stock" target="1.8" />
-      <module name="jinbiao-user" target="1.8" />
-      <module name="jinbiao_cloud" target="1.8" />
-      <module name="jinbiao_im" target="1.8" />
-      <module name="jinbiao_security" target="1.8" />
-      <module name="jinbiao_study" target="1.8" />
-    </bytecodeTargetLevel>
+    <bytecodeTargetLevel target="8" />
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
@@ -39,7 +28,6 @@
       <module name="jinbiao-order" options="-parameters" />
       <module name="jinbiao-stock" options="-parameters" />
       <module name="jinbiao-user" options="-parameters" />
-      <module name="jinbiao_cloud" options="" />
       <module name="jinbiao_im" options="-parameters" />
       <module name="jinbiao_security" options="-parameters" />
       <module name="jinbiao_study" options="-parameters" />

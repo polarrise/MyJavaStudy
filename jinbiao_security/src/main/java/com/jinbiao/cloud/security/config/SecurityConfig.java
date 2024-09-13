@@ -56,6 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(restAuthenticationEntryPoint())
                 // 自定义权限拦截器JWT过滤器
                 .and()
+                // jwt认证过滤器要在用户名密码认证过滤器之前，因为业务逻辑是这样的：1.先解析token 成功就不再认证用户名密码过滤器了,如果没有token再通过用户名密码认证过滤器认证，通过再生成token
                 .addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         //有动态权限配置时添加动态权限校验过滤器
         if (dynamicSecurityService != null) {

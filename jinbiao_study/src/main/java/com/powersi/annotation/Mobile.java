@@ -35,5 +35,6 @@ public @interface Mobile {
    * Constraint要求的属性，用于分组校验和扩展，留空就好
    */
   Class<?>[] groups() default {};
+
   Class<? extends Payload>[] payload() default {};
 }

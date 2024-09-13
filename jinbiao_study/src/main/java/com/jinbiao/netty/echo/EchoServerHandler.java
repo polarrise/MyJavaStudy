@@ -6,6 +6,9 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.CharsetUtil;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+
 /**
  * 作者：Mark
  * 类说明：服务端的业务Handler
@@ -17,6 +20,7 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
         ByteBuf in = (ByteBuf)msg;
         System.out.println("server accept :" + in.toString(CharsetUtil.UTF_8));
         ctx.writeAndFlush(in);
+        //ctx.writeAndFlush(ByteBuffer.wrap("server回复: 亲亲，在的  2024-08-11 14:26:11".getBytes(StandardCharsets.UTF_8)));
 
         //ctx.close();
     }
