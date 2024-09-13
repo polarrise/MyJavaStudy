@@ -1,5 +1,7 @@
 package com.jinbiao.javaStudy.spi;
 
+import java.sql.Driver;
+import java.sql.SQLException;
 import java.util.ServiceLoader;
 
 /**
@@ -14,10 +16,10 @@ import java.util.ServiceLoader;
  * 在这demo里面就是,SpiTest类作为调用放，提供一个接口Animal,但是它的实现是由服务方提供的,Cat类的实现和Dog类的实现，我调用方SpiTest可以选择特定的实现
  */
 public class SpiTest {
-    public static void main(String[] args) {
-        ServiceLoader<Animal> load = ServiceLoader.load(Animal.class);
-        for (Animal animal:load ) {
-            animal.say();
+    public static void main(String[] args) throws SQLException {
+        ServiceLoader<Driver> load = ServiceLoader.load(Driver.class);
+        for (Driver driver :load ) {
+            driver.connect("xxx",null);
         }
     }
 }

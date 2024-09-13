@@ -17,7 +17,7 @@ public class EchoClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
     //读取到网络数据后进行业务处理,并关闭连接
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
-        System.out.println("client Accept"+msg.toString(CharsetUtil.UTF_8));
+        System.out.println("rise收到："+msg.toString(CharsetUtil.UTF_8));
         //关闭连接
         //ctx.close();
     }
@@ -25,8 +25,8 @@ public class EchoClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
     //channel活跃后，做业务处理
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        ctx.writeAndFlush(Unpooled.copiedBuffer(
-                "Hello,Netty",CharsetUtil.UTF_8));
+        System.out.println("rise发送:在吗？  2024-08-11 14:26:10");
+        ctx.writeAndFlush(Unpooled.copiedBuffer("rise发送:在吗？  2024-08-11 14:26:10",CharsetUtil.UTF_8));
         //ctx.pipeline().write()
         //ctx.channel().write()
         ctx.alloc().buffer();
