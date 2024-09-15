@@ -98,6 +98,8 @@ secure:
     - /order/**
     - /testES/**
     - /manyThread/**
+    - /showOverSell
+    - /deduct_stock
 
 mybatis:
   mapper-locations: classpath:mapping/*Mapper.xml

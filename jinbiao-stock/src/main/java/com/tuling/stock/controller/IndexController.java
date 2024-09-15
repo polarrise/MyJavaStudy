@@ -1,5 +1,6 @@
 package com.tuling.stock.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.redisson.Redisson;
 import org.redisson.RedissonRedLock;
 import org.redisson.api.RLock;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 @RestController
 public class IndexController {
 
@@ -21,6 +23,7 @@ public class IndexController {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    private static final String STOCK_PRODUCT_KEY ="stock:product:101";
 
     /**nginx反向代理到两台后端服务8030/8031.
      * Jmeter测试接口：http://localhost/deduct_stock_overSell   通过ngnix反向代理到8030/8031. 权重1:1
@@ -28,18 +31,19 @@ public class IndexController {
      * 测试结果：1秒钟里面300个并发请求都扣减库存成功，然后redis里面还有剩余几十个剩余库存，也就是一个超卖问题。
      * @return
      */
-    @RequestMapping("/deduct_stock_overSell")
+    @RequestMapping("/showOverSell")
     public String deductStock_overSell() {
-            int stock = Integer.parseInt(stringRedisTemplate.opsForValue().get("stock:product:101")); // jedis.get("stock")
-            if (stock > 0) {
-                int realStock = stock - 1;
-                stringRedisTemplate.opsForValue().set("stock:product:101", realStock + ""); // jedis.set(key,value)
-                System.out.println("扣减成功，剩余库存:" + realStock);
-                return "下单扣减库存成功";
-            } else {
-                System.out.println("扣减失败，库存不足");
-                return "下单失败，库存不足";
-            }
+        // 查询redis里面该业务key：stock:product:101 的库存，初始为300.   (我们使用分布式锁的时候需要考虑锁到最细维度,这个需要我们结合对业务来细化，锁范围大了会影响业务性能)
+        int stock = Integer.parseInt(stringRedisTemplate.opsForValue().get(STOCK_PRODUCT_KEY)); // jedis.get("stock")
+        if (stock > 0) {
+            int realStock = stock - 1;
+            stringRedisTemplate.opsForValue().set(STOCK_PRODUCT_KEY, String.valueOf(realStock)); // jedis.set(key,value)
+            log.info("扣减成功，剩余库存:{}" , realStock);
+            return "下单扣减库存成功";
+        } else {
+            log.info("扣减失败，库存不足");
+            return "下单失败，库存不足";
+        }
     }
 
     /**
@@ -50,33 +54,24 @@ public class IndexController {
     @RequestMapping("/deduct_stock")
     public String deductStock() {
         String lockKey = "lock:product_101";
-        //Boolean result = stringRedisTemplate.opsForValue().setIfAbsent(lockKey, "zhuge");
-        //stringRedisTemplate.expire(lockKey, 10, TimeUnit.SECONDS);
-        /*String clientId = UUID.randomUUID().toString();
-        Boolean result = stringRedisTemplate.opsForValue().setIfAbsent(lockKey, clientId, 30, TimeUnit.SECONDS); //jedis.setnx(k,v)
-        if (!result) {
-            return "error_code";
-        }*/
+
         //获取锁对象
         RLock redissonLock = redisson.getLock(lockKey);
         //加分布式锁
         redissonLock.lock();  //  .setIfAbsent(lockKey, clientId, 30, TimeUnit.SECONDS);
         try {
-            int stock = Integer.parseInt(stringRedisTemplate.opsForValue().get("stock:product:101")); // jedis.get("stock")
+            int stock = Integer.parseInt(stringRedisTemplate.opsForValue().get(STOCK_PRODUCT_KEY)); // jedis.get("stock")
             if (stock > 0) {
                 int realStock = stock - 1;
-                stringRedisTemplate.opsForValue().set("stock:product:101", realStock + ""); // jedis.set(key,value)
-                System.out.println("扣减成功，剩余库存:" + realStock);
+                stringRedisTemplate.opsForValue().set(STOCK_PRODUCT_KEY, String.valueOf(realStock)); // jedis.set(key,value)
+                log.info("扣减成功，剩余库存:{}" , realStock);
                 return "下单扣减库存成功";
             } else {
-                System.out.println("扣减失败，库存不足");
+                log.info("扣减失败，库存不足");
                 return "下单失败，库存不足";
             }
         } finally {
-            /*if (clientId.equals(stringRedisTemplate.opsForValue().get(lockKey))) {
-                stringRedisTemplate.delete(lockKey);
-            }*/
-            //解锁
+            // 注意需要手动释放锁
             redissonLock.unlock();
         }
     }
