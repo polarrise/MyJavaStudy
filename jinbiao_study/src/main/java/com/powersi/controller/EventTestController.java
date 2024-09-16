@@ -1,6 +1,7 @@
 package com.powersi.controller;
 
-import com.powersi.component.EventTest;
+import com.powersi.component.MailEvent;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/testPubEvent")
+@Slf4j
 public class EventTestController {
 
     @Autowired
@@ -26,7 +28,8 @@ public class EventTestController {
 
     @GetMapping("/pub-event")
     public void pub() {
-        applicationContext.publishEvent(new EventTest(this, 4));
+        log.info("业务逻辑处理中....");
+        applicationContext.publishEvent(new MailEvent(this));
     }
 
 }

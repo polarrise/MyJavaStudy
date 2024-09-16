@@ -1,5 +1,6 @@
 package com.powersi.component;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEvent;
 
 /**
@@ -13,17 +14,15 @@ import org.springframework.context.ApplicationEvent;
  * 2. 发布事件的对象，一般都是使用ApplicationContext的publishEvent方法来发布；
  * 3. 接收（或者叫监听）事件的对象，使用onApplicationEvent方法或者使用@EventListener注解的方法；
  */
-public class EventTest extends ApplicationEvent {
+@Slf4j
+public class MailEvent extends ApplicationEvent {
 
-    private final int age;
-
-    public EventTest(Object source, int age) {
+    public MailEvent(Object source) {
         super(source);
-        this.age = age;
     }
 
-    public int getAge() {
-        return age;
+    public void sendMail() {
+       log.info("邮件发送中...");
     }
 }
 
