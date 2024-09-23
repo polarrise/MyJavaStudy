@@ -17,10 +17,9 @@ public class OrderDemo {
 
     private static void init(){
         //订单延时5s消费
-        ZonedDateTime expireTime = ZonedDateTime.now(ZoneId.of("UTC")).plus(3, ChronoUnit.SECONDS);
         delayQueue.put(new Order("1", ZonedDateTime.now(ZoneId.of("UTC")).plus(1, ChronoUnit.SECONDS)));
         delayQueue.put(new Order("2", ZonedDateTime.now(ZoneId.of("UTC")).plus(2, ChronoUnit.SECONDS)));
-        delayQueue.put(new Order("3", expireTime));
+        delayQueue.put(new Order("3",  ZonedDateTime.now(ZoneId.of("UTC")).plus(3, ChronoUnit.SECONDS)));
     }
     public static void main(String[] args) throws InterruptedException {
         init();

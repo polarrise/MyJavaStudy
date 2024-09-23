@@ -2,6 +2,7 @@ package com.jinbiao.manyThreads.tulinSchool.juc.blockingqueue;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * @Author：Jinbiao
@@ -19,7 +20,6 @@ public class BlockingQueueExample {
     public static void main(String[] args) {
         // 创建一个容量为QUEUE_CAPACITY的阻塞队列
         BlockingQueue<String> queue =new ArrayBlockingQueue<>(QUEUE_CAPACITY);
-
         new Thread(()->{
             for(;;){
                 try{
