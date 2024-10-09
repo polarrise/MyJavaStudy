@@ -13,6 +13,8 @@ public class SpringTransactionTestApplication {
         UserServiceTransaction userServiceTransaction = (UserServiceTransaction)applicationContext.getBean("userServiceTransaction");
         //userServiceTransaction.test1();
         //userServiceTransaction.test2();
-        userServiceTransaction.test22();
+        //userServiceTransaction.test22();
+        userServiceTransaction.programmingTransaction1();
+        userServiceTransaction.programmingTransaction2();
     }
 }
