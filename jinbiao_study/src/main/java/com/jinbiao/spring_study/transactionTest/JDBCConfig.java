@@ -33,7 +33,7 @@ public class JDBCConfig {
     public DataSource dataSource(){
         DruidDataSource druidDataSource = new DruidDataSource();
         druidDataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        druidDataSource.setUrl("jdbc:mysql://localhost:3306/xiaofa_lawyer");
+        druidDataSource.setUrl("jdbc:mysql://localhost:3306/study_test");
         druidDataSource.setUsername("root");
         druidDataSource.setPassword("123456");
         return druidDataSource;

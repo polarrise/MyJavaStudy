@@ -1,6 +1,7 @@
 package com.jinbiao.spring_study.transactionTest;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.powersi.common.exception.customException.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,6 +20,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author wangjinbiao
@@ -64,17 +66,34 @@ public class UserServiceTransaction {
      */
     @Transactional
     public void testTransaction() {
-        jdbcTemplate.execute("insert into xiaofa_user values (3,'rise3','wang1234..','17673635094','快手')");
+        jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
         throw new NullPointerException();
     }
 
     /**
-     * 测试事务失效，1：发生this(目标对象)调用问题：
-     * 代理对象会对加了@Transactional的方法做额外的逻辑
+     * 测试事务失效1：访问权限问题
      */
     @Transactional
-    public void test1() {
-        jdbcTemplate.execute("insert into xiaofa_user values (3,'rise3','wang1234..','17673635094','快手')");
+    private void test1() {
+        jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
+        this.a();   //this对象是目标对象不是代理对象，所以不会被代理到，造成a()上面的事务注解会失效
+    }
+
+    /**
+     * 测试事务失效2：方法用final修饰或者static修饰
+     */
+    @Transactional
+    public final void test2() {
+        jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
+        this.a();   //this对象是目标对象不是代理对象，所以不会被代理到，造成a()上面的事务注解会失效
+    }
+
+    /**
+     * 测试事务失效3：方法内部调用，发生this调用问题，
+     */
+    @Transactional
+    public void test3() {
+        jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
         this.a();   //this对象是目标对象不是代理对象，所以不会被代理到，造成a()上面的事务注解会失效
     }
 
@@ -83,15 +102,86 @@ public class UserServiceTransaction {
      */
     @Transactional(propagation = Propagation.NEVER)
     public void a() {
-        jdbcTemplate.execute("insert into xiaofa_user values (5,'rise5','wang1234..','17673635094','快手')");
+        jdbcTemplate.execute("insert into jinbiao_user values (5,'rise5','wang1234..','10086','小程序')");
+    }
+
+    /**
+     * 测试事务失效4：多线程调用
+     */
+    @Transactional
+    public void test4() {
+        jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
+        CompletableFuture.runAsync(()->{
+            jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
+        });
+        throw new RuntimeException();
+    }
+
+    /**
+     * 测试事务失效5：表不支持事务
+     */
+    @Transactional
+    public void test5() {
+        jdbcTemplate.execute("insert into jinbiao_user2 values (3,'rise3','wang1234..','10086','小程序')");
+        throw new RuntimeException();
+    }
+
+    /**
+     * 测试事务失效6：错误的传播特性
+     * REQUIRED 如果当前上下文中存在事务，那么加入该事务，如果不存在事务，创建一个事务，这是默认的传播属性值。
+     * SUPPORTS 如果当前上下文存在事务，则支持事务加入事务，如果不存在事务，则使用非事务的方式执行。
+     * MANDATORY 如果当前上下文中存在事务，否则抛出异常。
+     * REQUIRES_NEW 每次都会新建一个事务，并且同时将上下文中的事务挂起，执行当前新建事务完成以后，上下文事务恢复再执行。
+     * NOT_SUPPORTED 如果当前上下文中存在事务，则挂起当前事务，然后新的方法在没有事务的环境中执行。
+     * NEVER 如果当前上下文中存在事务，则抛出异常，否则在无事务环境上执行代码。
+     * NESTED 如果当前上下文中存在事务，则嵌套事务执行，如果不存在事务，则新建事务。
+     */
+    @Transactional(propagation = Propagation.NEVER)
+    public void test6() {
+        jdbcTemplate.execute("insert into jinbiao_user values (5,'rise5','wang1234..','10086','小程序')");
+    }
+
+    /**
+     * 测试事务失效7：自己吞了异常
+     */
+    @Transactional()
+    public void test7() {
+        try {
+            jdbcTemplate.execute("insert into jinbiao_user values (5,'rise5','wang1234..','10086','小程序')");
+            int a = 1/0;
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+        }
+    }
+
+    /**
+     * 测试事务失效8：手动抛了别的异常
+     */
+    @Transactional()
+    public void test8() throws Exception {
+        try {
+            jdbcTemplate.execute("insert into jinbiao_user values (5,'rise5','wang1234..','10086','小程序')");
+            int a = 1/0;
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            throw new Exception("手动抛出Exception");
+        }
+    }
+
+    /**
+     * 测试事务失效9：自定义了回滚异常
+     */
+    @Transactional(rollbackFor = BusinessException.class)
+    public void test9() throws Exception {
+            jdbcTemplate.execute("insert into jinbiao_user values (5,'rise5','wang1234..','10086')");
     }
 
     /**
      * 测试内部调用其他的方法让事务不失效的情况：1.再新建一个代理对象userServiceTransactionBase去调用a()
      */
     @Transactional
-    public void test2() {
-        jdbcTemplate.execute("insert into xiaofa_user values (3,'rise3','wang1234..','17673635094','快手')");
+    public void test22() {
+        jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
         userServiceTransactionBase.a();   //报错 Existing transaction found for transaction marked with propagation 'never'
     }
 
@@ -99,8 +189,8 @@ public class UserServiceTransaction {
      * 测试内部调用其他的方法让事务不失效的情况：2.自己注入自己。因为Spring容器里面单例池获取出来的是代理对象userServiceTransaction
      */
     @Transactional
-    public void test22() {
-        jdbcTemplate.execute("insert into xiaofa_user values (3,'rise3','wang1234..','17673635094','快手')");
+    public void test222() {
+        jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
         userServiceTransaction.a();   //报错 Existing transaction found for transaction marked with propagation 'never'
     }
 
@@ -230,3 +320,26 @@ public class UserServiceTransaction {
     }
 
 }
+
+/**
+ CREATE TABLE `jinbiao_user` (
+ `id` int NOT NULL AUTO_INCREMENT,
+ `user_name` varchar(50) DEFAULT NULL,
+ `password` varchar(50) DEFAULT NULL,
+ `phone` varchar(50) DEFAULT NULL,
+ `source` varchar(20) DEFAULT NULL,
+ PRIMARY KEY (`id`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+ CREATE TABLE `jinbiao_user2` (
+ `id` int NOT NULL AUTO_INCREMENT,
+ `user_name` varchar(50) DEFAULT NULL,
+ `password` varchar(50) DEFAULT NULL,
+ `phone` varchar(50) DEFAULT NULL,
+ `source` varchar(20) DEFAULT NULL,
+ PRIMARY KEY (`id`)
+ ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+ */
