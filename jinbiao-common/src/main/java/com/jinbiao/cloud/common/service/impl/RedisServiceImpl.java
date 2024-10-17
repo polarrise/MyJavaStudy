@@ -28,7 +28,7 @@ public class RedisServiceImpl implements RedisService {
     void nilRecord(String cmd, String key) {
         CompletableFuture.supplyAsync(() -> {
             Throwable throwable = new Throwable();
-            log.warn("keyspace_misses " + key + " nil");
+            // log.warn("keyspace_misses " + key + " nil");
             String nil = "debug:redis:nil";
             StackTraceElement[] stack = throwable.getStackTrace();
             StringBuilder stringBuilder = new StringBuilder(String.format("%s: %s", cmd, key));
@@ -268,7 +268,7 @@ public class RedisServiceImpl implements RedisService {
 
     @Override
     public Set<String> keys(String pattern) {
-        log.warn("Do not use KEYS command: KEYS {}", pattern);
+        // log.warn("Do not use KEYS command: KEYS {}", pattern);
         return redisTemplate.keys(pattern);
     }
 
@@ -295,7 +295,7 @@ public class RedisServiceImpl implements RedisService {
                 return stringSerializer.deserialize(value);
             });
         } catch (Exception e) {
-            log.error("从缓存中读取信息异常", e);
+            // log.error("从缓存中读取信息异常", e);
             return null;
         }
     }

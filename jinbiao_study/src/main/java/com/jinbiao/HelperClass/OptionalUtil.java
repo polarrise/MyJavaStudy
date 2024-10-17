@@ -1,4 +1,4 @@
-package com.jinbiao.HelperClass.Optional;
+package com.jinbiao.HelperClass;
 
 
 import org.apache.commons.lang3.StringUtils;
@@ -13,7 +13,7 @@ import java.util.function.Supplier;
  会用 null!=obj 这样的方式存在的判断，从而令人头疼导致NPE（Null Pointer Exception 空指针异常），
  同时Optional的存在可以让代码更加简单，可读性跟高，代码写起来更高效.
  */
-public class OptionalTest {
+public class OptionalUtil {
     public String test1(){
         String str1=null;
         if (null==str1){   //常规判空:
@@ -159,7 +159,7 @@ public class OptionalTest {
         }).orElse("name为空");
     }
     public static void main(String[] args) throws MyException {
-        OptionalTest optionalTest = new OptionalTest();
+        OptionalUtil optionalTest = new OptionalUtil();
         System.out.println("test1:"+optionalTest.test1());
         System.out.println("orElse2:"+optionalTest.orElse());
         System.out.println("===========");

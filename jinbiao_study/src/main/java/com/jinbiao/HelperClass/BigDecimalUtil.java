@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * compareTo只比较值，其中返回结果：-1表示小于，0表示等于，1表示大于
  */
-public class BigDecimalTest {
+public class BigDecimalUtil {
     public static String addDay(String s, int n) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
