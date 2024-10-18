@@ -18,4 +18,8 @@
         insert into test3(name) value('test3')
     </insert>
 
+    <insert id="insertJinbiaoUser">
+        insert into jinbiao_user values (1,'rise1','wang1234..','10086','测试事务回滚private方法')
+    </insert>
+
 </mapper>

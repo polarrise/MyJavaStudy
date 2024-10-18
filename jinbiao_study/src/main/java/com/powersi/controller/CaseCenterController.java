@@ -5,6 +5,7 @@ import com.jinbiao.manyThreads.tulinSchool.juc.lock.readWriteLock.Cache;
 import com.powersi.annotation.DealResult;
 import com.powersi.annotation.Mobile;
 import com.powersi.common.api.CommonResult;
+import com.powersi.dao.TestDao;
 import com.powersi.entity.CaseCenter;
 import com.powersi.enums.JudgeTaskFinishedWaysEnum;
 import com.powersi.qo.CaseQO;
@@ -13,6 +14,7 @@ import com.powersi.service.CaseCenterService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -122,5 +124,16 @@ public class CaseCenterController {
         System.out.println(Cache.map);
         return CommonResult.success(map);
     }
+
+    @Autowired
+    private TestDao testDao;
+
+    @Transactional
+    @PostMapping("/test1")
+    private CommonResult<Void> test1(){
+        testDao.insertJinbiaoUser();
+        return CommonResult.success();
+    }
+
 
 }

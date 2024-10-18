@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -16,6 +17,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import javax.annotation.PostConstruct;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -41,11 +43,8 @@ import java.util.concurrent.CompletableFuture;
  * }
  */
 @Slf4j
-@Component
+@Service
 public class UserServiceTransaction {
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
 
     /**
      * 方式1：新建一个代理对象userServiceTransactionBase去保证事务不失效
@@ -56,27 +55,46 @@ public class UserServiceTransaction {
     /**
      * 测试内部调用其他的方法让事务不失效的情况：2.自己注入自己。因为Spring容器里面单例池获取出来的是代理对象userServiceTransaction
      */
+    // @Autowired
+    // private UserServiceTransaction userServiceTransaction;
+
     @Autowired
-    private UserServiceTransaction userServiceTransaction;
+    public static UserServiceTransaction userServiceTransaction;
 
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
-    /**
-     * 测试发生异常事务回滚：
-     * attention、attention、attention注意三遍：如果在JDBCConfig上没加@Configuration,事务是不会生效的！！！
-     */
-    @Transactional
-    public void testTransaction() {
-        jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
-        throw new NullPointerException();
+    @PostConstruct
+    public void init(){
+        userServiceTransaction = this;
     }
 
     /**
-     * 测试事务失效1：访问权限问题
+     * 测试事务失效1：访问权限问题:事务方法使用 static修饰方法
      */
     @Transactional
-    private void test1() {
-        jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
-        this.a();   //this对象是目标对象不是代理对象，所以不会被代理到，造成a()上面的事务注解会失效
+    public static void test1() {
+        /**
+         * 静态方法里面直接从Spring容器里面取jdbcTemplate此时会为null,会报空指针
+         * 需要用在bean初始化前方法里面填充好的userServiceTransaction对象的jdbcTemplate。
+         */
+        userServiceTransaction.jdbcTemplate.execute("insert into jinbiao_user values (1,'rise1','wang1234..','10086','小程序')");
+        throw new RuntimeException("异常啦,请回滚...");
+    }
+
+
+    /**
+     * 测试事务失效1：访问权限问题:事务方法使用 final 、static 修饰方法
+     */
+    @Transactional
+    public void test() {
+        userServiceTransaction.test11();
+    }
+
+    @Transactional()
+    private void test11() {
+        jdbcTemplate.execute("insert into jinbiao_user values (1,'rise1','wang1234..','10086','小程序')");
+        throw new RuntimeException("异常啦,请回滚...");
     }
 
     /**
@@ -84,8 +102,8 @@ public class UserServiceTransaction {
      */
     @Transactional
     public final void test2() {
-        jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
-        this.a();   //this对象是目标对象不是代理对象，所以不会被代理到，造成a()上面的事务注解会失效
+        jdbcTemplate.execute("insert into jinbiao_user values (2,'rise2','wang1234..','10086','小程序')");
+        throw new RuntimeException("异常啦,请回滚...");
     }
 
     /**
@@ -97,12 +115,8 @@ public class UserServiceTransaction {
         this.a();   //this对象是目标对象不是代理对象，所以不会被代理到，造成a()上面的事务注解会失效
     }
 
-    /**
-     * Propagation.NEVER：以非事务方式执行，如果存在事务，则抛出异常
-     */
-    @Transactional(propagation = Propagation.NEVER)
     public void a() {
-        jdbcTemplate.execute("insert into jinbiao_user values (5,'rise5','wang1234..','10086','小程序')");
+        jdbcTemplate.execute("insert into jinbiao_user values (3,'rise33','wang1234..','10086','小程序')");
     }
 
     /**

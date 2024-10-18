@@ -4,10 +4,12 @@ import com.alibaba.druid.pool.DruidDataSource;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
@@ -16,19 +18,12 @@ import javax.sql.DataSource;
  * @date 2023/2/14 23:53
  * @desc
  */
+//在Spring开启声明式事务支持时，启动类需要加@EnableTransactionManagement注解。‌ 这个注解告诉Spring容器要启用基于注解的事务管理功能,否则事务不生效
+@EnableTransactionManagement
+@ComponentScan({"com.jinbiao.spring_study.transactionTest"})
 @Configuration
 public class JDBCConfig {
 
-    @Value("${database.driverClassName}")
-    private String driverClassName;
-    @Value("${database.url}")
-    private String url;
-    @Value("${database.username}")
-    private String username;
-    @Value("${database.password}")
-    private String password;
-
-    //创建数据源返回数据源，Spring会自动调用该方法，并将该对象交给IOC容器管理
     @Bean
     public DataSource dataSource(){
         DruidDataSource druidDataSource = new DruidDataSource();
@@ -39,7 +34,11 @@ public class JDBCConfig {
         return druidDataSource;
     }
 
-    //创建SqlSessionFactoryBean对象,设置形参，Spring会自动去调用IOC容器中已有的数据源
+    /**
+     * 如果使用到mybatis需要给sqlSessionFactoryBean注入数据源信息
+     * @param dataSource
+     * @return
+     */
     @Bean
     public SqlSessionFactoryBean sqlSessionFactoryBean(DataSource dataSource){
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
@@ -56,6 +55,6 @@ public class JDBCConfig {
     public PlatformTransactionManager transactionManager(){
         DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
         transactionManager.setDataSource(dataSource());
-        return  transactionManager;
+        return transactionManager;
     }
 }

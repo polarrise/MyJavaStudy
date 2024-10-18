@@ -9,12 +9,16 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
  */
 public class SpringTransactionTestApplication {
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(TransactionConfig.class);
+        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(JDBCConfig.class);
         UserServiceTransaction userServiceTransaction = (UserServiceTransaction)applicationContext.getBean("userServiceTransaction");
-        //userServiceTransaction.test1();
+
+        // 编程式事务测试：
+        // userServiceTransaction.programmingTransaction1();
+        // userServiceTransaction.programmingTransaction2();
+
+        // 声明式事务测试：
+        userServiceTransaction.test1();
         //userServiceTransaction.test2();
         //userServiceTransaction.test22();
-        userServiceTransaction.programmingTransaction1();
-        userServiceTransaction.programmingTransaction2();
     }
 }

@@ -87,11 +87,11 @@ public class OrderServiceImpl implements OrderService {
                     return "您操作过快,请稍微再试";
                 }
 
-                OmsOrder omsOrder = new OmsOrder();
-                omsOrder.setMemberId(Integer.valueOf(currentMember.getId().toString()));
-                omsOrder.setReceivedAddress("createOrder2");
-                omsOrder.setReceivedName("rise2");
-                omsOrderMapper.insert(omsOrder);
+                // OmsOrder omsOrder = new OmsOrder();
+                // omsOrder.setMemberId(currentMember.getId());
+                // omsOrder.setReceivedAddress("createOrder2");
+                // omsOrder.setReceivedName("rise2");
+                // omsOrderMapper.insert(omsOrder);
                 return "订单创建成功";
             } catch (Exception e) {
                 log.error("createOrder: {}", e.getMessage(), e);
@@ -110,11 +110,11 @@ public class OrderServiceImpl implements OrderService {
         if(CollectionUtil.isNotEmpty(omsOrders)){
             return "您操作过快,请稍微再试";
         }
-        OmsOrder omsOrder = new OmsOrder();
-        omsOrder.setMemberId(Integer.valueOf(currentMember.getId().toString()));
-        omsOrder.setReceivedAddress("createOrder3");
-        omsOrder.setReceivedName("rise3");
-        omsOrderMapper.insert(omsOrder);
+        // OmsOrder omsOrder = new OmsOrder();
+        // omsOrder.setMemberId(currentMember.getId());
+        // omsOrder.setReceivedAddress("createOrder3");
+        // omsOrder.setReceivedName("rise3");
+        // omsOrderMapper.insert(omsOrder);
         return "订单创建成功";
     }
 
@@ -125,12 +125,11 @@ public class OrderServiceImpl implements OrderService {
             if("hasOrdered".equals(redisService.get(hasOrderedKey))){
                 return "您操作过快,请稍微再试";
             }
-            OmsOrder omsOrder = new OmsOrder();
-            omsOrder.setMemberId(Integer.valueOf(currentMember.getId().toString()));
-            omsOrder.setReceivedAddress("createOrder4");
-            omsOrder.setReceivedName("rise4");
-
-            omsOrderMapper.insert(omsOrder);
+            // OmsOrder omsOrder = new OmsOrder();
+            // omsOrder.setMemberId(currentMember.getId());
+            // omsOrder.setReceivedAddress("createOrder4");
+            // omsOrder.setReceivedName("rise4");
+            // omsOrderMapper.insert(omsOrder);
             redisService.set("createOder4:"+currentMember.getId(),"hasOrdered",30000);
             return "订单创建成功";
         } catch (Exception e) {
@@ -143,12 +142,12 @@ public class OrderServiceImpl implements OrderService {
     public String createByDbUniqueIndex(Long userId) {
         UmsMember currentMember = securityMemberService.getCurrentMember();
         try{
-            OmsOrder omsOrder = new OmsOrder();
-            omsOrder.setMemberId(Integer.valueOf(currentMember.getId().toString()));
-            omsOrder.setReceivedAddress("createOrder4");
-            omsOrder.setReceivedName("rise4");
-            omsOrder.setProductId(1);
-            omsOrderMapper.insert(omsOrder);
+            // OmsOrder omsOrder = new OmsOrder();
+            // omsOrder.setMemberId(currentMember.getId());
+            // omsOrder.setReceivedAddress("createOrder4");
+            // omsOrder.setReceivedName("rise4");
+            // omsOrder.setProductId(1);
+            // omsOrderMapper.insert(omsOrder);
             return "订单创建成功!";
         }catch (DuplicateKeyException e){
             log.info("重复下单违反唯一约束异常:"+e.getMessage());
@@ -158,16 +157,17 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public String updateByDBVersion(Long userId,Integer version) {
-        UmsMember currentMember = securityMemberService.getCurrentMember();
-        Integer memberId = Integer.valueOf(currentMember.getId().toString());
-        OmsOrder omsOrder = new OmsOrder();
-        omsOrder.setMemberId(memberId);
-        omsOrder.setProductId(1);
-        omsOrder.setReceivedName("rise5");
-        omsOrder.setVersion(version+1);
-        OmsOrderExample omsOrderExample = new OmsOrderExample();
-        omsOrderExample.createCriteria().andMemberIdEqualTo(memberId).andProductIdEqualTo(1).andVersionEqualTo(version);
-        int i = omsOrderMapper.updateByExampleSelective(omsOrder, omsOrderExample);
-        return  i>0 ?"订单更新成功!":"您操作过快,请稍微再试";
+        // UmsMember currentMember = securityMemberService.getCurrentMember();
+        // Integer memberId = Integer.valueOf(currentMember.getId().toString());
+        // OmsOrder omsOrder = new OmsOrder();
+        // omsOrder.setMemberId(currentMember.getId());
+        // omsOrder.setProductId(1);
+        // omsOrder.setReceivedName("rise5");
+        // omsOrder.setVersion(version+1);
+        // OmsOrderExample omsOrderExample = new OmsOrderExample();
+        // omsOrderExample.createCriteria().andMemberIdEqualTo(memberId).andProductIdEqualTo(1).andVersionEqualTo(version);
+        // int i = omsOrderMapper.updateByExampleSelective(omsOrder, omsOrderExample);
+        // return  i>0 ?"订单更新成功!":"您操作过快,请稍微再试";
+        return null;
     }
 }

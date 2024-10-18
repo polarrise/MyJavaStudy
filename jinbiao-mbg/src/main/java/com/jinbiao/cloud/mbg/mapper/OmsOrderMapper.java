@@ -2,8 +2,6 @@ package com.jinbiao.cloud.mbg.mapper;
 
 import com.jinbiao.cloud.mbg.model.OmsOrder;
 import com.jinbiao.cloud.mbg.model.OmsOrderExample;
-import com.jinbiao.cloud.mbg.model.XiaofaUser;
-import com.jinbiao.cloud.mbg.model.XiaofaUserExample;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

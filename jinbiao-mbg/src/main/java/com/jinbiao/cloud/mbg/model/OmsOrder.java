@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 @Data
 public class OmsOrder implements Serializable {
-    private Integer memberId;
+    private Long memberId;
 
     private String receivedAddress;
 
