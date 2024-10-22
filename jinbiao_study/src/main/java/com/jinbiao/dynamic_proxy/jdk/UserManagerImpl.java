@@ -12,4 +12,13 @@ public class UserManagerImpl implements UserManager{
         System.out.println("调用了删除的方法！");
         System.out.println("传入参数为 userName: "+userName);
     }
+
+
+    void delUser2(String userName){
+        System.out.println(userName);
+    };
+
+    protected void delUser3(String userName){
+        System.out.println(userName);
+    };
 }

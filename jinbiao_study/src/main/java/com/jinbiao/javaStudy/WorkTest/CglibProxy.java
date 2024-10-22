@@ -1,6 +1,7 @@
-package com.jinbiao.dynamic_proxy.Cglib;
+package com.jinbiao.javaStudy.WorkTest;
 
 import com.jinbiao.dynamic_proxy.jdk.UserManagerImpl;
+import com.jinbiao.javaStudy.modifier.Parent;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
@@ -11,7 +12,7 @@ import java.lang.reflect.Method;
  * Cglib动态代理是利用asm开源包，对代理对象类的class文件加载进来，通过修改其字节码生成子类来处理。
  * Cglib动态代理，实现MethodInterceptor接口
  */
-public class CglibProxy implements MethodInterceptor {
+public class CglibProxy extends Parent implements MethodInterceptor{
 
     //需要代理的目标对象
     private Object target;
@@ -48,5 +49,16 @@ public class CglibProxy implements MethodInterceptor {
          *  protected: 可以在本包下和其子类访问,把CglibProxy类换到jdk下的包目录就可以了
          */
         // proxy.delUser2("222");
+        //  proxy.delUser3("333");
+
+        /** 不在同一包：父类的代理对象是访问不到父类的protected方法的
+        Parent parentProxy = (Parent) cglib.getCglibProxy(new Parent());
+        parentProxy.test();
+        parentProxy.test2();
+         */
+
+        // 子类可以访问到父类的protected方法
+        CglibProxy pro = new CglibProxy();
+        pro.test();
     }
 }

@@ -55,32 +55,32 @@ public class UserServiceTransaction {
     /**
      * 测试内部调用其他的方法让事务不失效的情况：2.自己注入自己。因为Spring容器里面单例池获取出来的是代理对象userServiceTransaction
      */
-    // @Autowired
-    // private UserServiceTransaction userServiceTransaction;
-
     @Autowired
-    public static UserServiceTransaction userServiceTransaction;
+    private UserServiceTransaction userServiceTransaction;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    @PostConstruct
-    public void init(){
-        userServiceTransaction = this;
-    }
+    // @Autowired
+    // public static UserServiceTransaction userServiceTransaction;
 
-    /**
-     * 测试事务失效1：访问权限问题:事务方法使用 static修饰方法
-     */
-    @Transactional
-    public static void test1() {
-        /**
-         * 静态方法里面直接从Spring容器里面取jdbcTemplate此时会为null,会报空指针
-         * 需要用在bean初始化前方法里面填充好的userServiceTransaction对象的jdbcTemplate。
-         */
-        userServiceTransaction.jdbcTemplate.execute("insert into jinbiao_user values (1,'rise1','wang1234..','10086','小程序')");
-        throw new RuntimeException("异常啦,请回滚...");
-    }
+    // @PostConstruct
+    // public void init(){
+    //     userServiceTransaction = this;
+    // }
+    //
+    // /**
+    //  * 测试事务失效1：访问权限问题:事务方法使用 static修饰方法
+    //  */
+    // @Transactional
+    // public static void test1() {
+    //     /**
+    //      * 静态方法里面直接从Spring容器里面取jdbcTemplate此时会为null,会报空指针
+    //      * 需要用在bean初始化前方法里面填充好的userServiceTransaction对象的jdbcTemplate。
+    //      */
+    //     userServiceTransaction.jdbcTemplate.execute("insert into jinbiao_user values (1,'rise1','wang1234..','10086','小程序')");
+    //     throw new RuntimeException("异常啦,请回滚...");
+    // }
 
 
     /**
@@ -109,26 +109,35 @@ public class UserServiceTransaction {
     /**
      * 测试事务失效3：方法内部调用，发生this调用问题，
      */
-    @Transactional
     public void test3() {
-        jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
         this.a();   //this对象是目标对象不是代理对象，所以不会被代理到，造成a()上面的事务注解会失效
+        userServiceTransaction.a();   //this对象是目标对象不是代理对象，所以不会被代理到，造成a()上面的事务注解会失效
+
     }
 
+    @Transactional
     public void a() {
         jdbcTemplate.execute("insert into jinbiao_user values (3,'rise33','wang1234..','10086','小程序')");
+        throw new RuntimeException("异常啦,请回滚...");
     }
 
+    @Autowired
+    private RoleService roleService;
     /**
      * 测试事务失效4：多线程调用
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void test4() {
         jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
-        CompletableFuture.runAsync(()->{
-            jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
-        });
-        throw new RuntimeException();
+        new Thread(() -> {
+            roleService.insertRole();
+            throw new RuntimeException();
+        }).start();
+
+        // CompletableFuture.runAsync(()->{
+        //     roleService.insertRole();
+        //     throw new RuntimeException();
+        // });
     }
 
     /**
@@ -355,5 +364,10 @@ public class UserServiceTransaction {
  PRIMARY KEY (`id`)
  ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+ CREATE TABLE `jinbiao_role` (
+ `id` int NOT NULL,
+ `role` varchar(255) DEFAULT NULL,
+ PRIMARY KEY (`id`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
  */
