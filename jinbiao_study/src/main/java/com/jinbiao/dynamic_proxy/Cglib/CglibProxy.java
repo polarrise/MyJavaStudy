@@ -47,6 +47,6 @@ public class CglibProxy implements MethodInterceptor {
         /**
          *  protected: 可以在本包下和其子类访问,把CglibProxy类换到jdk下的包目录就可以了
          */
-        // proxy.delUser2("222");
+        proxy.delUser4("222");
     }
 }

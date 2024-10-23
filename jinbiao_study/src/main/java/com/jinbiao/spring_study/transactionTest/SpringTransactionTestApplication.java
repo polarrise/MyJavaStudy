@@ -20,6 +20,6 @@ public class SpringTransactionTestApplication {
         // userServiceTransaction.test();
         // userServiceTransaction.test2();
         // userServiceTransaction.test3();
-        userServiceTransaction.test4();
+        userServiceTransaction.test1();
     }
 }

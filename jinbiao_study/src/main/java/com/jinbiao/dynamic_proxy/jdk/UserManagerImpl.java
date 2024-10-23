@@ -21,4 +21,8 @@ public class UserManagerImpl implements UserManager{
     protected void delUser3(String userName){
         System.out.println(userName);
     };
+
+    public static void delUser4(String userName){
+        System.out.println(userName);
+    };
 }
