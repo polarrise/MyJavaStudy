@@ -3,6 +3,7 @@ package com.jinbiao.spring_study.transactionTest;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.powersi.common.exception.customException.BusinessException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -121,6 +122,8 @@ public class UserServiceTransaction {
         this.a();   //this对象是目标对象不是代理对象，所以不会被代理到，造成a()上面的事务注解会失效
         userServiceTransaction.a();   //this对象是目标对象不是代理对象，所以不会被代理到，造成a()上面的事务注解会失效
 
+        // 拿到当前的动态代理对象
+        ((UserServiceTransaction)AopContext.currentProxy()).a();
     }
 
     @Transactional
