@@ -2,13 +2,15 @@ package com.jinbiao.spring_study.transactionTest;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * @author WangJinbiao
  * @date 2023/2/14 21:54
  * @desc
  */
 public class SpringTransactionTestApplication {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(JDBCConfig.class);
         UserServiceTransaction userServiceTransaction = (UserServiceTransaction)applicationContext.getBean("userServiceTransaction");
 
@@ -20,6 +22,6 @@ public class SpringTransactionTestApplication {
         // userServiceTransaction.test();
         // userServiceTransaction.test2();
         // userServiceTransaction.test3();
-        userServiceTransaction.test1();
+        userServiceTransaction.test4();
     }
 }

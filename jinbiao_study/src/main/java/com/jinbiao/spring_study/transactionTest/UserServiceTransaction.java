@@ -7,7 +7,6 @@ import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -18,12 +17,12 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import javax.annotation.PostConstruct;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author wangjinbiao
@@ -56,40 +55,40 @@ public class UserServiceTransaction {
     /**
      * 测试内部调用其他的方法让事务不失效的情况：2.自己注入自己。因为Spring容器里面单例池获取出来的是代理对象userServiceTransaction
      */
+    @Autowired
+    private UserServiceTransaction userServiceTransaction;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
     // @Autowired
-    // private UserServiceTransaction userServiceTransaction;
+    // private static UserServiceTransaction userServiceTransaction;
     //
+    // /**
+    //  * Spring进行属性注入的时候会去判断属性是不是static的。
+    //  * 具体是在AutowiredAnnotationBeanPostProcessor 如果是static会提示- Autowired annotation is not supported on static fields
+    //  * 本质：static属性，是类所有，不属于对象所有。Spring是管理对象的容器
+    //  */
     // @Autowired
-    // private JdbcTemplate jdbcTemplate;
-
-    @Autowired
-    private static UserServiceTransaction userServiceTransaction;
-
-    /**
-     * Spring进行属性注入的时候会去判断属性是不是static的。
-     * 具体是在AutowiredAnnotationBeanPostProcessor 如果是static会提示- Autowired annotation is not supported on static fields
-     * 本质：static属性，是类所有，不属于对象所有。Spring是管理对象的容器
-     */
-    @Autowired
-    private static JdbcTemplate jdbcTemplate;
-
-    @PostConstruct
-    public void init(){
-        userServiceTransaction = this;
-    }
-
-    /**
-     * 测试事务失效1：访问权限问题:事务方法使用 static修饰方法
-     */
-    @Transactional
-    public static void test1() {
-        /**
-         * 静态方法里面直接从Spring容器里面取jdbcTemplate此时会为null,会报空指针
-         * 需要用在bean初始化前方法里面填充好的userServiceTransaction对象的jdbcTemplate。
-         */
-        jdbcTemplate.execute("insert into jinbiao_user values (1,'rise1','wang1234..','10086','小程序')");
-        throw new RuntimeException("异常啦,请回滚...");
-    }
+    // private static JdbcTemplate jdbcTemplate;
+    //
+    // @PostConstruct
+    // public void init(){
+    //     userServiceTransaction = this;
+    // }
+    //
+    // /**
+    //  * 测试事务失效1：访问权限问题:事务方法使用 static修饰方法
+    //  */
+    // @Transactional
+    // public static void test1() {
+    //     /**
+    //      * 静态方法里面直接从Spring容器里面取jdbcTemplate此时会为null,会报空指针
+    //      * 需要用在bean初始化前方法里面填充好的userServiceTransaction对象的jdbcTemplate。
+    //      */
+    //     jdbcTemplate.execute("insert into jinbiao_user values (1,'rise1','wang1234..','10086','小程序')");
+    //     throw new RuntimeException("异常啦,请回滚...");
+    // }
 
 
     /**
@@ -119,10 +118,14 @@ public class UserServiceTransaction {
      * 测试事务失效3：方法内部调用，发生this调用问题，
      */
     public void test3() {
-        this.a();   //this对象是目标对象不是代理对象，所以不会被代理到，造成a()上面的事务注解会失效
-        userServiceTransaction.a();   //this对象是目标对象不是代理对象，所以不会被代理到，造成a()上面的事务注解会失效
 
-        // 拿到当前的动态代理对象
+        // this对象是目标对象不是代理对象，所以不会被代理到，造成a()上面的事务注解会失效
+        // this.a();
+
+        // 解决办法1：再次注入userServiceTransaction,debug看出是个cglib代理对象,所以事务能生效
+        // userServiceTransaction.a();
+
+        // 解决办法2：拿到当前的动态代理对象调用事务a方法
         ((UserServiceTransaction)AopContext.currentProxy()).a();
     }
 
@@ -137,18 +140,38 @@ public class UserServiceTransaction {
     /**
      * 测试事务失效4：多线程调用
      */
-    @Transactional(rollbackFor = Exception.class)
-    public void test4() {
-        jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
-        new Thread(() -> {
-            roleService.insertRole();
-            throw new RuntimeException();
-        }).start();
-
+    @Transactional
+    public void test4() throws ExecutionException, InterruptedException {
+        // 1.主线程报错，子线程报错
+        // jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
         // CompletableFuture.runAsync(()->{
         //     roleService.insertRole();
-        //     throw new RuntimeException();
+        //     throw new RuntimeException("子线程出错啦...");
+        // }).join();
+        // throw new RuntimeException("主线程出错啦...");
+
+        // 2.主线程报错，子线程不报错
+        // jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
+        // CompletableFuture.runAsync(()->{
+        //     roleService.insertRole();
+        // }).join();
+        // throw new RuntimeException("主线程出错啦...");
+
+        // 3.主线程不报错，子线程报错
+        jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
+        CompletableFuture.runAsync(()->{
+            roleService.insertRole();
+            throw new RuntimeException("子线程出错啦...");
+        }).join();
+
+        // jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
+        // CompletableFuture<Integer> integerCompletableFuture = CompletableFuture.supplyAsync(() -> {
+        //     roleService.insertRole();
+        //     throw new RuntimeException("子线程出错啦...");
         // });
+        //
+        // integerCompletableFuture.get();
+
     }
 
     /**
