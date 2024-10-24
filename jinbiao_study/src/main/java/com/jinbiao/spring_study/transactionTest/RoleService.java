@@ -14,5 +14,6 @@ public class RoleService {
     @Transactional
     public void insertRole() {
         jdbcTemplate.execute("insert into jinbiao_role values (1,'admin')");
+        throw new RuntimeException("子线程出错啦...");
     }
 }

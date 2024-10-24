@@ -5,6 +5,7 @@ import com.powersi.common.exception.customException.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
 
 /**
  * @author wangjinbiao
@@ -136,41 +138,43 @@ public class UserServiceTransaction {
     }
 
     @Autowired
+    @Qualifier("commonPool")
+    private ExecutorService tulingThreadPoolExecutor;
+
+    @Autowired
     private RoleService roleService;
     /**
      * 测试事务失效4：多线程调用
      */
     @Transactional
-    public void test4() throws ExecutionException, InterruptedException {
+    public void test4() {
         // 1.主线程报错，子线程报错
         // jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
         // CompletableFuture.runAsync(()->{
         //     roleService.insertRole();
         //     throw new RuntimeException("子线程出错啦...");
-        // }).join();
+        // },tulingThreadPoolExecutor).join();
         // throw new RuntimeException("主线程出错啦...");
 
-        // 2.主线程报错，子线程不报错
+        // 2.主线程报错，子线程不报错：主线程jinbiao_user表数据回滚，子线程jinbiao_role 表数据未回滚
         // jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
         // CompletableFuture.runAsync(()->{
         //     roleService.insertRole();
-        // }).join();
+        // },tulingThreadPoolExecutor).join();
         // throw new RuntimeException("主线程出错啦...");
 
-        // 3.主线程不报错，子线程报错
+        // 3.主线程不报错，子线程事务方法之后报错，join等待子线程执行完：主线程回滚、子线程不回滚
+        //jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
+        //CompletableFuture.runAsync(()->{
+        //    roleService.insertRole();
+        //    throw new RuntimeException("子线程出错啦...");
+        //}).join();
+
+        // 4.主线程不报错，子线程事务方法内报错，join等待子线程执行完：主线程回滚、子线程回滚
         jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
         CompletableFuture.runAsync(()->{
             roleService.insertRole();
-            throw new RuntimeException("子线程出错啦...");
         }).join();
-
-        // jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
-        // CompletableFuture<Integer> integerCompletableFuture = CompletableFuture.supplyAsync(() -> {
-        //     roleService.insertRole();
-        //     throw new RuntimeException("子线程出错啦...");
-        // });
-        //
-        // integerCompletableFuture.get();
 
     }
 
