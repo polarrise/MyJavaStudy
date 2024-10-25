@@ -147,34 +147,76 @@ public class UserServiceTransaction {
      * 测试事务失效4：多线程调用
      */
     @Transactional
-    public void test4() {
-        // 1.主线程报错，子线程报错
-        // jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
-        // CompletableFuture.runAsync(()->{
-        //     roleService.insertRole();
-        //     throw new RuntimeException("子线程出错啦...");
-        // },tulingThreadPoolExecutor).join();
-        // throw new RuntimeException("主线程出错啦...");
+    public void test4() throws ExecutionException, InterruptedException {
+        /**
+         *  1.主线程事务方法报错，子线程事务方法报错，主线程使用join等待结果: jinbiao_user、jinbiao_role表数据都回滚，说明主线程和子线程各自的事务都是生效的
+         * 原理解释：join()获取结果，子线程任务异常抛出的是CompletionException属于运行时异常，所以子线程/主线程的事务都可以生效
+         */
+         //jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
+         //CompletableFuture.runAsync(()->{
+         //    roleService.insertRole2();
+         //},tulingThreadPoolExecutor).join();
+         //throw new RuntimeException("主线程出错啦...");
 
-        // 2.主线程报错，子线程不报错：主线程jinbiao_user表数据回滚，子线程jinbiao_role 表数据未回滚
-        // jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
-        // CompletableFuture.runAsync(()->{
-        //     roleService.insertRole();
-        // },tulingThreadPoolExecutor).join();
-        // throw new RuntimeException("主线程出错啦...");
-
-        // 3.主线程不报错，子线程事务方法之后报错，join等待子线程执行完：主线程回滚、子线程不回滚
+        /**
+         * 2.主线程事务方法报错，子线程事务方法报错，主线程使用get等待结果: jinbiao_user不回滚！！、jinbiao_role表数据回滚。
+         * 原理解释：get()获取结果，子线程任务异常抛出的是ExecutionException非运行时异常，不管主线程抛出的运行时异常了。所以主线程的事务失效了
+         */
         //jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
         //CompletableFuture.runAsync(()->{
-        //    roleService.insertRole();
-        //    throw new RuntimeException("子线程出错啦...");
+        //    roleService.insertRole2();
+        //},tulingThreadPoolExecutor).get();
+        //
+        //throw new RuntimeException("主线程出错啦...");
+
+        /**
+         * 3.主线程事务方法报错，子线程事务方法报错，主线程使用get等待结果: jinbiao_user回滚、jinbiao_role表数据回滚。
+         * 原理解释：get()获取结果，子线程任务异常抛出的是ExecutionException非运行时异常，我们手动捕捉ExecutionException| InterruptedException，抛出运行时异常,主线程事务就还能生效
+         */
+        //jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
+        //  try {
+        //      CompletableFuture.runAsync(()->{
+        //          roleService.insertRole2();
+        //      },tulingThreadPoolExecutor).get();
+        //  }catch (InterruptedException | ExecutionException e){
+        //      throw new RuntimeException("子线程出错啦...");
+        //  }
+        //throw new RuntimeException("主线程出错啦...");
+
+        /**
+         * 4.主线程事务方法报错，子线程事务方法不报错：主线程jinbiao_user表数据回滚，子线程jinbiao_role 表数据未回滚，说明主线程子线程并不共同一个事务
+         */
+        // jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
+        // CompletableFuture.runAsync(()->{
+        //     roleService.insertRole1();
+        // },tulingThreadPoolExecutor).join();
+        // throw new RuntimeException("主线程出错啦...");
+
+        /**
+         * 5.主线程不报错，子线程事务方法报错，join等待子线程执行完：主线程回滚、子线程回滚。原因join()方法抛出的是CompletionException属于运行时异常，造成主线程事务也回滚
+         */
+        //jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
+        //CompletableFuture.runAsync(()->{
+        //    roleService.insertRole2();
         //}).join();
 
-        // 4.主线程不报错，子线程事务方法内报错，join等待子线程执行完：主线程回滚、子线程回滚
-        jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
-        CompletableFuture.runAsync(()->{
-            roleService.insertRole();
-        }).join();
+        /**
+         * 6.主线程不报错，子线程事务方法内报错，get等待子线程执行完：主线程不回滚、子线程回滚。原因get()方法抛出的是ExecutionException| InterruptedException非运行时异常，造成主线程事务失效，不回滚了。子线程内部事务是抛出运行时异常所以子线程事务生效。
+         */
+        //jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
+        //CompletableFuture.runAsync(()->{
+        //    roleService.insertRole2();
+        //}).get();
+
+        // 7.主线程不报错，子线程事务方法内报错，get等待子线程执行完：主线程回滚、子线程回滚
+       jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
+       try {
+           CompletableFuture.runAsync(()->{
+               roleService.insertRole2();
+           }).get();
+       }catch (InterruptedException | ExecutionException e){
+           throw new RuntimeException("子线程出错啦...");
+       }
 
     }
 
