@@ -10,7 +10,7 @@ import java.util.concurrent.ExecutionException;
  * @desc
  */
 public class SpringTransactionTestApplication {
-    public static void main(String[] args) throws ExecutionException, InterruptedException {
+    public static void main(String[] args) throws Exception {
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(JDBCConfig.class);
         UserServiceTransaction userServiceTransaction = (UserServiceTransaction)applicationContext.getBean("userServiceTransaction");
 
@@ -23,5 +23,11 @@ public class SpringTransactionTestApplication {
         // userServiceTransaction.test2();
         // userServiceTransaction.test3();
         userServiceTransaction.test4();
+        // userServiceTransaction.test6();
+        // userServiceTransaction.test7();
+        // userServiceTransaction.test8();
+        // userServiceTransaction.test9();
+        // userServiceTransaction.test10();
+
     }
 }

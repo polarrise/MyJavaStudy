@@ -18,6 +18,8 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import java.io.IOError;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -209,28 +211,34 @@ public class UserServiceTransaction {
         //}).get();
 
         // 7.主线程不报错，子线程事务方法内报错，get等待子线程执行完：主线程回滚、子线程回滚
+       // jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
+       // try {
+       //     CompletableFuture.runAsync(()->{
+       //         roleService.insertRole2();
+       //     }).get();
+       // }catch (InterruptedException | ExecutionException e){
+       //     throw new RuntimeException("子线程出错啦...");
+       // }
+
        jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
-       try {
-           CompletableFuture.runAsync(()->{
-               roleService.insertRole2();
-           }).get();
-       }catch (InterruptedException | ExecutionException e){
-           throw new RuntimeException("子线程出错啦...");
-       }
+       new Thread(()->{
+           roleService.insertRole2();
+       }).start();
+       Thread.currentThread().join();
 
     }
 
     /**
-     * 测试事务失效5：表不支持事务
+     * 测试事务失效6：表不支持事务
      */
     @Transactional
-    public void test5() {
-        jdbcTemplate.execute("insert into jinbiao_user2 values (3,'rise3','wang1234..','10086','小程序')");
+    public void test6() {
+        jdbcTemplate.execute("insert into jinbiao_user2 values (1,'rise1','wang1234..','10086','小程序')");
         throw new RuntimeException();
     }
 
     /**
-     * 测试事务失效6：错误的传播特性
+     * 测试事务失效7：错误的传播特性
      * REQUIRED 如果当前上下文中存在事务，那么加入该事务，如果不存在事务，创建一个事务，这是默认的传播属性值。
      * SUPPORTS 如果当前上下文存在事务，则支持事务加入事务，如果不存在事务，则使用非事务的方式执行。
      * MANDATORY 如果当前上下文中存在事务，否则抛出异常。
@@ -240,43 +248,50 @@ public class UserServiceTransaction {
      * NESTED 如果当前上下文中存在事务，则嵌套事务执行，如果不存在事务，则新建事务。
      */
     @Transactional(propagation = Propagation.NEVER)
-    public void test6() {
-        jdbcTemplate.execute("insert into jinbiao_user values (5,'rise5','wang1234..','10086','小程序')");
-    }
-
-    /**
-     * 测试事务失效7：自己吞了异常
-     */
-    @Transactional()
     public void test7() {
-        try {
-            jdbcTemplate.execute("insert into jinbiao_user values (5,'rise5','wang1234..','10086','小程序')");
-            int a = 1/0;
-        }catch (Exception e){
-            log.error(e.getMessage(),e);
-        }
+        jdbcTemplate.execute("insert into jinbiao_user values (7,'rise7','wang1234..','10086','小程序')");
+        throw new RuntimeException();
     }
 
     /**
-     * 测试事务失效8：手动抛了别的异常
+     * 测试事务失效8：自己吞了异常
      */
     @Transactional()
-    public void test8() throws Exception {
+    public void test8() {
         try {
-            jdbcTemplate.execute("insert into jinbiao_user values (5,'rise5','wang1234..','10086','小程序')");
+            jdbcTemplate.execute("insert into jinbiao_user values (8,'rise8','wang1234..','10086','小程序')");
             int a = 1/0;
         }catch (Exception e){
-            log.error(e.getMessage(),e);
-            throw new Exception("手动抛出Exception");
+            log.error("异常了..{}",e.getMessage());
         }
     }
 
     /**
-     * 测试事务失效9：自定义了回滚异常
+     * 测试事务失效9：手动抛了别的异常
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void test9() throws Exception {
+        try {
+            jdbcTemplate.execute("insert into jinbiao_user values (9,'rise9','wang1234..','10086','小程序')");
+            int a = 1/0;
+        }catch (Exception e){
+            log.error("异常了..{}",e.getMessage());
+            // throw new Exception("手动抛出Exception");  -- 不能回滚
+            // throw new IOException("手动抛出IOException");  -- 不能回滚
+            // throw new RuntimeException("手动抛出RuntimeException"); -- 能回滚
+            //  throw new NoSuchMethodError("手动抛出Error错误");  -- 能回滚
+            throw new OutOfMemoryError("手动抛出java内存溢出Error错误");  // 能回滚
+        }
+    }
+
+    /**
+     * 测试事务失效10：自定义了回滚异常
      */
     @Transactional(rollbackFor = BusinessException.class)
-    public void test9() throws Exception {
-            jdbcTemplate.execute("insert into jinbiao_user values (5,'rise5','wang1234..','10086')");
+    public void test10() throws IOException {
+         jdbcTemplate.execute("insert into jinbiao_user values (10,'rise10','wang1234..','10086','小程序')");
+         throw new IOException("手动抛出IOException");   // -- 不能回滚
+         //   throw new RuntimeException("手动抛出RuntimeException");  // -- 能回滚
     }
 
     /**
