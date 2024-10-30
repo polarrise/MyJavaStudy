@@ -30,7 +30,7 @@ public class SpringTransactionTestApplication {
         // userServiceTransaction.test10();
 
 
-        userServiceTransaction.programmingTransaction11();
+        userServiceTransaction.programmingTransaction1_1();
 
     }
 }

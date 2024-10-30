@@ -152,11 +152,16 @@ public class UserServiceTransaction {
      */
     @Transactional
     public void test4() throws ExecutionException, InterruptedException {
+        // 插入用户信息
         jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
-        CompletableFuture.runAsync(()->{
-            jdbcTemplate.execute("insert into jinbiao_role values (2,'admin')");
-            throw new RuntimeException("子线程出错啦...");
-        },tulingThreadPoolExecutor).join();
+        try {
+            CompletableFuture.runAsync(()->{
+                roleService.insertRole2();
+            },tulingThreadPoolExecutor).get();  //.get()阻塞等待,则用户信息也不回滚
+        }catch (Exception e){
+            throw new RuntimeException("角色信息业务出错啦...");
+        }
+        //throw new RuntimeException("用户信息业务出错啦...");
 
         /**
          *  1.主线程事务方法报错，子线程事务方法报错，主线程使用join等待结果: jinbiao_user、jinbiao_role表数据都回滚，说明主线程和子线程各自的事务都是生效的
@@ -418,7 +423,26 @@ public class UserServiceTransaction {
 
     AtomicBoolean needRollBack = new AtomicBoolean(false);
 
-    public void programmingTransaction11() {
+    // 一个事务状态是回滚不了的！！！
+    public void programmingTransaction1_1() {
+        transactionTemplate.execute(status -> {
+            // 插入用户信息
+            jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
+            CompletableFuture.runAsync(() -> {
+                try {
+                    // 插入角色信息
+                    jdbcTemplate.execute("insert into jinbiao_role values (3,'admin')");
+                    throw new RuntimeException("子线程出错啦...");
+                } catch (Exception e) {
+                    status.setRollbackOnly(); // 设置回滚标志
+                }
+            }, tulingThreadPoolExecutor).join();
+            return "事务方法执行完成";
+        });
+    }
+
+
+    public void programmingTransaction1_2() {
         // 开启主事务：
         transactionTemplate.execute(new TransactionCallbackWithoutResult() {
             @Override
@@ -428,27 +452,24 @@ public class UserServiceTransaction {
                     jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
                     log.info("事务中执行的操作");
 
-                    // 开启子事务：
-                    transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-                        @Override
-                        protected void doInTransactionWithoutResult(TransactionStatus childStatus) {
-                                CompletableFuture.runAsync(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        try {
-                                            jdbcTemplate.execute("insert into jinbiao_role values (2,'admin')");
-                                            throw new RuntimeException("子线程出错啦...");
-                                        }catch (Exception e){
-                                            log.info("子线程执行失败了...回滚自己的结果");
-                                            // 手动回滚子线程数据
-                                            childStatus.setRollbackOnly();
-                                            // 设置标记位给主线程回滚
-                                            needRollBack.set(true);
-                                        }
-                                    }
-                                }, tulingThreadPoolExecutor).join();
-                        }
-                    });
+                    CompletableFuture.runAsync(()->{
+                        // 开启子事务：
+                        transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+                            @Override
+                            protected void doInTransactionWithoutResult(TransactionStatus childStatus) {
+                                try {
+                                    jdbcTemplate.execute("insert into jinbiao_role values (2,'admin')");
+                                    throw new RuntimeException("子线程出错啦...");
+                                }catch (Exception e){
+                                    log.info("子线程执行失败了...回滚自己的结果");
+                                    // 手动回滚子线程数据
+                                    childStatus.setRollbackOnly();
+                                    // 设置标记位给主线程回滚
+                                    needRollBack.set(true);
+                                }
+                            }
+                        });
+                    }, tulingThreadPoolExecutor).join();
 
                     // 你可以根据特定条件回滚事务
                     if (needRollBack.get()) {
@@ -464,6 +485,35 @@ public class UserServiceTransaction {
                     throw e;
                 }
             }
+        });
+    }
+
+    public void programmingTransaction1_3() {
+        transactionTemplate.execute(status -> {
+            // 插入用户信息
+            jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
+            CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+                try {
+                    transactionTemplate.execute(innerStatus -> {
+                        // 插入角色信息
+                        jdbcTemplate.execute("insert into jinbiao_role values (3,'admin')");
+                        // 模拟异常
+                        throw new RuntimeException("角色信息业务出错啦...");
+                    });
+                } catch (Exception e) {
+                    // 标记为有错误
+                    needRollBack.set(true);
+                }
+            });
+            // 等待子线程完成
+            future.join();
+
+            // 根据共享变量决定是否回滚
+            if (needRollBack.get()) {
+                // 设置主线程事务回滚
+                status.setRollbackOnly();
+            }
+            return "事务方法执行完成";
         });
     }
 
