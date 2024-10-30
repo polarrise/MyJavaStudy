@@ -22,12 +22,15 @@ public class SpringTransactionTestApplication {
         // userServiceTransaction.test();
         // userServiceTransaction.test2();
         // userServiceTransaction.test3();
-        userServiceTransaction.test4();
+        // userServiceTransaction.test4();
         // userServiceTransaction.test6();
         // userServiceTransaction.test7();
         // userServiceTransaction.test8();
         // userServiceTransaction.test9();
         // userServiceTransaction.test10();
+
+
+        userServiceTransaction.programmingTransaction11();
 
     }
 }

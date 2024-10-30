@@ -27,6 +27,8 @@ import java.sql.SQLException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author wangjinbiao
@@ -150,6 +152,12 @@ public class UserServiceTransaction {
      */
     @Transactional
     public void test4() throws ExecutionException, InterruptedException {
+        jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
+        CompletableFuture.runAsync(()->{
+            jdbcTemplate.execute("insert into jinbiao_role values (2,'admin')");
+            throw new RuntimeException("子线程出错啦...");
+        },tulingThreadPoolExecutor).join();
+
         /**
          *  1.主线程事务方法报错，子线程事务方法报错，主线程使用join等待结果: jinbiao_user、jinbiao_role表数据都回滚，说明主线程和子线程各自的事务都是生效的
          * 原理解释：join()获取结果，子线程任务异常抛出的是CompletionException属于运行时异常，所以子线程/主线程的事务都可以生效
@@ -220,11 +228,11 @@ public class UserServiceTransaction {
        //     throw new RuntimeException("子线程出错啦...");
        // }
 
-       jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
-       new Thread(()->{
-           roleService.insertRole2();
-       }).start();
-       Thread.currentThread().join();
+       // jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
+       // new Thread(()->{
+       //     roleService.insertRole2();
+       // }).start();
+       // Thread.currentThread().join();
 
     }
 
@@ -396,12 +404,67 @@ public class UserServiceTransaction {
         });
     }
 
+
     /**
      *  判断不满足某个条件事务回滚
      * @return
      */
     private boolean someCondition() {
         return false;
+    }
+
+    @Autowired
+    private TransactionTemplate transactionTemplate;
+
+    AtomicBoolean needRollBack = new AtomicBoolean(false);
+
+    public void programmingTransaction11() {
+        // 开启主事务：
+        transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus mainStatu) {
+                try {
+                    // 执行主线程事务的业务逻辑
+                    jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
+                    log.info("事务中执行的操作");
+
+                    // 开启子事务：
+                    transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+                        @Override
+                        protected void doInTransactionWithoutResult(TransactionStatus childStatus) {
+                                CompletableFuture.runAsync(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            jdbcTemplate.execute("insert into jinbiao_role values (2,'admin')");
+                                            throw new RuntimeException("子线程出错啦...");
+                                        }catch (Exception e){
+                                            log.info("子线程执行失败了...回滚自己的结果");
+                                            // 手动回滚子线程数据
+                                            childStatus.setRollbackOnly();
+                                            // 设置标记位给主线程回滚
+                                            needRollBack.set(true);
+                                        }
+                                    }
+                                }, tulingThreadPoolExecutor).join();
+                        }
+                    });
+
+                    // 你可以根据特定条件回滚事务
+                    if (needRollBack.get()) {
+                        log.info("子线程执行失败了...主线程开始回滚自己的数据");
+                        // 手动回滚主线程数据
+                        mainStatu.setRollbackOnly();
+                    }
+
+                } catch (Exception e) {
+                    log.info("主线程执行失败了...主线程开始回滚自己的数据");
+                    // 发生异常时自动回滚
+                    mainStatu.setRollbackOnly();
+                    throw e;
+                }
+            }
+        });
     }
 
     /**
