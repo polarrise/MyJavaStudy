@@ -1,12 +1,21 @@
 package com.jinbiao.HelperClass;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author com.jinbiao
@@ -106,6 +115,44 @@ public class DateUtil {
         }
     }
 
+    /**
+     * Date类型的时分秒与Time类型比较
+     */
+    public static void compareTimeWithDate(){
+        // 创建一个包含 MyObject 的列表
+        List<TimeRule> objectList = new ArrayList<>();
+
+        // 使用 Calendar 添加一些示例日期
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.set(2023, Calendar.NOVEMBER, 1, 17, 30, 0); // 2023-11-01 17:30:00
+        objectList.add(new TimeRule(calendar.getTime()));
+
+        calendar.set(2023, Calendar.NOVEMBER, 1, 18, 15, 0); // 2023-11-01 18:15:00
+        objectList.add(new TimeRule(calendar.getTime()));
+
+        calendar.set(2023, Calendar.NOVEMBER, 1, 19, 0, 0); // 2023-11-01 19:00:00
+        objectList.add(new TimeRule(calendar.getTime()));
+
+        Time endTime = Time.valueOf("18:00:00");
+        LocalTime endLocalTime = endTime.toLocalTime();
+
+        // 过滤出时分秒在 "18:00:00" 之后的记录
+        List<TimeRule> filteredList = objectList.stream()
+                .filter(obj -> {
+                    Date date = obj.getLogoutDate();
+                    LocalTime time = LocalTime.of(date.getHours(), date.getMinutes(), date.getSeconds());
+                    return time.isAfter(endLocalTime);
+                })
+                .collect(Collectors.toList());
+
+        // 输出过滤后的列表
+        for (TimeRule obj : filteredList) {
+            System.out.println(obj.getLogoutDate());
+        }
+
+    }
+
     public static void main(String[] args) throws ParseException {
         // 2021-11-11 -> 2021年11月11日
         System.out.println(new DateUtil().dateConversion("2021-11-11"));
@@ -118,5 +165,15 @@ public class DateUtil {
 
         // 计算两日期之前的相差毫秒数
         calcTimeDiff();
+
+        compareTimeWithDate();
     }
+}
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Accessors(chain = true)
+class TimeRule{
+    private Date logoutDate;
 }
