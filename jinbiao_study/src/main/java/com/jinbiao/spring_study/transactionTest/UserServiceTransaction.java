@@ -49,7 +49,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * }
  */
 @Slf4j
-@Service
+// @Service
 public class UserServiceTransaction {
 
     /**
@@ -98,18 +98,28 @@ public class UserServiceTransaction {
 
 
     /**
-     * 测试事务失效1：访问权限问题:事务方法使用 final 、static 修饰方法
+     * 测试事务失效1：事务方法使用 final 、static 修饰方法
      */
     @Transactional
     public void test() {
-        userServiceTransaction.test11();
+        jdbcTemplate.execute("insert into jinbiao_user values (1,'rise1','wang1234..','10086','小程序')");
+        test11();
     }
 
     @Transactional()
     private void test11() {
-        jdbcTemplate.execute("insert into jinbiao_user values (1,'rise1','wang1234..','10086','小程序')");
+        jdbcTemplate.execute("insert into jinbiao_user values (1,'rise11','wang1234..','10086','小程序')");
         throw new RuntimeException("异常啦,请回滚...");
     }
+
+    /**
+     * 访问权限问题: private修饰，访问不到，就无法代理方法
+     */
+    // @Transactional()
+    // private void test111() {
+    //     jdbcTemplate.execute("insert into jinbiao_user values (1,'rise11','wang1234..','10086','小程序')");
+    //     throw new RuntimeException("异常啦,请回滚...");
+    // }
 
     /**
      * 测试事务失效2：方法用final修饰或者static修饰
@@ -133,11 +143,19 @@ public class UserServiceTransaction {
 
         // 解决办法2：拿到当前的动态代理对象调用事务a方法
         ((UserServiceTransaction)AopContext.currentProxy()).a();
+
+        ((UserServiceTransaction)AopContext.currentProxy()).b();
     }
 
     @Transactional
     public void a() {
         jdbcTemplate.execute("insert into jinbiao_user values (3,'rise33','wang1234..','10086','小程序')");
+        throw new RuntimeException("异常啦,请回滚...");
+    }
+
+    @Transactional
+    public void b() {
+        jdbcTemplate.execute("insert into jinbiao_user values (4,'rise44','wang1234..','10086','小程序')");
         throw new RuntimeException("异常啦,请回滚...");
     }
 
@@ -307,11 +325,12 @@ public class UserServiceTransaction {
          //   throw new RuntimeException("手动抛出RuntimeException");  // -- 能回滚
     }
 
+    // ------   测试事务不失效的情况   --------
     /**
      * 测试内部调用其他的方法让事务不失效的情况：1.再新建一个代理对象userServiceTransactionBase去调用a()
      */
     @Transactional
-    public void test22() {
+    public void testTrsacationIsValid1() {
         jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
         userServiceTransactionBase.a();   //报错 Existing transaction found for transaction marked with propagation 'never'
     }
@@ -320,9 +339,9 @@ public class UserServiceTransaction {
      * 测试内部调用其他的方法让事务不失效的情况：2.自己注入自己。因为Spring容器里面单例池获取出来的是代理对象userServiceTransaction
      */
     @Transactional
-    public void test222() {
+    public void testTrsacationIsValid2() {
         jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
-        userServiceTransaction.a();   //报错 Existing transaction found for transaction marked with propagation 'never'
+        userServiceTransaction.a();
     }
 
     public static void main(String[] args) {
@@ -451,6 +470,11 @@ public class UserServiceTransaction {
                     // 执行主线程事务的业务逻辑
                     jdbcTemplate.execute("insert into jinbiao_user values (3,'rise3','wang1234..','10086','小程序')");
                     log.info("事务中执行的操作");
+                    if(true){
+                        // 设置标记位给子线程回滚
+                        needRollBack.set(true);
+                        throw new RuntimeException("主线程执行失败了...回滚自己的结果");
+                    }
 
                     CompletableFuture.runAsync(()->{
                         // 开启子事务：
@@ -459,7 +483,11 @@ public class UserServiceTransaction {
                             protected void doInTransactionWithoutResult(TransactionStatus childStatus) {
                                 try {
                                     jdbcTemplate.execute("insert into jinbiao_role values (2,'admin')");
-                                    throw new RuntimeException("子线程出错啦...");
+
+                                    if(needRollBack.get()){
+                                        // 手动回滚子线程数据
+                                        childStatus.setRollbackOnly();
+                                    }
                                 }catch (Exception e){
                                     log.info("子线程执行失败了...回滚自己的结果");
                                     // 手动回滚子线程数据

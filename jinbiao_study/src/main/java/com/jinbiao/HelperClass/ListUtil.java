@@ -102,11 +102,11 @@ public class ListUtil {
 
   public static void main(String[] args) {
     // 交集
-    getIntersection();
-    // 差集
-    getDifference();
-    // 去重后并集
-    getDistincteUnion();
+    // getIntersection();
+    // // 差集
+    // getDifference();
+    // // 去重后并集
+    // getDistincteUnion();
 
     // 根据对象属性去重保留最新时间的数据
     ListUtil.getDistinctedNewest();

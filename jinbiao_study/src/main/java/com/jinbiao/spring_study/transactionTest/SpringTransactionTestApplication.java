@@ -21,7 +21,7 @@ public class SpringTransactionTestApplication {
         // 声明式事务测试：
         // userServiceTransaction.test();
         // userServiceTransaction.test2();
-        // userServiceTransaction.test3();
+        userServiceTransaction.test3();
         // userServiceTransaction.test4();
         // userServiceTransaction.test6();
         // userServiceTransaction.test7();
@@ -30,7 +30,7 @@ public class SpringTransactionTestApplication {
         // userServiceTransaction.test10();
 
 
-        userServiceTransaction.programmingTransaction1_1();
+        // userServiceTransaction.programmingTransaction1_2();
 
     }
 }

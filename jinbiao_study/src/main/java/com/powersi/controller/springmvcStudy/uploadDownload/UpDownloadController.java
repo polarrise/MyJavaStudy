@@ -62,11 +62,11 @@ public class UpDownloadController {
         //EasyExcel.write(response.getOutputStream(), Student.class).sheet("模板").doWrite(data());
 
         //写excel时注册
-        ExcelWriter excelWriter = EasyExcel.write(response.getOutputStream(), Student.class).registerConverter(new ListStringConverter()).build();
-        WriteSheet writeSheet = EasyExcel.writerSheet("模板").build();
-        excelWriter.write(data(),writeSheet);
+        // ExcelWriter excelWriter = EasyExcel.write(response.getOutputStream(), Student.class).registerConverter(new ListStringConverter()).build();
+        // WriteSheet writeSheet = EasyExcel.writerSheet("模板").build();
+        // excelWriter.write(data(),writeSheet);
         //千万别忘记finish 会帮忙关闭流
-        excelWriter.finish();
+        // excelWriter.finish();
     }
 
     public static final String PATH = "E:\\";
@@ -78,15 +78,15 @@ public class UpDownloadController {
         response.setContentType("application/vnd.ms-excel;charset=UTF-8");
         response.setCharacterEncoding("utf-8");
         //3、、创建工作簿
-        ExcelWriterBuilder writeWork = EasyExcel.write(response.getOutputStream(), XiaofaUser.class).registerConverter(new ListStringConverter());
-        //4、创建表格
-        ExcelWriterSheetBuilder sheet = writeWork.sheet();
-        sheet.sheetName("黑名单导出模板");
-        //5、调用业务层获取数据
-        List<XiaofaUser> xiaofaUserList = xiaoFaUserService.getXiaofaUserList(map);
-        //6、写入数据到表格中
-        //sheet.doWrite(xiaofaUserList);
-        EasyExcel.write(PATH+"黑名单导出模板.xlsx",XiaofaUser.class).sheet("黑名单导出模板").doWrite(xiaofaUserList);
+        // ExcelWriterBuilder writeWork = EasyExcel.write(response.getOutputStream(), XiaofaUser.class).registerConverter(new ListStringConverter());
+        // //4、创建表格
+        // ExcelWriterSheetBuilder sheet = writeWork.sheet();
+        // sheet.sheetName("黑名单导出模板");
+        // //5、调用业务层获取数据
+        // List<XiaofaUser> xiaofaUserList = xiaoFaUserService.getXiaofaUserList(map);
+        // //6、写入数据到表格中
+        // //sheet.doWrite(xiaofaUserList);
+        // EasyExcel.write(PATH+"黑名单导出模板.xlsx",XiaofaUser.class).sheet("黑名单导出模板").doWrite(xiaofaUserList);
         return CommonResult.success("成功");
     }
 

@@ -2,7 +2,9 @@ package com.jinbiao.cloud.im.component;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
+import com.jinbiao.cloud.common.util.JsonUtils;
 import com.jinbiao.cloud.im.config.SpringContextHolder;
+import com.jinbiao.cloud.im.domain.ws.WSMsgResult;
 import com.jinbiao.cloud.im.service.Impl.WsServiceImpl;
 import com.jinbiao.cloud.im.service.WsService;
 import com.jinbiao.cloud.im.domain.ws.WSMsgReqParam;
@@ -56,7 +58,7 @@ public class WSServerHandler extends SimpleChannelInboundHandler<TextWebSocketFr
         if (evt instanceof IdleStateEvent) {
             IdleStateEvent event = (IdleStateEvent) evt;
             if (event.state().equals(IdleState.ALL_IDLE)) {
-                //ctx.channel().writeAndFlush(new TextWebSocketFrame(JsonUtils.objectToJson(WSMsgResult.success(WSMsgResult.HEART_BEAT, "心跳检测成功", null))));
+                ctx.channel().writeAndFlush(new TextWebSocketFrame(JsonUtils.objectToJson(WSMsgResult.success(WSMsgResult.HEART_BEAT, "心跳检测成功", null))));
             }
         }
     }
